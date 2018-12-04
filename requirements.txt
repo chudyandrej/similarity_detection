@@ -1,0 +1,7 @@
+joblib
+HLL
+keras
+pandas
+tensorflow
+unidecode
+numpy
