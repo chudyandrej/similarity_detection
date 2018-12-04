@@ -1,5 +1,4 @@
 import numpy as np
-from sklearn.neighbors import NearestNeighbors
 
 
 def convert_to_vec(encoder_model, data, max_seq_len, max_count_tokens):
@@ -46,13 +45,13 @@ def create_column_embedding(type_embedding, weights=None):
         Array of Tuple: [(column_name, Numpy), ...]
 
     """
-
     columns_name_set = list(set(list(map(lambda x: x[0], type_embedding))))
+
     if weights is not None and len(weights) == len(type_embedding):
         weights = list(map(lambda x: int(x), weights))
         data = list(zip(type_embedding, weights))
     else:
-        data = type_embedding
+        data = list(type_embedding)
         weights = None
 
     class_embedding = []
@@ -61,39 +60,17 @@ def create_column_embedding(type_embedding, weights=None):
 
     return class_embedding
 
-
-def evaluate_neighbors(embedding_vectors, classes, n_neighbors=100, radius=0.15, metric="braycurtis", mode="kneighbors"):
-
-    neigh_model = NearestNeighbors(n_neighbors=n_neighbors, radius=radius, n_jobs=-1, metric=metric)
-    neigh_model.fit(embedding_vectors)
-    if mode == "kneighbors":
-        neighbor_indexes = neigh_model.kneighbors(embedding_vectors, return_distance=False)
-    elif mode == "radius":
-        neighbor_indexes = neigh_model.radius_neighbors(embedding_vectors, return_distance=False)
-    else:
-        neighbor_indexes1 = neigh_model.kneighbors(embedding_vectors, return_distance=False)
-        neighbor_indexes2 = neigh_model.radius_neighbors(embedding_vectors, return_distance=False)
-        neighbor_indexes = list(map(lambda x: np.intersect1d(x[0], x[1]), zip(neighbor_indexes1, neighbor_indexes2)))
-    index = {}
-
-    for i in range(len(neighbor_indexes)):
-        neighbor_classes = classes[neighbor_indexes[i]]
-        neighbor_classes = list(filter(lambda x: x != classes[i], neighbor_classes))
-        index[classes[i]] = neighbor_classes
-
-    return index
-
 # ------------------------- PRIVATE ----------------------------------
 
 
 def job(column_name, data, weights_for_values):
     class_data = list(filter(lambda x: x[0] == column_name, data))
+    class_embeddings = class_data
     if weights_for_values is not None:
-        _, class_embeddings, weights_for_values = zip(*class_data)
-    else:
-        _, class_embeddings = zip(*class_data)
+        class_embeddings, weights_for_values = zip(*class_data)
 
-    mean_embedding = np.average(np.array(class_embeddings), axis=0, weights=weights_for_values)
+    _, embeddings = zip(*class_embeddings)
+    mean_embedding = np.average(np.array(embeddings), axis=0, weights=weights_for_values)
     return column_name, mean_embedding
 
 

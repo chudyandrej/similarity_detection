@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="3905913a-c36d-42a4-9e14-a1c596c342e9" name="AI1" url="http://ai01.shr.prg-krl.atc">
+        <fileTransfer host="ai01.shr.prg-krl.atc" port="22" privateKey="$USER_HOME$/.ssh/id_rsa" rootFolder="/home/andrej/similarity_detection" accessType="SFTP" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

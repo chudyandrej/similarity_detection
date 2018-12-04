@@ -1,6 +1,6 @@
 
 from keras.models import Model
-from keras.layers import Input, LSTM, Dense, Concatenate, Dot
+from keras.layers import Input, LSTM, Concatenate, Dot
 from collections import defaultdict
 import tensorflow as tf
 from unidecode import unidecode
@@ -37,11 +37,10 @@ def create_model():
 
 
 def generate_random_fit(input_texts, types):
-    """Generator for fiting
+    """Generator for fitting
 
     Args:
-        input_texts (Array): Encder data
-        target_texts (Array): Decoder data
+        input_texts (Array): Encoder data
         types (Array): Type
 
     Yields:

@@ -3,16 +3,15 @@ import os
 import random
 import pickle
 import pandas as pd
-
 from evaluater.key_analyzer.profile_class import Profile
 
-PATH = "../data/cvut/profiles.pkl"
-TARGET_PATH = "../data/cvut/"
+PATH = os.environ['PYTHONPATH'].split(":")[0] + "/data/cvut/profiles.pkl"
+TARGET_PATH = os.environ['PYTHONPATH'].split(":")[0] + "/data/cvut/"
 
 
 class CvutDataset:
-    def __init__(self):
 
+    def __init__(self):
         self.df = pd.DataFrame({"value": [], "type": ""})
 
     def load_top100_last100(self):
@@ -112,4 +111,4 @@ def generate_profile_numbers(digit):
 
 if __name__ == '__main__':
     dataclass = CvutDataset()
-    dataclass.load_top100_last100()
+    dataclass.load_for_similarity_case()

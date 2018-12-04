@@ -1,16 +1,13 @@
-from ast import literal_eval
 import numpy as np
 
-from evaluater.key_analyzer.data_analytics import filter_cand_key_by_prof_id
 
-
-def evaluate_stats(neighbor_indexes):
+def evaluate_similarity_index(similarity_index):
     recall_list = []
     precision_list = []
     count_selected = []
     tps = []
 
-    for class_name, n_class_names in neighbor_indexes.items():
+    for class_name, n_class_names in similarity_index.items():
 
         n_class_names_true = list(filter(lambda x: x != class_name and x[:-2] == class_name[:-2], n_class_names))
         tp = len(n_class_names_true)
@@ -37,4 +34,3 @@ def evaluate_stats(neighbor_indexes):
         "avg_selected": np.average(count_selected)
     }
     return stats
-

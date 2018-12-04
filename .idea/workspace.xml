@@ -2,36 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d3daed69-9682-4673-9397-f4a458b7e5cc" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/dictionaries/andrej_chudy.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/other.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../evaluater/key_analyzer/profile_class.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../evaluating/Column embeding CVUT dataset.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../evaluating/evaluate.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../evaluating/helper_modules/key_detection.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../evaluating/helper_modules/seq2seq_helper.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../evaluating/helper_modules/seq2seq_siamese_model_helper.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../evaluating/quantiles_weight/quantile.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../evaluating/seq2seq/key_analysis/foreign_keys.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../evaluating/seq2seq_siamese/key_analysis/foreign_keys_siamese_seq2seq.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../evaluating/seq2seq_siamese/model/seq2seq_siamese1543504392-model.h5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../evaluating/top100_weight/top100_weight.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../evaluating/top50last50_weight/top50last50_weight.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gcloud-train-cloud-ml.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gcloud-train-local.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../setup.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../trainer/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../trainer/cloudml-gpu.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../trainer/modelCheckpoint.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../trainer/seq2seq/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../trainer/seq2seq/seq2seq.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../trainer/seq2seq_siamese/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../trainer/seq2seq_siamese/model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../trainer/seq2seq_siamese/task.py" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/webServers.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/evaluater/computing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_preparation/cvut.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_preparation/cvut.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluater/embedder.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater/embedder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluater/key_analyzer/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater/key_analyzer/run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluater/similarity_detection/evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater/similarity_detection/evaluation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluater/similarity_detection/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater/similarity_detection/run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trainer/seq2_siamese/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/trainer/seq2_siamese/model.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -43,26 +25,14 @@
     <SUITE FILE_PATH="coverage/lstm_embedding$run.coverage" NAME="run Coverage Results" MODIFIED="1543867363245" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/evaluater/key_analyzer" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.41783613">
+    <splitter split-orientation="horizontal" split-proportion="0.4296394">
       <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/evaluater/key_analyzer/profile_class.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="618">
-                  <caret line="99" selection-start-line="99" selection-end-line="99" />
-                  <folding>
-                    <element signature="e#0#9#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
+        <leaf>
           <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/trainer/seq2_siamese/model.py">
+            <entry file="file://$PROJECT_DIR$/evaluater/similarity_detection/evaluation.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="470">
-                  <caret line="123" lean-forward="true" selection-start-line="123" selection-end-line="123" />
+                <state relative-caret-position="540">
+                  <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
                 </state>
               </provider>
             </entry>
@@ -72,13 +42,43 @@
       <split-second>
         <leaf>
           <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/trainer/seq2_siamese/task.py">
+            <entry file="file://$PROJECT_DIR$/evaluater/similarity_detection/run.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="840">
-                  <caret line="56" column="31" selection-start-line="56" selection-start-column="31" selection-end-line="56" selection-end-column="31" />
+                <state relative-caret-position="645">
+                  <caret line="43" column="26" lean-forward="true" selection-start-line="43" selection-start-column="26" selection-end-line="43" selection-end-column="26" />
                   <folding>
-                    <element signature="e#442#513#0" expanded="true" />
+                    <element signature="e#1#10#0" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/evaluater/embedder.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="930">
+                  <caret line="62" column="29" selection-start-line="62" selection-start-column="29" selection-end-line="62" selection-end-column="29" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/data_preparation/cvut.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-308">
+                  <caret line="7" column="45" selection-start-line="7" selection-start-column="7" selection-end-line="7" selection-end-column="45" />
+                  <folding>
+                    <element signature="e#1#10#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/setup.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="15">
+                  <caret line="1" column="17" selection-start-line="1" selection-start-column="17" selection-end-line="1" selection-end-column="17" />
                 </state>
               </provider>
             </entry>
@@ -114,6 +114,8 @@
       <find>unidecode</find>
       <find>make_index_by_firs_value</find>
       <find>get_pairs_with</find>
+      <find>evaluate_neighbors</find>
+      <find>from evaluater.embedder import</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -122,7 +124,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/trainer/seq2seq_siamese.py" />
         <option value="$PROJECT_DIR$/.venv/lib/python3.6/site-packages/model/__init__.py" />
         <option value="$PROJECT_DIR$/trainer/seq2seq_siamese/seq2seq_siamese.py" />
@@ -137,17 +138,24 @@
         <option value="$PROJECT_DIR$/evaluating/helper_modules/seq2seq_siamese_model_helper.py" />
         <option value="$PROJECT_DIR$/evaluater/load_models.py" />
         <option value="$PROJECT_DIR$/evaluater/key_analyzer.py" />
-        <option value="$PROJECT_DIR$/evaluater/embedder.py" />
         <option value="$PROJECT_DIR$/evaluater/key_analyzer/evaluation.py" />
         <option value="$PROJECT_DIR$/evaluater/key_analyzer/__init__.py" />
         <option value="$PROJECT_DIR$/evaluater/key_analyzer/data_analytics.py" />
         <option value="$PROJECT_DIR$/evaluater/key_analyzer/profile_class.py" />
-        <option value="$PROJECT_DIR$/evaluater/key_analyzer/run.py" />
         <option value="$PROJECT_DIR$/gcloud-train-local.sh" />
         <option value="$PROJECT_DIR$/trainer/seq2_siamese/task.py" />
         <option value="$PROJECT_DIR$/trainer/cloudml-gpu.yaml" />
         <option value="$PROJECT_DIR$/gcloud-train-cloud-ml.sh" />
         <option value="$PROJECT_DIR$/trainer/seq2_siamese/model.py" />
+        <option value="$PROJECT_DIR$/data_preparation/cvut.py" />
+        <option value="$PROJECT_DIR$/evaluater/similarity_detection/evaluation.py" />
+        <option value="$PROJECT_DIR$/evaluater/computing.py" />
+        <option value="$PROJECT_DIR$/evaluater/key_analyzer/run.py" />
+        <option value="$PROJECT_DIR$/setup.py" />
+        <option value="$PROJECT_DIR$/requirements.txt" />
+        <option value="$PROJECT_DIR$/.env" />
+        <option value="$PROJECT_DIR$/evaluater/embedder.py" />
+        <option value="$PROJECT_DIR$/evaluater/similarity_detection/run.py" />
       </list>
     </option>
   </component>
@@ -179,7 +187,7 @@
               <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
               <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
               <item name="evaluater" type="462c0819:PsiDirectoryNode" />
-              <item name="key_analyzer" type="462c0819:PsiDirectoryNode" />
+              <item name="similarity_detection" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -190,12 +198,20 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="Settings.JavaScript.Linters.JSLint" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/evaluater/similarity_detection" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/evaluater/key_analyzer" />
       <recent name="$PROJECT_DIR$/data/models" />
@@ -216,7 +232,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.run">
+  <component name="RunManager" selected="Python.run (1)">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="lstm_embedding" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -231,6 +247,44 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="cvut" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="lstm_embedding" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/data_preparation" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data_preparation/cvut.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="run (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="lstm_embedding" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/evaluater/similarity_detection" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/evaluater/similarity_detection/run.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -286,9 +340,13 @@
     <list>
       <item itemvalue="Python.task" />
       <item itemvalue="Python.run" />
+      <item itemvalue="Python.run (1)" />
+      <item itemvalue="Python.cvut" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.run (1)" />
+        <item itemvalue="Python.cvut" />
         <item itemvalue="Python.run" />
         <item itemvalue="Python.task" />
       </list>
@@ -306,36 +364,46 @@
       <updated>1543399042864</updated>
       <workItem from="1543864926570" duration="2547000" />
       <workItem from="1543907256187" duration="432000" />
-      <workItem from="1543910987573" duration="2764000" />
+      <workItem from="1543910987573" duration="17732000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5743000" />
+    <option name="totallyTimeSpent" value="20711000" />
+  </component>
+  <component name="TodoView" selected-index="2">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
     <frame x="-425" y="-1440" width="2560" height="1440" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12271644" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.098490864" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="File Transfer" visible="true" weight="0.329927" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32919708" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.329927" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.23649634" />
-      <window_info anchor="bottom" id="Python Console" order="12" weight="0.32857144" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.23649634" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.32846716" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Remote Host" order="3" />
+      <window_info active="true" anchor="right" id="Remote Host" order="3" visible="true" weight="0.08300238" />
       <window_info anchor="right" id="SciView" order="4" />
       <window_info anchor="right" x="0" y="0" width="590" height="1217" id="Documentation" order="5" side_tool="true" weight="0.32843527" />
       <window_info anchor="right" id="Database" order="6" />
@@ -362,13 +430,6 @@
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/.venv/lib/python3.6/site-packages/model/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="5" selection-start-line="4" selection-start-column="5" selection-end-line="4" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.venv/lib/python3.6/site-packages/tensorflow/python/util/compat.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="287">
@@ -430,13 +491,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/evaluater/key_analyzer.py" />
-    <entry file="file://$PROJECT_DIR$/evaluater/embedder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="990">
-          <caret line="68" column="66" selection-start-line="68" selection-start-column="66" selection-end-line="68" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/evaluating/helper_modules/seq2seq_siamese_model_helper.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -499,16 +553,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/evaluater/key_analyzer/profile_class.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="618">
-          <caret line="99" selection-start-line="99" selection-end-line="99" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/evaluater/key_analyzer/evaluation.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
@@ -533,34 +577,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/evaluater/key_analyzer/run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="21" column="24" selection-start-line="21" selection-start-column="24" selection-end-line="21" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gcloud-train-cloud-ml.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/setup.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="22" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/trainer/cloudml-gpu.yaml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
@@ -577,8 +593,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/trainer/seq2_siamese/task.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="840">
-          <caret line="56" column="31" selection-start-line="56" selection-start-column="31" selection-end-line="56" selection-end-column="31" />
+        <state relative-caret-position="750">
+          <caret line="50" column="36" lean-forward="true" selection-start-line="50" selection-start-column="36" selection-end-line="50" selection-end-column="36" />
           <folding>
             <element signature="e#442#513#0" expanded="true" />
           </folding>
@@ -587,10 +603,120 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/trainer/seq2_siamese/model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="470">
-          <caret line="123" lean-forward="true" selection-start-line="123" selection-end-line="123" />
+        <state relative-caret-position="161">
+          <caret line="49" column="57" lean-forward="true" selection-start-line="49" selection-start-column="57" selection-end-line="49" selection-end-column="57" />
+          <folding>
+            <element signature="e#1#31#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/evaluater/key_analyzer/profile_class.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="618">
+          <caret line="99" selection-start-line="99" selection-end-line="99" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="30" selection-start-line="10" selection-start-column="30" selection-end-line="10" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluater/computing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="14" lean-forward="true" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluater/key_analyzer/run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="615">
+          <caret line="41" lean-forward="true" selection-start-line="41" selection-end-line="41" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="17" selection-start-line="1" selection-start-column="17" selection-end-line="1" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluater/similarity_detection/evaluation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gcloud-train-cloud-ml.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="34" lean-forward="true" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data_preparation/cvut.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-308">
+          <caret line="7" column="45" selection-start-line="7" selection-start-column="7" selection-end-line="7" selection-end-column="45" />
+          <folding>
+            <element signature="e#1#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluater/embedder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="930">
+          <caret line="62" column="29" selection-start-line="62" selection-start-column="29" selection-end-line="62" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluater/similarity_detection/run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="645">
+          <caret line="43" column="26" lean-forward="true" selection-start-line="43" selection-start-column="26" selection-end-line="43" selection-end-column="26" />
+          <folding>
+            <element signature="e#1#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>
