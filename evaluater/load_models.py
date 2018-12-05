@@ -11,6 +11,16 @@ def load_seq2seq_siamese(model_path):
     return encoder_model
 
 
+def load_seq2_siamese(model_path):
+    model = load_model(model_path)
+    # encoder
+    encoder_inputs = model.get_layer(name="encoder_Input_1").output
+    encoder_outputs, state_h_enc, state_c_enc = model.get_layer(name="encoder").get_output_at(0)
+    encoder_states = [state_h_enc, state_c_enc]
+    encoder_model = Model(encoder_inputs, encoder_states)
+    return encoder_model
+
+
 def load_seq2seq(model_path):
     """Load Vec2Vec model and divide to encoder and decoder. With model is loaded
     settenigs piclke file.

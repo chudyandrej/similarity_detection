@@ -1,4 +1,5 @@
 from sklearn.neighbors import NearestNeighbors
+import numpy as np
 
 
 def compute_neighbors(embedding_vectors, classes, n_neighbors=100, radius=0.15, metric="braycurtis", mode="kneighbors"):

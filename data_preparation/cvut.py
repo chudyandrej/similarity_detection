@@ -2,6 +2,7 @@
 import os
 import random
 import pickle
+import enum
 import pandas as pd
 from evaluater.key_analyzer.profile_class import Profile
 
@@ -9,10 +10,20 @@ PATH = os.environ['PYTHONPATH'].split(":")[0] + "/data/cvut/profiles.pkl"
 TARGET_PATH = os.environ['PYTHONPATH'].split(":")[0] + "/data/cvut/"
 
 
-class CvutDataset:
+class SelectData(enum.Enum):
+    profile_similarity_basic = 1
+    profile_top100_last100_raw = 2
 
-    def __init__(self):
+
+class CvutDataset:
+    def __init__(self, data_selectro):
         self.df = pd.DataFrame({"value": [], "type": ""})
+        self.name = ''
+
+        if data_selectro.value == 1:
+            self.load_for_similarity_case()
+        elif data_selectro.value == 2:
+            self.load_top100_last100()
 
     def load_top100_last100(self):
         if os.path.exists(TARGET_PATH + "top100_last100.csv"):
@@ -49,12 +60,12 @@ class CvutDataset:
             self.save_to_csv("top100_last100.csv")
             print("Data loaded!")
             print("Data saved!")
-            return self.df
 
     def load_for_similarity_case(self, count_of_data_in_class=50):
-        if os.path.exists(TARGET_PATH+"similarity_problem.csv"):
+        self.name = "cvut_prof_numgen_split_column.csv"
+        if os.path.exists(TARGET_PATH + self.name):
             print("Data loaded!")
-            self.df = pd.read_csv(TARGET_PATH+"similarity_problem.csv")
+            self.df = pd.read_csv(TARGET_PATH + self.name)
             return self.df
 
         if not os.path.exists(PATH):
@@ -88,10 +99,9 @@ class CvutDataset:
             name = "digit_" + str(i)
             self.df = pd.concat([self.df, pd.DataFrame({"value": vals1, "type": name+"_1"})])
             self.df = pd.concat([self.df, pd.DataFrame({"value": vals2, "type": name+"_2"})])
-            self.save_to_csv("similarity_problem.csv")
-            print("Data loaded!")
-            print("Data saved!")
-            return self.df
+        self.save_to_csv(self.name)
+        print("Data loaded!")
+        print("Data saved!")
 
     def save_to_csv(self, name):
         self.df.to_csv(TARGET_PATH+name, index=False)
@@ -110,5 +120,6 @@ def generate_profile_numbers(digit):
 
 
 if __name__ == '__main__':
-    dataclass = CvutDataset()
-    dataclass.load_for_similarity_case()
+    dataclass = CvutDataset(SelectData.profile_similarity_basic)
+    print(dataclass.df['type'])
+
