@@ -13,6 +13,8 @@ def convert_to_vec(encoder_model, data, max_seq_len, max_count_tokens):
     Returns:
         (Array of Numpy): Array of embedding vectors
     """
+    assert (len(data) > 0), "Input data are empty!"
+    assert (max_count_tokens > 0), "Count of tokens can not be 0 or negative"
 
     encoder_input_data = np.zeros((len(data), max_seq_len, max_count_tokens), dtype='float32')
 
@@ -45,6 +47,9 @@ def create_column_embedding(type_embedding, weights=None):
         Array of Tuple: [(column_name, Numpy), ...]
 
     """
+    type_embedding = list(type_embedding)
+    assert (len(type_embedding) > 0), "Input data are empty!"
+
     columns_name_set = list(set(list(map(lambda x: x[0], type_embedding))))
 
     if weights is not None and len(weights) == len(type_embedding):
@@ -83,6 +88,7 @@ def tokenizer(char):
     Returns:
         NUMBER: Code <0,94>
     """
+    assert (char is not None), "Input data are empty!"
     code = ord(char)
     if 0 <= code <= 31 or code == 127:    # Is white
         code = 0

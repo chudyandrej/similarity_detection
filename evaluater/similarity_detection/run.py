@@ -70,8 +70,7 @@ def experiment_seq2_siamese():
     # -------------- SET PARAMETERS OF EXPERIMENT --------------------
     experiment_name = experiment_seq2_siamese.__name__
 
-    model_path = os.environ['PYTHONPATH'].split(":")[0] +\
-                 "/data/models/seq2_siamese1543913096-model.h5"
+    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2_siamese1543913096-model.h5"
     print("Experiment " + experiment_name + " running ...")
     # -------------- COMPUTING EXPERIMENT BODY --------------------
     if os.path.exists(CHECKPOINT_PATH+experiment_name):
@@ -80,6 +79,32 @@ def experiment_seq2_siamese():
     else:
         dataclass = dt.CvutDataset(dt.SelectData.profile_similarity_basic)
         encoder_model = model_loader.load_seq2_siamese(model_path)
+        class_embedding = compute_embedding_pipeline(experiment_name, dataclass, encoder_model)
+
+    # -------------- EVALUATE EXPERIMENT --------------------
+    classes, embedding_vectors = zip(*class_embedding)
+    print("Count of classes: " + str(len(set(classes))))
+    similarity_index = compute_neighbors(np.array(embedding_vectors), np.array(classes),
+                                       n_neighbors=100, radius=0.3, mode="radius+kneighbors")
+
+    # dataclass = dt.CvutDataset(dt.SelectData.profile_similarity_basic)
+    # print_similar_domain(similarity_index, dataclass)
+    return evaluate_similarity_index(similarity_index)
+
+
+def experiment_seq2seq():
+    # -------------- SET PARAMETERS OF EXPERIMENT --------------------
+    experiment_name = experiment_seq2seq.__name__
+
+    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2seq1544020916-model.h5"
+    print("Experiment " + experiment_name + " running ...")
+    # -------------- COMPUTING EXPERIMENT BODY --------------------
+    if os.path.exists(CHECKPOINT_PATH+experiment_name):
+        print("Checkpoint found ...")
+        class_embedding = pickle.load(open(CHECKPOINT_PATH+experiment_name, "rb"))
+    else:
+        dataclass = dt.CvutDataset(dt.SelectData.profile_similarity_basic)
+        encoder_model = model_loader.load_seq2seq(model_path)
         class_embedding = compute_embedding_pipeline(experiment_name, dataclass, encoder_model)
 
     # -------------- EVALUATE EXPERIMENT --------------------
@@ -105,8 +130,9 @@ if __name__ == '__main__':
         states = experiment_seq2seq_siamese()
     elif parse_args.exp == 2:
         states = experiment_seq2_siamese()
+    elif parse_args.exp == 3:
+        states = experiment_seq2seq()
     else:
         print("Bad experiment code")
-
     print(states)
 

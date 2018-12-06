@@ -1,17 +1,17 @@
 from ast import literal_eval
 import numpy as np
 
-from evaluater.key_analyzer.data_analytics import filter_cand_key_by_prof_id
+from data_preparation.cvut import filter_cand_key_by_prof_id
 
 
-def evaluate_stats(candidate_key_index, fk_pk):
+def evaluate_stats(candidate_key_index, fk_pk, profiles):
     recall_list = []
     precision_list = []
     count_selected = []
     tps = []
     candidate_keys_count = 0
     for cfk, cand_pks in candidate_key_index.items():
-        cand_pks = filter_cand_key_by_prof_id(cfk, cand_pks)
+        cand_pks = filter_cand_key_by_prof_id(cfk, cand_pks, profiles)
         if len(cand_pks) == 0:
             continue
 
