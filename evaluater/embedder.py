@@ -1,4 +1,6 @@
 import numpy as np
+from joblib import Parallel, delayed
+from collections import defaultdict
 
 
 def convert_to_vec(encoder_model, data, max_seq_len, max_count_tokens):
@@ -36,7 +38,7 @@ def convert_to_vec(encoder_model, data, max_seq_len, max_count_tokens):
     return vectors
 
 
-def create_column_embedding(type_embedding, weights=None):
+def create_column_embedding(type_embedding):
     """Create column embedding from value embeddings by vector AVERAGE
 
     Args:
@@ -50,32 +52,21 @@ def create_column_embedding(type_embedding, weights=None):
     type_embedding = list(type_embedding)
     assert (len(type_embedding) > 0), "Input data are empty!"
 
-    columns_name_set = list(set(list(map(lambda x: x[0], type_embedding))))
+    class_embeddings_index = defaultdict(list)
+    [class_embeddings_index[key].append(embedding) for key, embedding in type_embedding]
+    class_embeddings_index = dict(class_embeddings_index)
 
-    if weights is not None and len(weights) == len(type_embedding):
-        weights = list(map(lambda x: int(x), weights))
-        data = list(zip(type_embedding, weights))
-    else:
-        data = list(type_embedding)
-        weights = None
-
-    class_embedding = []
-    for column_name in columns_name_set:
-        class_embedding.append(job(column_name, data, weights))
+    class_embedding = Parallel(n_jobs=-1)(delayed(job)(column_name, embeddings)
+                                          for column_name, embeddings in class_embeddings_index.items())
 
     return class_embedding
 
 # ------------------------- PRIVATE ----------------------------------
 
 
-def job(column_name, data, weights_for_values):
-    class_data = list(filter(lambda x: x[0] == column_name, data))
-    class_embeddings = class_data
-    if weights_for_values is not None:
-        class_embeddings, weights_for_values = zip(*class_data)
+def job(column_name, embeddings):
 
-    _, embeddings = zip(*class_embeddings)
-    mean_embedding = np.average(np.array(embeddings), axis=0, weights=weights_for_values)
+    mean_embedding = np.average(np.array(embeddings), axis=0)
     return column_name, mean_embedding
 
 
