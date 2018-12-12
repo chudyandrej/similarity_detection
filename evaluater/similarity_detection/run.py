@@ -6,7 +6,7 @@ import numpy as np
 from unidecode import unidecode
 
 import evaluater.load_models as model_loader
-from evaluater.embedder import convert_to_vec, create_column_embedding
+from evaluater.embedder import convert_to_vec, create_column_embedding, convert_to_vec_el
 from evaluater.computing import compute_neighbors
 from evaluater.similarity_detection.evaluation import evaluate_similarity_index
 import data_preparation.cvut as dt
@@ -16,13 +16,16 @@ CHECKPOINT_PATH = os.environ['PYTHONPATH'].split(":")[0] + \
                   "/evaluater/similarity_detection/pickles/"
 
 
-def compute_embedding_pipeline(experiment_name, dataclass, encoder_model):
+def compute_embedding_pipeline(experiment_name, dataclass, encoder_model, one_hot):
     print("Checkpoint not found ... Calculating...")
     data = dataclass.df
     data.value = data.value.map(lambda x: unidecode(str(x))[:63])
 
     print("Checkpoint not found. Converting values to vectors...")
-    value_embedding = convert_to_vec(encoder_model, data["value"].values, 64, 95)
+    if one_hot:
+        value_embedding = convert_to_vec(encoder_model, data["value"].values, 64, 95)
+    else:
+        value_embedding = convert_to_vec_el(encoder_model, data["value"].values, 64, 95)
     print("Processed " + str(len(value_embedding)) + " value embeddings")
     class_embedding = create_column_embedding(list(zip(data["type"].values, value_embedding)))
     print("Column embedding calculated.")
@@ -56,7 +59,7 @@ def experiment_seq2seq_siamese():
     else:
         dataclass = dt.CvutDataset(dt.SelectData.profile_similarity_basic)
         encoder_model = model_loader.load_seq2_siamese(model_path)
-        class_embedding = compute_embedding_pipeline(experiment_name, dataclass, encoder_model)
+        class_embedding = compute_embedding_pipeline(experiment_name, dataclass, encoder_model, True)
 
     # -------------- EVALUATE EXPERIMENT --------------------
     classes, embedding_vectors = zip(*class_embedding)
@@ -79,7 +82,7 @@ def experiment_seq2_siamese():
     else:
         dataclass = dt.CvutDataset(dt.SelectData.profile_similarity_basic)
         encoder_model = model_loader.load_seq2_siamese(model_path)
-        class_embedding = compute_embedding_pipeline(experiment_name, dataclass, encoder_model)
+        class_embedding = compute_embedding_pipeline(experiment_name, dataclass, encoder_model, True)
 
     # -------------- EVALUATE EXPERIMENT --------------------
     classes, embedding_vectors = zip(*class_embedding)
@@ -105,7 +108,33 @@ def experiment_seq2seq():
     else:
         dataclass = dt.CvutDataset(dt.SelectData.profile_similarity_basic)
         encoder_model = model_loader.load_seq2seq(model_path)
-        class_embedding = compute_embedding_pipeline(experiment_name, dataclass, encoder_model)
+        class_embedding = compute_embedding_pipeline(experiment_name, dataclass, encoder_model, True)
+
+    # -------------- EVALUATE EXPERIMENT --------------------
+    classes, embedding_vectors = zip(*class_embedding)
+    print("Count of classes: " + str(len(set(classes))))
+    similarity_index = compute_neighbors(np.array(embedding_vectors), np.array(classes),
+                                       n_neighbors=100, radius=0.3, mode="radius+kneighbors")
+
+    # dataclass = dt.CvutDataset(dt.SelectData.profile_similarity_basic)
+    # print_similar_domain(similarity_index, dataclass)
+    return evaluate_similarity_index(similarity_index)
+
+
+def experiment_cnn_kim():
+    # -------------- SET PARAMETERS OF EXPERIMENT --------------------
+    experiment_name = experiment_cnn_kim.__name__
+
+    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/cnn_kim1544535197-model.h5"
+    print("Experiment " + experiment_name + " running ...")
+    # -------------- COMPUTING EXPERIMENT BODY --------------------
+    if os.path.exists(CHECKPOINT_PATH+experiment_name):
+        print("Checkpoint found ...")
+        class_embedding = pickle.load(open(CHECKPOINT_PATH+experiment_name, "rb"))
+    else:
+        dataclass = dt.CvutDataset(dt.SelectData.profile_similarity_basic)
+        encoder_model = model_loader.load_cnn_kim(model_path)
+        class_embedding = compute_embedding_pipeline(experiment_name, dataclass, encoder_model, False)
 
     # -------------- EVALUATE EXPERIMENT --------------------
     classes, embedding_vectors = zip(*class_embedding)
@@ -132,6 +161,8 @@ if __name__ == '__main__':
         states = experiment_seq2_siamese()
     elif parse_args.exp == 3:
         states = experiment_seq2seq()
+    elif parse_args.exp == 4:
+        states = experiment_cnn_kim()
     else:
         print("Bad experiment code")
     print(states)

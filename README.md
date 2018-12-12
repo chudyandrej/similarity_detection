@@ -28,7 +28,6 @@ Dataset contains 251864 values with 2459 columns.
 
 
 
-
 ### CVUT dataset key detection problem
 
 #### SEQ2SEQ_SIAMESE
@@ -45,6 +44,14 @@ Dataset contains 251864 values with 2459 columns.
 | `COUNT OF CANDIDATES` | 101325 |
 | `RECALL` | 0.725 |
 | `PRECISION` | 0.0683 |
+
+
+#### SEQ2_SIAMESE
+| State | SEQ2SEQ |
+| --- | --- |
+| `COUNT OF CANDIDATES` | 101638 |
+| `RECALL` | 0.8051 |
+| `PRECISION` | 0.094 |
 
 
 

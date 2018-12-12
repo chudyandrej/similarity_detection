@@ -30,23 +30,27 @@ def load_seq2seq(model_path):
     encoder_model = Model(encoder_inputs, encoder_states)
     return encoder_model
 
+#
+# def load_seq2seq(model_path):
+#     """Load Vec2Vec model and divide to encoder and decoder. With model is loaded
+#     settenigs piclke file.
+#
+#     Args:
+#         model_path (STRING): Path to .h5  file
+#
+#     Returns:
+#         (keras.engine.training.Model, keras.engine.training.Model): Encoder and  decoder_model
+#     """
+#     model = load_model(model_path)
+#
+#     # encoder
+#     encoder_inputs = model.input[0]  # input_1
+#     encoder_outputs, state_h_enc, state_c_enc = model.layers[2].output  # lstm_1
+#     encoder_states = [state_h_enc, state_c_enc]
+#     encoder_model = Model(encoder_inputs, encoder_states)
+#     return encoder_model
 
-def load_seq2seq(model_path):
-    """Load Vec2Vec model and divide to encoder and decoder. With model is loaded
-    settenigs piclke file.
 
-    Args:
-        model_path (STRING): Path to .h5  file
-        model_settings_path (STRING): Path to .pickle settings from training
-
-    Returns:
-        (keras.engine.training.Model, keras.engine.training.Model): Encoder and  decoder_model
-    """
+def load_cnn_kim(model_path):
     model = load_model(model_path)
-
-    # encoder
-    encoder_inputs = model.input[0]  # input_1
-    encoder_outputs, state_h_enc, state_c_enc = model.layers[2].output  # lstm_1
-    encoder_states = [state_h_enc, state_c_enc]
-    encoder_model = Model(encoder_inputs, encoder_states)
-    return encoder_model
+    return model.layers[2]

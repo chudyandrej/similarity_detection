@@ -38,6 +38,33 @@ def convert_to_vec(encoder_model, data, max_seq_len, max_count_tokens):
     return vectors
 
 
+def convert_to_vec_el(encoder_model, data, max_seq_len, max_count_tokens):
+    """Converting string data array to array of embedding vectors
+
+    Args:
+        encoder_model (keras.engine.training.Model): Description
+        data (Array of STRINGS): Column values
+        max_seq_len
+        max_count_tokens
+
+    Returns:
+        (Array of Numpy): Array of embedding vectors
+    """
+    assert (len(data) > 0), "Input data are empty!"
+    assert (max_count_tokens > 0), "Count of tokens can not be 0 or negative"
+
+    encoder_input_data = np.zeros((len(data), max_seq_len), dtype='float32')
+
+    for i, input_text in enumerate(data):
+        for t, char in enumerate(input_text):
+            # If character not be include in training vec2vec it will be replace by ' '
+            encoder_input_data[i, t] = tokenizer(char)
+
+    output = encoder_model.predict(encoder_input_data)
+
+    return output
+
+
 def create_column_embedding(type_embedding):
     """Create column embedding from value embeddings by vector AVERAGE
 
