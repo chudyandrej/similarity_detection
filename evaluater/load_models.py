@@ -54,3 +54,8 @@ def load_seq2seq(model_path):
 def load_cnn_kim(model_path):
     model = load_model(model_path)
     return model.layers[2]
+
+
+def load_cnn_tcn(model_path):
+    model = load_model(model_path)
+    return model.layers[2]

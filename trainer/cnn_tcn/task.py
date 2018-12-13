@@ -15,7 +15,7 @@ Original file is located at
 # !pip install unidecode
 
 from keras.callbacks import EarlyStopping, TensorBoard
-import trainer.cnn_kim.model as model
+import trainer.cnn_tcn.model as model
 from trainer.modelCheckpoint import ModelCheckpointMLEngine
 import argparse
 

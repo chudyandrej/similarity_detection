@@ -85,8 +85,33 @@ def create_column_embedding(type_embedding):
 
     class_embedding = Parallel(n_jobs=-1)(delayed(job)(column_name, embeddings)
                                           for column_name, embeddings in class_embeddings_index.items())
+    return class_embedding
+
+
+def create_column_embedding_by_mrc(type_embedding):
+    """Create column embedding from value embeddings by more representations of class by selected value encodings
+
+    Args:
+        type_embedding (Array): Array of Tuples
+        weights (None, optional): Array of numbers with same size as value_embeddings.
+
+    Returns:
+        Array of Tuple: [(column_name, Numpy), ...]
+
+    """
+    type_embedding = list(type_embedding)
+    assert (len(type_embedding) > 0), "Input data are empty!"
+
+    class_embeddings_index = defaultdict(list)
+    [class_embeddings_index[key].append(embedding) for key, embedding in type_embedding]
+    class_embeddings_index = dict(class_embeddings_index)
+
+    class_embedding = {}
+    for column_name, embeddings in class_embeddings_index.items():
+        class_embedding[column_name] = embeddings[:10]
 
     return class_embedding
+
 
 # ------------------------- PRIVATE ----------------------------------
 

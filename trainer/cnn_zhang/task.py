@@ -36,7 +36,7 @@ def main(data_file, job_dir):
                                 callbacks=[
                                     ModelCheckpointMLEngine(job_dir + '/model.h5', monitor='loss', verbose=1,
                                                     save_best_only=True, mode='min'),
-                                    EarlyStopping(monitor='loss', patience=10, verbose=1),
+                                    EarlyStopping(monitor='loss', patience=25, verbose=1),
                                     TensorBoard(log_dir=job_dir + '/log', write_graph=True,
                                                 embeddings_freq=0)
                                 ])

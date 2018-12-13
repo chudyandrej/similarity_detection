@@ -1,5 +1,4 @@
 from setuptools import setup, find_packages
-print("Spustams a")
 
 setup(name='seq2seq',
       version='0.1',

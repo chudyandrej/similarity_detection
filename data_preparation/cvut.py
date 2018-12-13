@@ -83,7 +83,6 @@ class CvutDataset:
             raise ValueError('Data not found: ' + PROFILES_PATH)
 
         self.profiles = pickle.load(open(PROFILES_PATH, "rb"))
-
         # Load data from profile
         for cel_name, profObj in list(self.profiles.items()):
             data1 = list(map(lambda x: x[0], profObj.most_frequent))
@@ -91,9 +90,8 @@ class CvutDataset:
             if len(data1) < count_of_data_in_class and len(data2) < count_of_data_in_class:
                 continue
 
-            if not digit_values(data1) and not digit_values(data2):
-                self.df = pd.concat([self.df, pd.DataFrame({"value": data1, "type": str(cel_name)+"_1"})])
-                self.df = pd.concat([self.df, pd.DataFrame({"value": data2, "type": str(cel_name)+"_2"})])
+            self.df = pd.concat([self.df, pd.DataFrame({"value": data1, "type": str(cel_name)+"_1"})])
+            self.df = pd.concat([self.df, pd.DataFrame({"value": data2, "type": str(cel_name)+"_2"})])
 
         # generate number value by count of dental advice
         for i in range(1, 20):
@@ -279,6 +277,6 @@ def is_candidate_key(fk_profile, pk_profile):
 
 
 if __name__ == '__main__':
-    dataclass = CvutDataset(SelectData.load_key_analyzer)
+    dataclass = CvutDataset(SelectData.profile_similarity_basic)
     print(dataclass.df)
 

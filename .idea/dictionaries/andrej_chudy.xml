@@ -3,6 +3,7 @@
     <words>
       <w>crossentropy</w>
       <w>dataset</w>
+      <w>embedder</w>
       <w>lstm</w>
       <w>softmax</w>
     </words>

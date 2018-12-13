@@ -1,6 +1,7 @@
 
 from keras.models import Model
-from keras.layers import Input, Embedding, Dense, Dot, Concatenate, Convolution1D, GlobalMaxPooling1D, AlphaDropout
+from keras.layers import Input, Embedding, Dense, Dot, BatchNormalization, Convolution1D, Activation, SpatialDropout1D
+from keras.layers import Add, Flatten
 from collections import defaultdict
 import tensorflow as tf
 from unidecode import unidecode
@@ -8,6 +9,7 @@ import numpy as np
 import pandas as pd
 import random
 
+from keras.utils import plot_model
 
 DATA_SIZE = 600000
 MAX_TEXT_SEQUENCE_LEN = 64
@@ -18,43 +20,47 @@ EPOCHS = 1000  # Number of epochs to train for.
 LSTM_DIM = 256  # Latent dimensionality of the encoding space.
 DENSE_DIM = 1024
 EMBEDDING_SIZE = 128
-CNN_LAYERS = [[256, 10], [256, 7], [256, 5], [256, 3]]
-DROPOUT = 0.2
+CNN_LAYERS = [[256, 5],[256, 5]]
+DROPOUT_P = 0.2
 
 
 def create_model():
-
     def embedder():
-        # Embedding layers
         inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name='sent_input', dtype='int64')
-        emb = Embedding(TOKEN_COUNT + 1, EMBEDDING_SIZE, input_length=MAX_TEXT_SEQUENCE_LEN)(inputs)
-        # Convolution layers
-        convolution_output = []
-        for num_filters, filter_width in CNN_LAYERS:
-            conv = Convolution1D(filters=num_filters,
-                                 kernel_size=filter_width,
-                                 activation='tanh',
-                                 name='Conv1D_{}_{}'.format(num_filters, filter_width))(emb)
-            pool = GlobalMaxPooling1D(name='MaxPoolingOverTime_{}_{}'.format(num_filters, filter_width))(conv)
-            convolution_output.append(pool)
-        x = Concatenate()(convolution_output)
+
+        x = Embedding(TOKEN_COUNT + 1, EMBEDDING_SIZE, input_length=MAX_TEXT_SEQUENCE_LEN)(inputs)
+        # Residual blocks with 2 Convolution layers each
+        d = 1  # Initial dilation factor
+        for cl in CNN_LAYERS:
+            res_in = x
+            for _ in range(2):
+                # NOTE: The paper used padding='causal'
+                x = Convolution1D(cl[0], cl[1], padding='same', dilation_rate=d, activation='linear')(x)
+                x = BatchNormalization()(x)
+                x = Activation('relu')(x)
+                x = SpatialDropout1D(DROPOUT_P)(x)
+                d *= 2  # Update dilation factor
+            # Residual connection
+            res_in = Convolution1D(filters=cl[0], kernel_size=1, padding='same', activation='linear')(res_in)
+            x = Add()([res_in, x])
+        x = Flatten()(x)
         # Fully connected layers
-        x = Dense(DENSE_DIM, activation='selu', kernel_initializer='lecun_normal')(x)
-        x = AlphaDropout(DROPOUT)(x)
-        x = Dense(256, activation='selu', kernel_initializer='lecun_normal')(x)
+        x = Dense(256)(x)
+        x = Activation('relu')(x)
         return Model(inputs=inputs, outputs=x)
 
     inputs1 = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name='sent_input1', dtype='int64')
     inputs2 = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name='sent_input2', dtype='int64')
     embedding_model = embedder()
+    # plot_model(embedding_model, to_file='model1.png')
+
     output1 = embedding_model(inputs1)
     output2 = embedding_model(inputs2)
     output = Dot(1, normalize=True, name="dotLayer")([output1, output2])
-
-    # Build and compile model
     model = Model(inputs=[inputs1, inputs2], outputs=output)
-    print("CharCNNKim model built: ")
+    # plot_model(model, to_file='model2.png')
     model.summary()
+
     return model
 
 
