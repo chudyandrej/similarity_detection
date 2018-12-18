@@ -22,6 +22,8 @@ if __name__ == '__main__':
         states = ex.experiment_cnn_kim()
     elif parse_args.exp == 5:
         states = ex.experiment_cnn_tck()
+    elif parse_args.exp == 6:
+        status = ex.experiment_cnn_tck2()
     else:
         print("Bad experiment code")
     print(states)

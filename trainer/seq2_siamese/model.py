@@ -61,7 +61,6 @@ def generate_random_fit(input_texts, types):
         # print(np.array_equal(encoder_input_data1[0], encoder_input_data2[0]))
 
         distances = np.array(list(map(lambda x: int(x), match)))
-
         yield [encoder_input_data1, encoder_input_data2], distances
 
 

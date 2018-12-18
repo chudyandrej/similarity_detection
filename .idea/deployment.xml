@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="AI1">
+  <component name="PublishConfigData" autoUpload="Always" serverName="AI2">
     <serverData>
       <paths name="AI1">
         <serverdata>
@@ -10,6 +10,13 @@
           <excludedPaths>
             <excludedPath path="/.venv" />
           </excludedPaths>
+        </serverdata>
+      </paths>
+      <paths name="AI2">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$" web="http://ai01.shr.prg-krl.atc" />
+          </mappings>
         </serverdata>
       </paths>
     </serverData>

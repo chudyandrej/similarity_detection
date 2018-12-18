@@ -3,7 +3,7 @@ from joblib import Parallel, delayed
 from collections import defaultdict
 
 
-def convert_to_vec(encoder_model, data, max_seq_len, max_count_tokens):
+def convert_to_vec_onehot(encoder_model, data, max_seq_len, max_count_tokens):
     """Converting string data array to array of embedding vectors
 
     Args:
@@ -38,7 +38,7 @@ def convert_to_vec(encoder_model, data, max_seq_len, max_count_tokens):
     return vectors
 
 
-def convert_to_vec_el(encoder_model, data, max_seq_len, max_count_tokens):
+def convert_to_vec_tok(encoder_model, data, max_seq_len, max_count_tokens):
     """Converting string data array to array of embedding vectors
 
     Args:
@@ -65,7 +65,7 @@ def convert_to_vec_el(encoder_model, data, max_seq_len, max_count_tokens):
     return output
 
 
-def create_column_embedding(type_embedding):
+def create_column_embedding_by_avg(type_embedding):
     """Create column embedding from value embeddings by vector AVERAGE
 
     Args:

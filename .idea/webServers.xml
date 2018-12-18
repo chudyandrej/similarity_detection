@@ -10,6 +10,14 @@
           <option name="port" value="22" />
         </fileTransfer>
       </webServer>
+      <webServer id="5f1466bf-e574-48e2-86c5-f903d7af9b07" name="AI2" url="http://ai02.shr.prg-krl.atc">
+        <fileTransfer host="ai02.shr.prg-krl.atc" port="22" privateKey="$USER_HOME$/.ssh/id_rsa" rootFolder="/home/andrej/similarity_detection" accessType="SFTP" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>
