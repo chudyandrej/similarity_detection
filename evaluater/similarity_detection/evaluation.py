@@ -10,7 +10,7 @@ def evaluate_similarity_index(similarity_index):
 
     for class_name, n_class_names in similarity_index.items():
 
-        n_class_names_true = list(filter(lambda x: x[:-2] == class_name[:-2], n_class_names))
+        n_class_names_true = list(set(list(filter(lambda x: x[:-2] == class_name[:-2], n_class_names))))
         # Can be only one
         if len(n_class_names_true) > 0:
             found_indexes.append(n_class_names.index(n_class_names_true[0]))

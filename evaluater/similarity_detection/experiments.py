@@ -215,11 +215,11 @@ def experiment_cnn_tck2():
     experiment_name = experiment_cnn_tck.__name__
     model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/cnn_tcn1544609078-model.h5"
     print("Experiment " + experiment_name + " running ...")
-
+    class_embeddings = {}
     # -------------- COMPUTING EXPERIMENT BODY --------------------
     if os.path.exists(CHECKPOINT_PATH+experiment_name):
         print("Checkpoint found ...")
-        class_embedding = pickle.load(open(CHECKPOINT_PATH+experiment_name, "rb"))
+        class_embeddings = pickle.load(open(CHECKPOINT_PATH+experiment_name, "rb"))
     else:
         dataclass = dt.CvutDataset(dt.SelectData.profile_similarity_basic)
         encoder_model = lm.load_cnn_tcn(model_path)
@@ -232,12 +232,16 @@ def experiment_cnn_tck2():
         pickle.dump(class_embeddings, open(CHECKPOINT_PATH + experiment_name, "wb"))
 
     # -------------- EVALUATE EXPERIMENT --------------------
-    class_embedding = [[(key, embedding) for embedding in embeddings] for key, embeddings in class_embeddings]
-    classes, embedding_vectors = zip(*class_embedding)
-    print(class_embedding)
+    classes = []
+    embedding_vectors = []
+    for key, embeddings in class_embeddings.items():
+        for embedding in embeddings:
+            classes.append(key)
+            embedding_vectors.append(embedding)
     print("Count of classes: " + str(len(set(classes))))
     similarity_index = compute_neighbors(np.array(embedding_vectors), np.array(classes), n_neighbors=100, radius=0.3,
                                          mode="radius+kneighbors")
+
 
     # print_similar_domain(similarity_index, dt.CvutDataset(dt.SelectData.profile_similarity_basic))
     index = evaluate_similarity_index(similarity_index)
