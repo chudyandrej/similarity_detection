@@ -1,5 +1,7 @@
 import os
+import sdep
 import pickle
+
 import numpy as np
 from unidecode import unidecode
 
@@ -10,6 +12,9 @@ import evaluater.load_models as lm
 import evaluater.embedder as em
 
 CHECKPOINT_PATH = os.environ['PYTHONPATH'].split(":")[0] + "/evaluater/similarity_detection/pickles/"
+
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
 
 # ====================================================================
@@ -241,8 +246,103 @@ def experiment_cnn_tck2():
     print("Count of classes: " + str(len(set(classes))))
     similarity_index = compute_neighbors(np.array(embedding_vectors), np.array(classes), n_neighbors=100, radius=0.3,
                                          mode="radius+kneighbors")
-
-
-    # print_similar_domain(similarity_index, dt.CvutDataset(dt.SelectData.profile_similarity_basic))
     index = evaluate_similarity_index(similarity_index)
     return index
+
+
+# ====================================================================
+#                           EXPERIMENT 7
+# ====================================================================
+def experiment_seq2seq_siamese_sdep():
+    # -------------- SET PARAMETERS OF EXPERIMENT --------------------
+    experiment_name = experiment_seq2seq_siamese_sdep.__name__
+    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2seq_siamese1543504392-model.h5"
+    print("Experiment " + experiment_name + " running ...")
+    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=50, radius=0.6)
+    # -------------- COMPUTING EXPERIMENT BODY --------------------
+    if os.path.exists(CHECKPOINT_PATH+experiment_name):
+        print("Checkpoint found ...")
+        class_embedding = pickle.load(open(CHECKPOINT_PATH+experiment_name, "rb"))
+    else:
+        test_data = ev.get_test_dataset()
+        quantiles = [data.quantiles for data in test_data]
+        quantiles = [unidecode(str(q))[:63] for q in quantiles]
+        encoder_model = lm.load_seq2_siamese(model_path)
+        print("Checkpoint not found. Calculating...")
+
+        value_embedding = em.convert_to_vec_onehot(encoder_model, quantiles, 64, 95)
+        print("Processed " + str(len(value_embedding)) + " value embeddings")
+        class_embedding = em.create_column_embedding_by_avg(list(zip(test_data, value_embedding)))
+        print("Column embedding calculated.")
+        pickle.dump(class_embedding, open(CHECKPOINT_PATH + experiment_name, "wb"))
+
+    # -------------- EVALUATE EXPERIMENT --------------------
+    classes, embedding_vectors = zip(*class_embedding)
+    print("Count of classes: " + str(len(set(classes))))
+    ev.evaluate_embeddings(classes, embedding_vectors)
+
+
+# ====================================================================
+#                           EXPERIMENT 8
+# ====================================================================
+def experiment_seq2_siamese_sdep():
+    # -------------- SET PARAMETERS OF EXPERIMENT --------------------
+    experiment_name = experiment_seq2_siamese_sdep.__name__
+    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2_siamese1543913096-model.h5"
+    print("Experiment " + experiment_name + " running ...")
+    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20)
+    # -------------- COMPUTING EXPERIMENT BODY --------------------
+    if os.path.exists(CHECKPOINT_PATH+experiment_name):
+        print("Checkpoint found ...")
+        class_embedding = pickle.load(open(CHECKPOINT_PATH+experiment_name, "rb"))
+    else:
+        test_data = ev.get_test_dataset()
+        # test_data = list(filter(lambda x: x.dtype == "object", test_data))
+        quantiles = [data.quantiles for data in test_data]
+        quantiles = [unidecode(str(q))[:63] for q in quantiles]
+        encoder_model = lm.load_seq2_siamese(model_path)
+        print("Checkpoint not found. Calculating...")
+        value_embedding = em.convert_to_vec_onehot(encoder_model, quantiles, 64, 95)
+        print("Processed " + str(len(value_embedding)) + " value embeddings")
+        class_embedding = em.create_column_embedding_by_avg(list(zip(test_data, value_embedding)))
+        print("Column embedding calculated.")
+        pickle.dump(class_embedding, open(CHECKPOINT_PATH + experiment_name, "wb"))
+
+    # -------------- EVALUATE EXPERIMENT --------------------
+    classes, embedding_vectors = zip(*class_embedding)
+    print("Count of classes: " + str(len(set(classes))))
+    ev.evaluate_embeddings(classes, embedding_vectors)
+
+
+# ====================================================================
+#                           EXPERIMENT 9
+# ====================================================================
+def experiment_seq2seq_sdep():
+    # -------------- SET PARAMETERS OF EXPERIMENT --------------------
+    experiment_name = experiment_seq2seq_sdep.__name__
+    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2seq1544020916-model.h5"
+    print("Experiment " + experiment_name + " running ...")
+    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20)
+
+    # -------------- COMPUTING EXPERIMENT BODY --------------------
+    if os.path.exists(CHECKPOINT_PATH+experiment_name):
+        print("Checkpoint found ...")
+        class_embedding = pickle.load(open(CHECKPOINT_PATH+experiment_name, "rb"))
+    else:
+        test_data = ev.get_test_dataset()
+        # test_data = list(filter(lambda x: x.dtype == "object", test_data))
+        quantiles = [data.quantiles for data in test_data]
+        quantiles = [unidecode(str(q))[:63] for q in quantiles]
+        encoder_model = lm.load_seq2seq(model_path)
+        print("Checkpoint not found. Calculating...")
+        value_embedding = em.convert_to_vec_onehot(encoder_model, quantiles, 64, 95)
+        print("Processed " + str(len(value_embedding)) + " value embeddings")
+        class_embedding = em.create_column_embedding_by_avg(list(zip(test_data, value_embedding)))
+        print("Column embedding calculated.")
+        pickle.dump(class_embedding, open(CHECKPOINT_PATH + experiment_name, "wb"))
+
+    # -------------- EVALUATE EXPERIMENT --------------------
+    classes, embedding_vectors = zip(*class_embedding)
+    print("Count of classes: " + str(len(set(classes))))
+    ev.evaluate_embeddings(classes, embedding_vectors)
+

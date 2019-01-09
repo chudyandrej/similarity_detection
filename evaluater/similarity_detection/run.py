@@ -24,6 +24,12 @@ if __name__ == '__main__':
         states = ex.experiment_cnn_tck()
     elif parse_args.exp == 6:
         states = ex.experiment_cnn_tck2()
+    elif parse_args.exp == 7:
+        states = ex.experiment_seq2seq_siamese_sdep()
+    elif parse_args.exp == 8:
+        states = ex.experiment_seq2_siamese_sdep()
+    elif parse_args.exp == 9:
+        states = ex.experiment_seq2seq_sdep()
     else:
         print("Bad experiment code")
     print(states)
