@@ -106,10 +106,9 @@ def create_column_embedding_by_mrc(type_embedding):
     [class_embeddings_index[key].append(embedding) for key, embedding in type_embedding]
     class_embeddings_index = dict(class_embeddings_index)
 
-    class_embedding = {}
-    for column_name, embeddings in class_embeddings_index.items():
-        class_embedding[column_name] = embeddings[:10]
-
+    class_embedding = []
+    for column_name, embs in class_embeddings_index.items():
+        [class_embedding.append((column_name, e)) for e in embs]
     return class_embedding
 
 

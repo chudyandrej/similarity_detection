@@ -24,7 +24,7 @@ CHECKPOINT_FILE_PATH = 'best_model.h5'
 
 def main(data_file, job_dir):
 
-    input_texts, target_texts, types = model.load_data(data_file)
+    input_texts, target_texts = model.load_data(data_file)
 
     model_seq2seq = model.create_model()
     model_seq2seq.compile(optimizer='rmsprop', loss='categorical_crossentropy')
@@ -34,8 +34,8 @@ def main(data_file, job_dir):
                                 epochs=model.EPOCHS,
                                 callbacks=[
                                     ModelCheckpointMLEngine(job_dir + '/model.h5', monitor='loss', verbose=1,
-                                                    save_best_only=True, mode='min'),
-                                    EarlyStopping(monitor='loss', patience=10, verbose=1),
+                                                            save_best_only=True, mode='min'),
+                                    EarlyStopping(monitor='loss', patience=15, verbose=1),
                                     TensorBoard(log_dir=job_dir + '/log', write_graph=True,
                                                 embeddings_freq=0)
                                 ])

@@ -7,14 +7,14 @@ from unidecode import unidecode
 import numpy as np
 import pandas as pd
 import random
+import pickle
 
-
-MAX_TEXT_SEQUENCE_LEN = 64
+MAX_TEXT_SEQUENCE_LEN = 100
 TOKEN_COUNT = 95
 # Model constants
 BATCH_SIZE = 1024  # Batch size for training.
 EPOCHS = 1000  # Number of epochs to train for.
-LSTM_DIM = 256  # Latent dimensionality of the encoding space.
+LSTM_DIM = 512  # Latent dimensionality of the encoding space.
 
 
 def create_model():
@@ -49,9 +49,9 @@ def generate_random_fit(input_texts, target_texts):
 
     data_batches = cut_data_to_batches(input_texts, target_texts)
 
-
     while True:
         for data_slide in data_batches:
+
             encoder_input_data, decoder_input_data, decoder_target_data = convert_to_vec(data_slide)
             yield [encoder_input_data, decoder_input_data], decoder_target_data
 
@@ -63,9 +63,7 @@ def load_data(data_path):
     input_texts = list(map(lambda x: x[:MAX_TEXT_SEQUENCE_LEN - 1], input_texts))
 
     target_texts = list(map(lambda x: "\t" + x, input_texts))
-    types = df['type'].values
-
-    return input_texts, target_texts, types
+    return input_texts, target_texts
 
 
 def tokening(char):

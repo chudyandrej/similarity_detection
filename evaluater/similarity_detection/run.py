@@ -30,6 +30,14 @@ if __name__ == '__main__':
         states = ex.experiment_seq2_siamese_sdep()
     elif parse_args.exp == 9:
         states = ex.experiment_seq2seq_sdep()
+    elif parse_args.exp == 10:
+        states = ex.experiment_cnn_kim_sdep()
+    elif parse_args.exp == 11:
+        states = ex.experiment_cnn_tck_sdeq()
+    elif parse_args.exp == 12:
+        states = ex.experiment_seq2seq_sdep_2()
+    elif parse_args.exp == 13:
+        states = ex.experiment_seq2seq_siamese_sdep_2()
     else:
         print("Bad experiment code")
     print(states)
