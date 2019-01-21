@@ -38,6 +38,14 @@ if __name__ == '__main__':
         states = ex.experiment_seq2seq_sdep_2()
     elif parse_args.exp == 13:
         states = ex.experiment_seq2seq_siamese_sdep_2()
+    elif parse_args.exp == 14:
+        states = ex.experiment_seq2seq_sdep_3()
+    elif parse_args.exp == 15:
+        states = ex.experiment_seq2seq_embedder()
+    elif parse_args.exp == 16:
+        states = ex.experiment_seq2seq_hierarchy_lstm()
+    elif parse_args.exp == 17:
+        states = ex.experiment_seq2seq_hierarchy_lstm_base()
     else:
         print("Bad experiment code")
     print(states)

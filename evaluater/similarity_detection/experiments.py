@@ -7,6 +7,8 @@ from unidecode import unidecode
 
 from evaluater.computing import compute_neighbors
 from evaluater.similarity_detection.evaluation import evaluate_similarity_index
+from keras.preprocessing.sequence import pad_sequences
+
 import data_preparation.cvut as dt
 import evaluater.load_models as lm
 import evaluater.embedder as em
@@ -35,6 +37,8 @@ def print_similar_domain(similarity_index, dataclass):
                 continue
             tmp2 = list(filter(lambda x: x[1] == column_name, dataclass.df.values))[:5]
             print(list(map(lambda x: x[0], tmp2)))
+
+
 
 
 # ====================================================================
@@ -160,7 +164,7 @@ def experiment_cnn_kim():
         encoder_model = lm.load_cnn_kim(model_path)
         print("Checkpoint not found. Calculating...")
         dataclass.df.value = dataclass.df.value.map(lambda x: unidecode(str(x))[:63])
-        value_embedding = em.convert_to_vec_tok(encoder_model, dataclass.df["value"].values, 64, 95)
+        value_embedding = em.convert_to_vec_tok(encoder_model, dataclass.df["value"].values, 64)
         print("Processed " + str(len(value_embedding)) + " value embeddings")
         class_embedding = em.create_column_embedding_by_avg(list(zip(dataclass.df["type"].values, value_embedding)))
         print("Column embedding calculated.")
@@ -195,7 +199,7 @@ def experiment_cnn_tck():
         encoder_model = lm.load_cnn_tcn(model_path)
         print("Checkpoint not found. Calculating...")
         dataclass.df.value = dataclass.df.value.map(lambda x: unidecode(str(x))[:63])
-        value_embedding = em.convert_to_vec_tok(encoder_model, dataclass.df["value"].values, 64, 95)
+        value_embedding = em.convert_to_vec_tok(encoder_model, dataclass.df["value"].values, 64)
         print("Processed " + str(len(value_embedding)) + " value embeddings")
         class_embedding = em.create_column_embedding_by_avg(list(zip(dataclass.df["type"].values, value_embedding)))
         print("Column embedding calculated.")
@@ -230,7 +234,7 @@ def experiment_cnn_tck2():
         encoder_model = lm.load_cnn_tcn(model_path)
         print("Checkpoint not found. Calculating...")
         dataclass.df.value = dataclass.df.value.map(lambda x: unidecode(str(x))[:63])
-        value_embedding = em.convert_to_vec_tok(encoder_model, dataclass.df["value"].values, 64, 95)
+        value_embedding = em.convert_to_vec_tok(encoder_model, dataclass.df["value"].values, 64)
         print("Processed " + str(len(value_embedding)) + " value embeddings")
         class_embeddings = em.create_column_embedding_by_mrc(list(zip(dataclass.df["type"].values, value_embedding)))
         print("Column embedding calculated.")
@@ -367,7 +371,7 @@ def experiment_cnn_kim_sdep():
         quantiles = [unidecode(str(q))[:63] for q in quantiles]
         encoder_model = lm.load_cnn_kim(model_path)
         print("Checkpoint not found. Calculating...")
-        value_embedding = em.convert_to_vec_tok(encoder_model, quantiles, 64, 95)
+        value_embedding = em.convert_to_vec_tok(encoder_model, quantiles, 64)
         print("Processed " + str(len(value_embedding)) + " value embeddings")
         class_embedding = em.create_column_embedding_by_avg(list(zip(test_data, value_embedding)))
         print("Column embedding calculated.")
@@ -399,7 +403,7 @@ def experiment_cnn_tck_sdeq():
         quantiles = [unidecode(str(q))[:63] for q in quantiles]
         encoder_model = lm.load_cnn_tcn(model_path)
         print("Checkpoint not found. Calculating...")
-        value_embedding = em.convert_to_vec_tok(encoder_model, quantiles, 64, 95)
+        value_embedding = em.convert_to_vec_tok(encoder_model, quantiles, 64)
         print("Processed " + str(len(value_embedding)) + " value embeddings")
         class_embedding = em.create_column_embedding_by_avg(list(zip(test_data, value_embedding)))
         print("Column embedding calculated.")
@@ -445,7 +449,7 @@ def experiment_seq2seq_sdep_2():
 
 
 # ====================================================================
-#                           EXPERIMENT 7
+#                           EXPERIMENT 13
 # ====================================================================
 def experiment_seq2seq_siamese_sdep_2():
     # -------------- SET PARAMETERS OF EXPERIMENT --------------------
@@ -474,3 +478,172 @@ def experiment_seq2seq_siamese_sdep_2():
     classes, embedding_vectors = zip(*class_embedding)
     print("Count of classes: " + str(len(set(classes))))
     ev.evaluate_embeddings(classes, embedding_vectors)
+
+
+# ====================================================================
+#                           EXPERIMENT 14
+# ====================================================================
+def experiment_seq2seq_sdep_3():
+    max_text_seqence_len = 100
+    # -------------- SET PARAMETERS OF EXPERIMENT --------------------
+    experiment_name = experiment_seq2seq_sdep_3.__name__
+    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2seq1547040526-model.h5"
+    print("Experiment " + experiment_name + " running ...")
+    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20)
+
+    # -------------- COMPUTING EXPERIMENT BODY --------------------
+    if os.path.exists(CHECKPOINT_PATH+experiment_name):
+        print("Checkpoint found ...")
+        class_embedding = pickle.load(open(CHECKPOINT_PATH+experiment_name, "rb"))
+    else:
+        test_data = ev.get_test_dataset()
+
+        values = []
+        classes = []
+        for data in test_data:
+            values += [unidecode(str(q)[:max_text_seqence_len]) for q in data.quantiles]
+            classes += [data]*len(data.quantiles)
+
+        encoder_model = lm.load_seq2seq(model_path)
+        print("Checkpoint not found. Calculating...")
+        value_embedding = em.convert_to_vec_onehot(encoder_model, values, max_text_seqence_len, 95)
+        print("Processed " + str(len(value_embedding)) + " value embeddings")
+        class_embedding = em.create_column_embedding_by_avg(list(zip(classes, value_embedding)))
+        print("Column embedding calculated.")
+        pickle.dump(class_embedding, open(CHECKPOINT_PATH + experiment_name, "wb"))
+
+    # -------------- EVALUATE EXPERIMENT --------------------
+    classes, embedding_vectors = zip(*class_embedding)
+    print("Count of classes: " + str(len(set(classes))))
+    ev.evaluate_embeddings(classes, embedding_vectors)
+
+
+# ====================================================================
+#                           EXPERIMENT 15
+# ====================================================================
+def experiment_seq2seq_embedder():
+    def preprocess_values(values, pad_maxlen):
+        values = map(str, values)
+        values = map(str.strip, values)
+        values = (x[::-1] for x in values)
+        values = list(map(lambda x: [ord(y) for y in x], values))
+        values = pad_sequences(values, maxlen=pad_maxlen, truncating='pre', padding='pre')
+        return values
+
+    max_text_seqence_len = 64
+    # -------------- SET PARAMETERS OF EXPERIMENT --------------------
+    experiment_name = experiment_seq2seq_embedder.__name__
+    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2seq_embedding_2/model.h5"
+    emb_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2seq_embedding_2/embedding_model.h5"
+
+    print("Experiment " + experiment_name + " running ...")
+    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20, train_size=0.7)
+
+    # -------------- COMPUTING EXPERIMENT BODY --------------------
+    if os.path.exists(CHECKPOINT_PATH+experiment_name):
+        print("Checkpoint found ...")
+        class_embedding = pickle.load(open(CHECKPOINT_PATH+experiment_name, "rb"))
+    else:
+        encoder_model = lm.load_seq2seq_embedder(model_path, emb_path)
+
+        test_profiles = ev.get_test_dataset()
+        class_values = [(profile, value) for profile in test_profiles for value in profile.quantiles]
+        class_values = list(set(class_values))
+        tokened_data = preprocess_values(map(lambda x: x[1], class_values), 64)
+        value_embeddings = encoder_model.predict(tokened_data)
+        print("Processed " + str(len(value_embeddings)) + " value embeddings")
+        class_embedding = em.create_column_embedding_by_avg(list(zip(list(map(lambda x: x[0], class_values)),
+                                                                     value_embeddings)))
+        print("Column embedding calculated.")
+        pickle.dump(class_embedding, open(CHECKPOINT_PATH + experiment_name, "wb"))
+
+    # -------------- EVALUATE EXPERIMENT --------------------
+    classes, embedding_vectors = zip(*class_embedding)
+    print("Count of classes: " + str(len(set(classes))))
+    ev.evaluate_embeddings(classes, embedding_vectors)
+
+
+# ====================================================================
+#                           EXPERIMENT 16
+# ====================================================================
+def experiment_seq2seq_hierarchy_lstm():
+    def preprocess_quantiles(quantiles, pad_maxlen):
+        quantiles = map(str, quantiles)
+        quantiles = map(str.strip, quantiles)
+        quantiles = (x[::-1] for x in quantiles)
+        quantiles = list(map(lambda x: [ord(y) for y in x], quantiles))
+        quantiles = pad_sequences(quantiles, maxlen=pad_maxlen, truncating='pre', padding='pre')
+        return quantiles
+
+    max_text_seqence_len = 64
+    # -------------- SET PARAMETERS OF EXPERIMENT --------------------
+    experiment_name = experiment_seq2seq_hierarchy_lstm.__name__
+    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2seq_embedding_2/model.h5"
+    emb_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2seq_embedding_2/embedding_model.h5"
+
+    print("Experiment " + experiment_name + " running ...")
+    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20)
+
+    # -------------- COMPUTING EXPERIMENT BODY --------------------
+    if os.path.exists(CHECKPOINT_PATH+experiment_name):
+        print("Checkpoint found ...")
+        class_embedding = pickle.load(open(CHECKPOINT_PATH+experiment_name, "rb"))
+    else:
+        encoder_model = lm.load_hierarchy_lstm_model(model_path, emb_path)
+        print("Checkpoint not found. Calculating...")
+
+        test_data = ev.get_test_dataset()
+        quantiles = np.array(list(map(lambda x: preprocess_quantiles(x.quantiles, max_text_seqence_len), test_data)))
+        embedding_vectors = encoder_model.predict(quantiles)
+
+        print("Processed " + str(len(embedding_vectors)) + " value embeddings")
+        class_embedding = list(zip(test_data, embedding_vectors))
+        pickle.dump(class_embedding, open(CHECKPOINT_PATH + experiment_name, "wb"))
+
+    # -------------- EVALUATE EXPERIMENT --------------------
+    classes, embedding_vectors = zip(*class_embedding)
+    print("Count of classes: " + str(len(set(classes))))
+    ev.evaluate_embeddings(classes, embedding_vectors)
+
+
+# ====================================================================
+#                           EXPERIMENT 17
+# ====================================================================
+def experiment_seq2seq_hierarchy_lstm_base():
+    def preprocess_quantiles(quantiles, pad_maxlen):
+        quantiles = map(str, quantiles)
+        quantiles = map(str.strip, quantiles)
+        quantiles = (x[::-1] for x in quantiles)
+        quantiles = list(map(lambda x: [ord(y) for y in x], quantiles))
+        quantiles = pad_sequences(quantiles, maxlen=pad_maxlen, truncating='pre', padding='pre')
+        return quantiles
+
+    max_text_seqence_len = 64
+    # -------------- SET PARAMETERS OF EXPERIMENT --------------------
+    experiment_name = experiment_seq2seq_hierarchy_lstm_base.__name__
+
+    print("Experiment " + experiment_name + " running ...")
+    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20)
+
+    # -------------- COMPUTING EXPERIMENT BODY --------------------
+    if os.path.exists(CHECKPOINT_PATH+experiment_name):
+        print("Checkpoint found ...")
+        class_embedding = pickle.load(open(CHECKPOINT_PATH+experiment_name, "rb"))
+    else:
+        encoder_model = lm.load_hierarchy_lstm_base_model()
+        print("Checkpoint not found. Calculating...")
+
+        test_data = ev.get_test_dataset()
+        quantiles = np.array(list(map(lambda x: preprocess_quantiles(x.quantiles, max_text_seqence_len), test_data)))
+        embedding_vectors = encoder_model.predict(quantiles)
+
+        print("Processed " + str(len(embedding_vectors)) + " value embeddings")
+        class_embedding = list(zip(test_data, embedding_vectors))
+        pickle.dump(class_embedding, open(CHECKPOINT_PATH + experiment_name, "wb"))
+
+    # -------------- EVALUATE EXPERIMENT --------------------
+    classes, embedding_vectors = zip(*class_embedding)
+    print("Count of classes: " + str(len(set(classes))))
+    ev.evaluate_embeddings(classes, embedding_vectors)
+
+

@@ -23,7 +23,8 @@ def convert_to_vec_onehot(encoder_model, data, max_seq_len, max_count_tokens):
     for i, input_text in enumerate(data):
         for t, char in enumerate(input_text):
             # If character not be include in training vec2vec it will be replace by ' '
-            encoder_input_data[i, t, tokenizer(char)] = 1.
+            print(tokenizer(char, full_unicode=False))
+            encoder_input_data[i, t, tokenizer(char, full_unicode=False)] = 1.
 
     input_seq = encoder_model.predict(encoder_input_data)
     vec_s1 = input_seq[0]
@@ -38,30 +39,57 @@ def convert_to_vec_onehot(encoder_model, data, max_seq_len, max_count_tokens):
     return vectors
 
 
-def convert_to_vec_tok(encoder_model, data, max_seq_len, max_count_tokens):
+def convert_to_vec_tok(encoder_model, data, max_seq_len, full_unicode=False):
     """Converting string data array to array of embedding vectors
 
     Args:
-        encoder_model (keras.engine.training.Model): Description
-        data (Array of STRINGS): Column values
-        max_seq_len
-        max_count_tokens
+        :param max_seq_len:
+        :param data:
+        :param encoder_model:
+        :param full_unicode:
 
     Returns:
         (Array of Numpy): Array of embedding vectors
+
     """
     assert (len(data) > 0), "Input data are empty!"
-    assert (max_count_tokens > 0), "Count of tokens can not be 0 or negative"
+    assert (max_seq_len > 0), "Count of tokens can not be 0 or negative"
 
-    encoder_input_data = np.zeros((len(data), max_seq_len), dtype='float32')
+    encoder_input_data = np.zeros((len(data), max_seq_len), dtype='int')
 
     for i, input_text in enumerate(data):
         for t, char in enumerate(input_text):
             # If character not be include in training vec2vec it will be replace by ' '
-            encoder_input_data[i, t] = tokenizer(char)
+            encoder_input_data[i, t] = tokenizer(char, full_unicode)
 
     output = encoder_model.predict(encoder_input_data)
 
+    return output
+
+
+def convert_to_vec_tok_over_columns(encoder_model, data, max_seq_len, full_unicode=False):
+    """Converting string data array to array of embedding vectors
+
+    Args:
+        :param max_seq_len:
+        :param data:
+        :param encoder_model:
+        :param full_unicode:
+
+    Returns:
+        (Array of Numpy): Array of embedding vectors
+
+    """
+    assert (len(data) > 0), "Input data are empty!"
+    assert (max_seq_len > 0), "Count of tokens can not be 0 or negative"
+
+    encoder_input_data = np.zeros((data.shape[0], data.shape[1], max_seq_len), dtype='int')
+
+    for i, quantiles in enumerate(data):
+        for k, input_text in enumerate(quantiles):
+            for t, char in enumerate(input_text):
+                encoder_input_data[i, k, t] = tokenizer(char, full_unicode)
+    output = encoder_model.predict(encoder_input_data)
     return output
 
 
@@ -121,17 +149,22 @@ def job(column_name, embeddings):
     return column_name, mean_embedding
 
 
-def tokenizer(char):
+def tokenizer(char, full_unicode):
     """Reduce he alphabet replace all white symbols as space
-
     Args:
-        char (STRING): Char
+        :param char:
+        :param full_unicode:
 
     Returns:
         NUMBER: Code <0,94>
+
     """
     assert (char is not None), "Input data are empty!"
     code = ord(char)
+
+    if full_unicode:
+        return code
+
     if 0 <= code <= 31 or code == 127:    # Is white
         code = 0
     else:
