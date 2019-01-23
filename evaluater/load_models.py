@@ -64,6 +64,7 @@ def load_seq2seq_embedder(model_path, embedder_path):
     encoder_states = [state_h_enc, state_c_enc]
     x = Concatenate()(encoder_states)
     encoder_model = Model(encoder_inputs, x)
+    encoder_model.compile(loss='binary_crossentropy', optimizer='adam')
     return encoder_model
 
 

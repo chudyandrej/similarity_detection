@@ -545,16 +545,18 @@ def experiment_seq2seq_embedder():
         class_embedding = pickle.load(open(CHECKPOINT_PATH+experiment_name, "rb"))
     else:
         encoder_model = lm.load_seq2seq_embedder(model_path, emb_path)
-
+        print("Model successfully loaded. ")
         test_profiles = ev.get_test_dataset()
+        print(str(len(test_profiles)) + " classes!")
         class_values = [(profile, value) for profile in test_profiles for value in profile.quantiles]
-        class_values = list(set(class_values))
-        tokened_data = preprocess_values(map(lambda x: x[1], class_values), 64)
+        class_values = list(class_values)
+        tokened_data = preprocess_values(map(lambda x: x[1], class_values), max_text_seqence_len)
         value_embeddings = encoder_model.predict(tokened_data)
-        print("Processed " + str(len(value_embeddings)) + " value embeddings")
-        class_embedding = em.create_column_embedding_by_avg(list(zip(list(map(lambda x: x[0], class_values)),
-                                                                     value_embeddings)))
-        print("Column embedding calculated.")
+        class_embeddings = list(map(lambda x: x[0], class_values))
+        print(str(len(value_embeddings)) + " values for activation.")
+        print(str(len(class_embeddings)) + " classes for data.")
+
+        class_embedding = em.create_column_embedding_by_avg(list(zip(class_embeddings, value_embeddings)))
         pickle.dump(class_embedding, open(CHECKPOINT_PATH + experiment_name, "wb"))
 
     # -------------- EVALUATE EXPERIMENT --------------------
@@ -582,7 +584,7 @@ def experiment_seq2seq_hierarchy_lstm():
     emb_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2seq_embedding_2/embedding_model.h5"
 
     print("Experiment " + experiment_name + " running ...")
-    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20)
+    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20, train_size=0.7)
 
     # -------------- COMPUTING EXPERIMENT BODY --------------------
     if os.path.exists(CHECKPOINT_PATH+experiment_name):
@@ -591,13 +593,14 @@ def experiment_seq2seq_hierarchy_lstm():
     else:
         encoder_model = lm.load_hierarchy_lstm_model(model_path, emb_path)
         print("Checkpoint not found. Calculating...")
+        test_profiles = ev.get_test_dataset()
+        print(str(len(test_profiles)) + " classes!")
 
-        test_data = ev.get_test_dataset()
-        quantiles = np.array(list(map(lambda x: preprocess_quantiles(x.quantiles, max_text_seqence_len), test_data)))
+        quantiles = np.array(list(map(lambda x: preprocess_quantiles(x.quantiles, max_text_seqence_len), test_profiles)))
         embedding_vectors = encoder_model.predict(quantiles)
 
         print("Processed " + str(len(embedding_vectors)) + " value embeddings")
-        class_embedding = list(zip(test_data, embedding_vectors))
+        class_embedding = list(zip(test_profiles, embedding_vectors))
         pickle.dump(class_embedding, open(CHECKPOINT_PATH + experiment_name, "wb"))
 
     # -------------- EVALUATE EXPERIMENT --------------------
@@ -634,6 +637,7 @@ def experiment_seq2seq_hierarchy_lstm_base():
         print("Checkpoint not found. Calculating...")
 
         test_data = ev.get_test_dataset()
+
         quantiles = np.array(list(map(lambda x: preprocess_quantiles(x.quantiles, max_text_seqence_len), test_data)))
         embedding_vectors = encoder_model.predict(quantiles)
 
