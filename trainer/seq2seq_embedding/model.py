@@ -1,6 +1,6 @@
 
 from keras.models import Model
-from keras.layers import Input, LSTM, Dense, Concatenate, Dot, Embedding
+from keras.layers import Input, LSTM, Dense, Embedding
 from keras.preprocessing.sequence import pad_sequences
 
 
@@ -30,11 +30,12 @@ def create_model():
     decoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN, ENCODER_OUTPUT_DIM), name="decoder_Input")
 
     # Define an input sequence and process it.
-    encoder = LSTM(LSTM_DIM, return_state=True, recurrent_dropout=0.2, name="encoder")
+    encoder = LSTM(LSTM_DIM, return_state=True, dropout=0.2, recurrent_dropout=0.2, name="encoder")
     encoder_outputs, state_h, state_c = encoder(encoder_inputs)
     encoder_states = [state_h, state_c]
 
-    decoder_lstm = LSTM(LSTM_DIM, return_sequences=True, return_state=True, recurrent_dropout=0.2, name="decoder")
+    decoder_lstm = LSTM(LSTM_DIM, return_sequences=True, return_state=True, dropout=0.2, recurrent_dropout=0.2,
+                        name="decoder")
     decoder_outputs, _, _ = decoder_lstm(decoder_inputs, initial_state=encoder_states)
 
     decoder_dense = Dense(ENCODER_OUTPUT_DIM,  name="dense")

@@ -15,36 +15,52 @@ Original file is located at
 # !pip install unidecode
 
 from keras.callbacks import ModelCheckpoint, EarlyStopping, TensorBoard
-import trainer.lstm_hierarchical_base.model as model
+import trainer.lstm_hierarchical.model as model
 from trainer.modelCheckpoint import ModelCheckpointMLEngine
+from keras.optimizers import RMSprop, SGD, Adam
+from keras import backend as K
+
+
 import numpy as np
 import argparse
 import sdep
 
 CHECKPOINT_FILE_PATH = 'best_model.h5'
+#
+# import os
+# os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
+# os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
-import os
-os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
-os.environ["CUDA_VISIBLE_DEVICES"] = ""
+
+def contrastive_loss(y_true, y_pred):
+    '''Contrastive loss from Hadsell-et-al.'06
+    http://yann.lecun.com/exdb/publis/pdf/hadsell-chopra-lecun-06.pdf
+    '''
+    margin = 1
+    return K.mean(y_true * K.square(y_pred) + (1 - y_true) * K.square(K.maximum(margin - y_pred, 0)))
 
 
 def main(data_file, job_dir):
-    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20, train_size=0.6)
+    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20, train_size=0.5)
 
     joint_model = model.create_model((11, 64))
-    joint_model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+    joint_model.compile(loss=contrastive_loss, optimizer=Adam(lr=0.001))
+
+    # joint_model.compile(loss='binary_crossentropy', optimizer=Adam(lr=0.00006))
     joint_model.summary(line_length=120)
 
     _, valid_profile = ev.get_train_dataset()
 
-    left, right, label = next(sdep.pairs_generator(valid_profile, model.BATCH_SIZE))
+    left, right, label, _ = next(sdep.pairs_generator(valid_profile, model.BATCH_SIZE))
     left = np.array(list(map(lambda x: model.preprocess_quantiles(x.quantiles, model.MAX_TEXT_SEQUENCE_LEN), left)))
     right = np.array(list(map(lambda x: model.preprocess_quantiles(x.quantiles, model.MAX_TEXT_SEQUENCE_LEN), right)))
-    print(([left, right], label))
+
     joint_model.fit_generator(model.generate_random_fit(ev),
                               steps_per_epoch=model.TRAINING_SAMPLES // model.BATCH_SIZE,
                               epochs=model.EPOCHS,
                               validation_data=([left, right], label),
+                              # class_weight={1: 10., -1: 1.},
                               callbacks=[
                                   ModelCheckpointMLEngine(job_dir + '/model.h5', monitor='val_loss', verbose=1,
                                                           save_best_only=True, mode='min'),

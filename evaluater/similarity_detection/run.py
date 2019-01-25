@@ -9,6 +9,8 @@ if __name__ == '__main__':
                         type=int,
                         help='Experiment selection')
 
+    parser.add_argument('--recompute', action='store_true', default=False)
+
     parse_args, _ = parser.parse_known_args()
     states = {}
 
@@ -41,11 +43,13 @@ if __name__ == '__main__':
     elif parse_args.exp == 14:
         states = ex.experiment_seq2seq_sdep_3()
     elif parse_args.exp == 15:
-        states = ex.experiment_seq2seq_embedder()
+        states = ex.experiment_seq2seq_embedder(parse_args.recompute)
     elif parse_args.exp == 16:
         states = ex.experiment_seq2seq_hierarchy_lstm()
     elif parse_args.exp == 17:
         states = ex.experiment_seq2seq_hierarchy_lstm_base()
+    elif parse_args.exp == 18:
+        states = ex.experiment_seq2seq_hierarchy_lstm_trained(parse_args.recompute)
     else:
         print("Bad experiment code")
     print(states)

@@ -39,8 +39,6 @@ def print_similar_domain(similarity_index, dataclass):
             print(list(map(lambda x: x[0], tmp2)))
 
 
-
-
 # ====================================================================
 #                           EXPERIMENT 1
 # ====================================================================
@@ -520,8 +518,10 @@ def experiment_seq2seq_sdep_3():
 
 # ====================================================================
 #                           EXPERIMENT 15
+# Value embedding of seq2seq with embedder layer over 75k characters.
+#        Percentage of found labels on first 3 index : 50%
 # ====================================================================
-def experiment_seq2seq_embedder():
+def experiment_seq2seq_embedder(recompute):
     def preprocess_values(values, pad_maxlen):
         values = map(str, values)
         values = map(str.strip, values)
@@ -537,10 +537,10 @@ def experiment_seq2seq_embedder():
     emb_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2seq_embedding_2/embedding_model.h5"
 
     print("Experiment " + experiment_name + " running ...")
-    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20, train_size=0.7)
+    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20, train_size=0.5)
 
     # -------------- COMPUTING EXPERIMENT BODY --------------------
-    if os.path.exists(CHECKPOINT_PATH+experiment_name):
+    if os.path.exists(CHECKPOINT_PATH+experiment_name) and not recompute:
         print("Checkpoint found ...")
         class_embedding = pickle.load(open(CHECKPOINT_PATH+experiment_name, "rb"))
     else:
@@ -549,7 +549,6 @@ def experiment_seq2seq_embedder():
         test_profiles = ev.get_test_dataset()
         print(str(len(test_profiles)) + " classes!")
         class_values = [(profile, value) for profile in test_profiles for value in profile.quantiles]
-        class_values = list(class_values)
         tokened_data = preprocess_values(map(lambda x: x[1], class_values), max_text_seqence_len)
         value_embeddings = encoder_model.predict(tokened_data)
         class_embeddings = list(map(lambda x: x[0], class_values))
@@ -611,6 +610,8 @@ def experiment_seq2seq_hierarchy_lstm():
 
 # ====================================================================
 #                           EXPERIMENT 17
+# This experiment testing non-training lstm hierarchy model in testing
+# data from s3.
 # ====================================================================
 def experiment_seq2seq_hierarchy_lstm_base():
     def preprocess_quantiles(quantiles, pad_maxlen):
@@ -638,8 +639,8 @@ def experiment_seq2seq_hierarchy_lstm_base():
 
         test_data = ev.get_test_dataset()
 
-        quantiles = np.array(list(map(lambda x: preprocess_quantiles(x.quantiles, max_text_seqence_len), test_data)))
-        embedding_vectors = encoder_model.predict(quantiles)
+        quantiles_data = np.array(list(map(lambda x: preprocess_quantiles(x.quantiles, max_text_seqence_len), test_data)))
+        embedding_vectors = encoder_model.predict(quantiles_data)
 
         print("Processed " + str(len(embedding_vectors)) + " value embeddings")
         class_embedding = list(zip(test_data, embedding_vectors))
@@ -650,4 +651,51 @@ def experiment_seq2seq_hierarchy_lstm_base():
     print("Count of classes: " + str(len(set(classes))))
     ev.evaluate_embeddings(classes, embedding_vectors)
 
+
+# ====================================================================
+#                           EXPERIMENT 18
+# This experiment testing non-training lstm hierarchy model in testing
+# data from s3.
+# ====================================================================
+def experiment_seq2seq_hierarchy_lstm_trained(recompute):
+    max_index = 0
+    def preprocess_quantiles(quantiles, pad_maxlen):
+        quantiles = map(str, quantiles)
+        quantiles = map(str.strip, quantiles)
+        quantiles = (x[::-1] for x in quantiles)
+        quantiles = list(map(lambda x: [ord(y) for y in x], quantiles))
+        quantiles = pad_sequences(quantiles, maxlen=pad_maxlen, truncating='pre', padding='pre')
+        return quantiles
+
+    max_text_seqence_len = 64
+    # -------------- SET PARAMETERS OF EXPERIMENT --------------------
+    experiment_name = experiment_seq2seq_hierarchy_lstm_trained.__name__
+
+    print("Experiment " + experiment_name + " running ...")
+    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20)
+    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/kubo_lstm/joint_model_002.hdf5"
+
+    # -------------- COMPUTING EXPERIMENT BODY --------------------
+    if os.path.exists(CHECKPOINT_PATH+experiment_name) and not recompute:
+        print("Checkpoint found ...")
+        class_embedding = pickle.load(open(CHECKPOINT_PATH+experiment_name, "rb"))
+    else:
+        encoder_model = lm.load_trained_hierarchy_lstm_model(model_path)
+        # encoder_model = lm.load_hierarchy_seq2seq_convolution_model(model_path)
+
+        print("Checkpoint not found. Calculating...")
+
+        test_data = ev.get_test_dataset()
+
+        quantiles_data = np.array(list(map(lambda x: preprocess_quantiles(x.quantiles, max_text_seqence_len), test_data)))
+        embedding_vectors = encoder_model.predict(quantiles_data)
+
+        print("Processed " + str(len(embedding_vectors)) + " value embeddings")
+        class_embedding = list(zip(test_data, embedding_vectors))
+        pickle.dump(class_embedding, open(CHECKPOINT_PATH + experiment_name, "wb"))
+
+    # -------------- EVALUATE EXPERIMENT --------------------
+    classes, embedding_vectors = zip(*class_embedding)
+    print("Count of classes: " + str(len(set(classes))))
+    ev.evaluate_embeddings(classes, embedding_vectors)
 

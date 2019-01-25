@@ -1,5 +1,5 @@
 from keras.models import Model, load_model
-
+from keras import backend as K
 from keras.layers import Concatenate, Input, TimeDistributed, LSTM, Bidirectional, Embedding
 
 
@@ -80,6 +80,19 @@ def load_hierarchy_lstm_model(model_path, embedder_path, quantile_shape=(11, 64)
     return hierarchy_encoder_model
 
 
+def load_trained_hierarchy_lstm_model(model_path):
+    def contrastive_loss(y_true, y_pred):
+        '''Contrastive loss from Hadsell-et-al.'06
+        http://yann.lecun.com/exdb/publis/pdf/hadsell-chopra-lecun-06.pdf
+        '''
+        margin = 1
+        return K.mean(y_true * K.square(y_pred) + (1 - y_true) * K.square(K.maximum(margin - y_pred, 0)))
+
+    trained_model = load_model(model_path, custom_objects={'contrastive_loss': contrastive_loss})
+    model = Model(trained_model.inputs[0], trained_model.layers[6].get_output_at(0))
+    return model
+
+
 def load_hierarchy_lstm_base_model(quantile_shape=(11, 64)):
     # Ensemble Joint Model
     net_input = Input(shape=quantile_shape, name='left_input')
@@ -98,3 +111,15 @@ def load_hierarchy_lstm_base_model(quantile_shape=(11, 64)):
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     model.summary(line_length=120)
     return model
+
+
+def load_hierarchy_seq2seq_convolution_model(model_path):
+    def contrastive_loss(y_true, y_pred):
+        '''Contrastive loss from Hadsell-et-al.'06
+        http://yann.lecun.com/exdb/publis/pdf/hadsell-chopra-lecun-06.pdf
+        '''
+        margin = 1
+        return K.mean(y_true * K.square(y_pred) + (1 - y_true) * K.square(K.maximum(margin - y_pred, 0)))
+
+    model = load_model(model_path, custom_objects={'contrastive_loss': contrastive_loss})
+    return Model(model.inputs[0], model.layers[17].get_output_at(0))
