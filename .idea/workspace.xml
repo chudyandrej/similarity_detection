@@ -2,23 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d3daed69-9682-4673-9397-f4a458b7e5cc" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/sync_repo.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ai-train-ataccama.sh" beforeDir="false" afterPath="$PROJECT_DIR$/ai-train-ataccama.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluater/load_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater/load_models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluater/similarity_detection/experiments.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater/similarity_detection/experiments.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluater/similarity_detection/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater/similarity_detection/run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/lstm_hierarchical_base/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/trainer/lstm_hierarchical/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/lstm_hierarchical_base/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/trainer/lstm_hierarchical/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/lstm_hierarchical_base/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/trainer/lstm_hierarchical/task.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/seq2seq_2/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/trainer/seq2seq_embedding/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/seq2seq_2/model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/seq2seq_2/task.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/seq2seq_embedding_l/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/seq2seq_embedding_l/model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/seq2seq_embedding_l/task.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/seq2seq_embedding_l_2/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/seq2seq_embedding_l_2/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/trainer/seq2seq_embedding/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/seq2seq_embedding_l_2/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/trainer/seq2seq_embedding/task.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,11 +26,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/trainer/lstm_hierarchical/model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="668">
+            <state relative-caret-position="128">
               <caret line="62" selection-start-line="62" selection-end-line="62" />
               <folding>
                 <element signature="e#1#31#0" expanded="true" />
-                <element signature="e#3562#5828#0" />
               </folding>
             </state>
           </provider>
@@ -54,8 +38,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/trainer/lstm_hierarchical/task.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="583">
-              <caret line="49" column="79" selection-start-line="49" selection-start-column="74" selection-end-line="49" selection-end-column="79" />
+            <state relative-caret-position="375">
+              <caret line="25" column="11" lean-forward="true" selection-start-line="25" selection-start-column="11" selection-end-line="25" selection-end-column="11" />
               <folding>
                 <element signature="e#442#513#0" expanded="true" />
               </folding>
@@ -64,13 +48,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/sync_repo.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="6" column="31" selection-start-line="6" selection-start-column="31" selection-end-line="6" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/evaluater/similarity_detection/experiments.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="838">
-              <caret line="683" column="81" lean-forward="true" selection-start-line="683" selection-start-column="81" selection-end-line="683" selection-end-column="81" />
+            <state relative-caret-position="243">
+              <caret line="661" column="52" lean-forward="true" selection-start-line="661" selection-start-column="52" selection-end-line="661" selection-end-column="52" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
-                <marker date="1548436351986" expanded="true" signature="483:588" ph="..." />
+                <marker date="1548447644500" expanded="true" signature="481:586" ph="..." />
               </folding>
             </state>
           </provider>
@@ -79,7 +72,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/evaluater/load_models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="598">
+            <state relative-caret-position="1335">
               <caret line="91" column="65" selection-start-line="91" selection-start-column="65" selection-end-line="91" selection-end-column="65" />
               <folding>
                 <element signature="e#0#42#0" expanded="true" />
@@ -138,7 +131,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/evaluating/helper_modules/key_detection.py" />
         <option value="$PROJECT_DIR$/trainer/seq2seq_siamese/task.py" />
         <option value="$PROJECT_DIR$/evaluating/helper_modules/seq2seq_siamese_model_helper.py" />
         <option value="$PROJECT_DIR$/evaluater/key_analyzer.py" />
@@ -189,6 +181,7 @@
         <option value="$PROJECT_DIR$/trainer/lstm_hierarchical/task.py" />
         <option value="$PROJECT_DIR$/evaluater/load_models.py" />
         <option value="$PROJECT_DIR$/evaluater/similarity_detection/experiments.py" />
+        <option value="$PROJECT_DIR$/sync_repo.sh" />
       </list>
     </option>
   </component>
@@ -202,7 +195,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -210,50 +202,11 @@
               <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
               <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
-              <item name="kubo_lstm" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
-              <item name="evaluater" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
-              <item name="trainer" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
-              <item name="trainer" type="462c0819:PsiDirectoryNode" />
-              <item name="cnn_kim" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
-              <item name="trainer" type="462c0819:PsiDirectoryNode" />
-              <item name="lstm_hierarchical" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -514,6 +467,7 @@
       <workItem from="1548144942845" duration="7445000" />
       <workItem from="1548232439249" duration="28238000" />
       <workItem from="1548405193522" duration="5684000" />
+      <workItem from="1548447562191" duration="886000" />
     </task>
     <task id="LOCAL-00001" summary="Evaluation similarity detection">
       <created>1543940803928</created>
@@ -599,11 +553,18 @@
       <option name="project" value="LOCAL" />
       <updated>1548244509673</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="contrastive loss, kim after seq2seq try">
+      <created>1548447813841</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1548447813841</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="265814000" />
+    <option name="totallyTimeSpent" value="266700000" />
   </component>
   <component name="TodoView" selected-index="2">
     <todo-panel id="selected-file">
@@ -615,10 +576,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-425" y="-1440" width="2560" height="1440" extended-state="0" />
+    <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49718875" visible="true" weight="0.104447976" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49718875" visible="true" weight="0.10561661" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.50281125" side_tool="true" weight="0.10206513" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -634,11 +595,11 @@
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5007943" side_tool="true" weight="0.21240877" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.20437956" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.1729927" />
-      <window_info anchor="bottom" id="File Transfer" order="13" sideWeight="0.4992057" visible="true" weight="0.091240875" />
+      <window_info anchor="bottom" id="File Transfer" order="13" sideWeight="0.4992057" visible="true" weight="0.09081633" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Remote Host" order="3" visible="true" weight="0.12549643" />
+      <window_info anchor="right" id="Remote Host" order="3" visible="true" weight="0.12515263" />
       <window_info anchor="right" id="SciView" order="4" weight="0.32962668" />
       <window_info anchor="right" x="0" y="0" width="590" height="1217" id="Documentation" order="5" side_tool="true" weight="0.32843527" />
       <window_info anchor="right" id="Database" order="6" />
@@ -699,7 +660,8 @@
     <MESSAGE value="Add experiments change training data in seq2seq" />
     <MESSAGE value="Add embeddings model and evaluations" />
     <MESSAGE value="Add hierarchical model with fix value encoder" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add hierarchical model with fix value encoder" />
+    <MESSAGE value="contrastive loss, kim after seq2seq try" />
+    <option name="LAST_COMMIT_MESSAGE" value="contrastive loss, kim after seq2seq try" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -757,13 +719,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="26100">
-          <caret line="1740" selection-start-line="1740" selection-end-line="1740" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/evaluater/key_analyzer/run.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-927">
@@ -1079,30 +1034,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/trainer/lstm_hierarchical/model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="668">
-          <caret line="62" selection-start-line="62" selection-end-line="62" />
-          <folding>
-            <element signature="e#1#31#0" expanded="true" />
-            <element signature="e#3562#5828#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/trainer/lstm_hierarchical/task.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="583">
-          <caret line="49" column="79" selection-start-line="49" selection-start-column="74" selection-end-line="49" selection-end-column="79" />
-          <folding>
-            <element signature="e#442#513#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/evaluater/load_models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="598">
+        <state relative-caret-position="1335">
           <caret line="91" column="65" selection-start-line="91" selection-start-column="65" selection-end-line="91" selection-end-column="65" />
           <folding>
             <element signature="e#0#42#0" expanded="true" />
@@ -1112,12 +1046,39 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/evaluater/similarity_detection/experiments.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="838">
-          <caret line="683" column="81" lean-forward="true" selection-start-line="683" selection-start-column="81" selection-end-line="683" selection-end-column="81" />
+        <state relative-caret-position="243">
+          <caret line="661" column="52" lean-forward="true" selection-start-line="661" selection-start-column="52" selection-end-line="661" selection-end-column="52" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
-            <marker date="1548436351986" expanded="true" signature="483:588" ph="..." />
+            <marker date="1548447644500" expanded="true" signature="481:586" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/trainer/lstm_hierarchical/model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="62" selection-start-line="62" selection-end-line="62" />
+          <folding>
+            <element signature="e#1#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/trainer/lstm_hierarchical/task.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="25" column="11" lean-forward="true" selection-start-line="25" selection-start-column="11" selection-end-line="25" selection-end-column="11" />
+          <folding>
+            <element signature="e#442#513#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sync_repo.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="31" selection-start-line="6" selection-start-column="31" selection-end-line="6" selection-end-column="31" />
         </state>
       </provider>
     </entry>
