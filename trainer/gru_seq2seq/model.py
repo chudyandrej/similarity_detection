@@ -1,6 +1,6 @@
 
 from keras.models import Model
-from keras.layers import Input, LSTM, Dense, Embedding, Lambda
+from keras.layers import Input, LSTM, Dense, Embedding, Lambda, GRU
 from keras.preprocessing.sequence import pad_sequences
 from unidecode import unidecode
 from keras import backend as K
@@ -18,7 +18,7 @@ TOKEN_COUNT = 95
 # Model constants
 BATCH_SIZE = 1024  # Batch size for training.
 EPOCHS = 1000  # Number of epochs to train for.
-LSTM_DIM = 256  # Latent dimensionality of the encoding space.
+GRU_DIM = 128  # Latent dimensionality of the encoding space.
 ENCODER_OUTPUT_DIM = 256
 
 
@@ -32,46 +32,43 @@ def create_model_fullunicode():
     embedded_decoder_input = embedding(decoder_inputs)
     emedded_target = embedding(target)
 
-    # Define an input sequence and process it.
-    encoder = LSTM(LSTM_DIM, return_state=True, dropout=0.2, recurrent_dropout=0.2, name="encoder")
-    encoder_outputs, state_h, state_c = encoder(embedded_encoder_input)
-    encoder_states = [state_h, state_c]
+    encoder = GRU(GRU_DIM, return_state=True)
+    encoder_outputs, state_h = encoder(embedded_encoder_input)
 
-    decoder_lstm = LSTM(LSTM_DIM, return_sequences=True, return_state=True, dropout=0.2, recurrent_dropout=0.2,
-                        name="decoder")
-    decoder_outputs, _, _ = decoder_lstm(embedded_decoder_input, initial_state=encoder_states)
+    decoder_gru = GRU(GRU_DIM, return_sequences=True)
+    decoder_outputs = decoder_gru(embedded_decoder_input, initial_state=state_h)
+    decoder_dense = Dense(ENCODER_OUTPUT_DIM, activation='sigmoid')
+    decoder_outputs = decoder_dense(decoder_outputs)
 
-    decoder_dense = Dense(ENCODER_OUTPUT_DIM, activation='sigmoid', name="dense")
-    decoder_output = decoder_dense(decoder_outputs)
-    output = cc.CustomRegularization()([emedded_target, decoder_output])
+    output = cc.CustomRegularization(loss_function="mean_squared_error")([emedded_target, decoder_outputs])
     model = Model([encoder_inputs, decoder_inputs, target], output)
     return model
 
 
-def create_model_unidecode():
-    encoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="encoder_Input")
-    decoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="decoder_Input")
-    target = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="target_Input")
-
-    embedding = Embedding(95, output_dim=ENCODER_OUTPUT_DIM, trainable=False, name="embedding_layer")
-    embedded_encoder_input = embedding(encoder_inputs)
-    embedded_decoder_input = embedding(decoder_inputs)
-    emedded_target = embedding(target)
-
-    # Define an input sequence and process it.
-    encoder = LSTM(LSTM_DIM, return_state=True, dropout=0.2, recurrent_dropout=0.2, name="encoder")
-    encoder_outputs, state_h, state_c = encoder(embedded_encoder_input)
-    encoder_states = [state_h, state_c]
-
-    decoder_lstm = LSTM(LSTM_DIM, return_sequences=True, return_state=True, dropout=0.2, recurrent_dropout=0.2,
-                        name="decoder")
-    decoder_outputs, _, _ = decoder_lstm(embedded_decoder_input, initial_state=encoder_states)
-
-    decoder_dense = Dense(ENCODER_OUTPUT_DIM, activation='sigmoid', name="dense")
-    decoder_output = decoder_dense(decoder_outputs)
-    output = cc.CustomRegularization()([emedded_target, decoder_output])
-    model = Model([encoder_inputs, decoder_inputs, target], output)
-    return model
+# def create_model_unidecode():
+#     encoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="encoder_Input")
+#     decoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="decoder_Input")
+#     target = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="target_Input")
+#
+#     embedding = Embedding(95, output_dim=ENCODER_OUTPUT_DIM, trainable=False, name="embedding_layer")
+#     embedded_encoder_input = embedding(encoder_inputs)
+#     embedded_decoder_input = embedding(decoder_inputs)
+#     emedded_target = embedding(target)
+#
+#     # Define an input sequence and process it.
+#     encoder = LSTM(LSTM_DIM, return_state=True, dropout=0.2, recurrent_dropout=0.2, name="encoder")
+#     encoder_outputs, state_h, state_c = encoder(embedded_encoder_input)
+#     encoder_states = [state_h, state_c]
+#
+#     decoder_lstm = LSTM(LSTM_DIM, return_sequences=True, return_state=True, dropout=0.2, recurrent_dropout=0.2,
+#                         name="decoder")
+#     decoder_outputs, _, _ = decoder_lstm(embedded_decoder_input, initial_state=encoder_states)
+#
+#     decoder_dense = Dense(ENCODER_OUTPUT_DIM, activation='sigmoid', name="dense")
+#     decoder_output = decoder_dense(decoder_outputs)
+#     output = cc.CustomRegularization()([emedded_target, decoder_output])
+#     model = Model([encoder_inputs, decoder_inputs, target], output)
+#     return model
 
 
 def create_model_onehot_layer():
@@ -79,23 +76,20 @@ def create_model_onehot_layer():
     decoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="decoder_Input", dtype="int32")
     target = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="target_Input", dtype="int32")
 
-    embedding = cc.OneHot(input_dim=95, input_length=MAX_TEXT_SEQUENCE_LEN)
+    embedding = cc.OneHot(input_dim=2000, input_length=MAX_TEXT_SEQUENCE_LEN)
     embedded_encoder_input = embedding(encoder_inputs)
     embedded_decoder_input = embedding(decoder_inputs)
     emedded_target = embedding(target)
 
-    # Define an input sequence and process it.
-    encoder = LSTM(LSTM_DIM, return_state=True, dropout=0.2, recurrent_dropout=0.2, name="encoder")
-    encoder_outputs, state_h, state_c = encoder(embedded_encoder_input)
-    encoder_states = [state_h, state_c]
+    encoder = GRU(GRU_DIM, return_state=True)
+    encoder_outputs, state_h = encoder(embedded_encoder_input)
 
-    decoder_lstm = LSTM(LSTM_DIM, return_sequences=True, return_state=True, dropout=0.2, recurrent_dropout=0.2,
-                        name="decoder")
-    decoder_outputs, _, _ = decoder_lstm(embedded_decoder_input, initial_state=encoder_states)
+    decoder_gru = GRU(GRU_DIM, return_sequences=True)
+    decoder_outputs = decoder_gru(embedded_decoder_input, initial_state=state_h)
+    decoder_dense = Dense(ENCODER_OUTPUT_DIM, activation='sigmoid')
+    decoder_outputs = decoder_dense(decoder_outputs)
 
-    decoder_dense = Dense(95, activation='softmax', name="dense")
-    decoder_output = decoder_dense(decoder_outputs)
-    output = cc.CustomRegularization(loss_function="categorical_crossentropy")([emedded_target, decoder_output])
+    output = cc.CustomRegularization(loss_function="mean_squared_error")([emedded_target, decoder_outputs])
     model = Model([encoder_inputs, decoder_inputs, target], output)
     return model
 

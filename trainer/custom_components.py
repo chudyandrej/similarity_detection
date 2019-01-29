@@ -1,6 +1,8 @@
 from keras import backend as K
 from keras.engine.topology import Layer
 from keras import objectives
+from keras.layers import Lambda
+
 
 
 ##################################################
@@ -40,17 +42,38 @@ def zero_loss(y_true, y_pred):
 ##################################################
 
 class CustomRegularization(Layer):
-    def __init__(self, **kwargs):
+    def __init__(self, loss_function, **kwargs):
         super(CustomRegularization, self).__init__(**kwargs)
+        self.loss_function = loss_function
 
     def call(self, x, mask=None):
         target = x[0]
         pred = x[1]
-        mse = objectives.mean_squared_error(target, pred)
-        loss = K.sum(mse)
+        tmp = 0
+        if self.loss_function == 'categorical_crossentropy':
+            tmp = objectives.categorical_crossentropy(target, pred)
+        elif self.loss_function == 'mean_squared_error':
+            tmp = objectives.mean_squared_error(target, pred)
+
+        loss = K.sum(tmp)
         self.add_loss(loss, x)
-        return mse
+        return tmp
 
     def get_output_shape_for(self, input_shape):
         return (input_shape[0][0],1)
 
+
+def OneHot(input_dim=None, input_length=None):
+    # Check if inputs were supplied correctly
+    if input_dim is None or input_length is None:
+        raise TypeError("input_dim or input_length is not set")
+
+    # Helper method (not inlined for clarity)
+    def _one_hot(x, num_classes):
+        return K.one_hot(K.cast(x, 'uint8'),
+                          num_classes=num_classes)
+
+    # Final layer representation as a Lambda layer
+    return Lambda(_one_hot,
+                  arguments={'num_classes': input_dim},
+                  input_shape=(input_length,))

@@ -45,12 +45,10 @@ if __name__ == '__main__':
         states = ex.experiment_seq2seq_siamese_sdep_2()
     elif parse_args.exp == 14:
         states = ex.experiment_seq2seq_sdep_3()
-    elif parse_args.exp == 15:
-        states = ex.experiment_seq2seq_embedder(parse_args.recompute)
     elif parse_args.exp == 16:
         states = ex.experiment_seq2seq_hierarchy_lstm()
     elif parse_args.exp == 17:
-        states = ex.experiment_seq2seq_hierarchy_lstm_base()
+        states = ex.experiment_seq2seq_hierarchy_lstm_base(recompute=parse_args.recompute)
     elif parse_args.exp == 18:
         states = ex.experiment_seq2seq_hierarchy_lstm_trained(parse_args.recompute)
     else:

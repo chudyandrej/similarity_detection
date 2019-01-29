@@ -5,6 +5,8 @@ import pickle
 from keras.preprocessing.sequence import pad_sequences
 
 import argparse
+from evaluater.embedder import tokenizer_0_96
+from unidecode import unidecode
 import evaluater.load_models as lm
 import evaluater.embedder as em
 
@@ -13,24 +15,31 @@ CHECKPOINT_PATH = os.environ['PYTHONPATH'].split(":")[0] + "/evaluater/similarit
 # os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
 # os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
+
+def preprocess_values(values, pad_maxlen, full_unicode=True):
+    values = map(lambda x: str(x), values)
+    values = map(str.strip, values)
+    values = (x[::-1] for x in values)
+    if full_unicode:
+        values = list(map(lambda x: [ord(y) for y in x], values))
+    else:
+        values = map(lambda x: unidecode(x), values)
+        values = map(lambda x: [tokenizer_0_96(y) for y in x], values)
+    # print(list(values)[:100])
+    values = pad_sequences(list(values), maxlen=pad_maxlen, truncating='pre', padding='pre')
+
+    return values
+
+
 # ====================================================================
 #                           EXPERIMENT 1
 # ====================================================================
 def experiment_seq2seq_embedder_jointly(recompute):
-    def preprocess_values(values, pad_maxlen):
-        values = map(lambda x: str(x), values)
-        values = map(str.strip, values)
-        values = (x[::-1] for x in values)
-
-        values = list(map(lambda x: [ord(y) for y in x], values))
-        values = pad_sequences(values, maxlen=pad_maxlen, truncating='pre', padding='pre')
-
-        return values
 
     max_text_seqence_len = 64
     # -------------- SET PARAMETERS OF EXPERIMENT --------------------
     experiment_name = experiment_seq2seq_embedder_jointly.__name__
-    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/seq2seq_embedding1548688266/model.h5"
+    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/seq2seq_embedding1548769086/model.h5"
 
     print("Experiment " + experiment_name + " running ...")
     ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20, train_size=0.5)
@@ -45,7 +54,7 @@ def experiment_seq2seq_embedder_jointly(recompute):
         test_profiles = ev.get_test_dataset()
         print(str(len(test_profiles)) + " classes!")
         class_values = [(profile, value) for profile in test_profiles for value in profile.quantiles]
-        tokened_data = preprocess_values(map(lambda x: x[1], class_values), max_text_seqence_len)
+        tokened_data = preprocess_values(map(lambda x: x[1], class_values), max_text_seqence_len, full_unicode=False)
         value_embeddings = encoder_model.predict(tokened_data)
         class_embeddings = list(map(lambda x: x[0], class_values))
         print(str(len(value_embeddings)) + " values for activation.")
@@ -66,13 +75,6 @@ def experiment_seq2seq_embedder_jointly(recompute):
 #        Percentage of found labels on first 3 index : 50%
 # ====================================================================
 def experiment_seq2seq_embedder(recompute):
-    def preprocess_values(values, pad_maxlen):
-        values = map(str, values)
-        values = map(str.strip, values)
-        values = (x[::-1] for x in values)
-        values = list(map(lambda x: [ord(y) for y in x], values))
-        values = pad_sequences(values, maxlen=pad_maxlen, truncating='pre', padding='pre')
-        return values
 
     max_text_seqence_len = 64
     # -------------- SET PARAMETERS OF EXPERIMENT --------------------

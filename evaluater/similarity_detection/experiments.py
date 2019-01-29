@@ -570,7 +570,7 @@ def experiment_seq2seq_hierarchy_lstm():
 # This experiment testing non-training lstm hierarchy model in testing
 # data from s3.
 # ====================================================================
-def experiment_seq2seq_hierarchy_lstm_base():
+def experiment_seq2seq_hierarchy_lstm_base(recompute):
     def preprocess_quantiles(quantiles, pad_maxlen):
         quantiles = map(str, quantiles)
         quantiles = map(str.strip, quantiles)
@@ -587,12 +587,12 @@ def experiment_seq2seq_hierarchy_lstm_base():
     ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20)
 
     # -------------- COMPUTING EXPERIMENT BODY --------------------
-    if os.path.exists(CHECKPOINT_PATH+experiment_name):
+    if os.path.exists(CHECKPOINT_PATH+experiment_name) and not recompute:
         print("Checkpoint found ...")
         class_embedding = pickle.load(open(CHECKPOINT_PATH+experiment_name, "rb"))
     else:
-        encoder_model = lm.load_hierarchy_lstm_base_model()
-        print("Checkpoint not found. Calculating...")
+        encoder_model = lm.load_hierarchy_gru_base_model()
+        print("Checkpoint not found. Calculating... GRU" )
 
         test_data = ev.get_test_dataset()
 
@@ -630,22 +630,22 @@ def experiment_seq2seq_hierarchy_lstm_trained(recompute):
 
     print("Experiment " + experiment_name + " running ...")
     ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20)
-    # model_path = os.environ['PYTHONPATH'].split(":")[0] + "/mnt/data/joint_model_014.hdf5"
-    model_path = "/mnt/data/joint_model_014.hdf5"
+    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/gru_hierarchical1548766779/model.h5"
 
     # -------------- COMPUTING EXPERIMENT BODY --------------------
     if os.path.exists(CHECKPOINT_PATH+experiment_name) and not recompute:
         print("Checkpoint found ...")
         class_embedding = pickle.load(open(CHECKPOINT_PATH+experiment_name, "rb"))
     else:
-        encoder_model = lm.load_hierarchy_kubo(model_path)
+        encoder_model = lm.load_hierarchy_model(model_path)
         # encoder_model = lm.load_hierarchy_seq2seq_convolution_model(model_path)
 
         print("Checkpoint not found. Calculating...")
 
         test_data = ev.get_test_dataset()
 
-        quantiles_data = np.array(list(map(lambda x: preprocess_quantiles(x.quantiles, max_text_seqence_len), test_data)))
+        quantiles_data = np.array(list(map(lambda x: preprocess_quantiles(x.quantiles, max_text_seqence_len),
+                                           test_data)))
         embedding_vectors = encoder_model.predict(quantiles_data)
 
         print("Processed " + str(len(embedding_vectors)) + " value embeddings")

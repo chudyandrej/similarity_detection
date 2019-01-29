@@ -140,6 +140,23 @@ def create_column_embedding_by_mrc(type_embedding):
     return class_embedding
 
 
+def tokenizer_0_96(char):
+    """Reduce he alphabet replace all white symbols as space
+
+    Args:
+        char (STRING): Char
+
+    Returns:
+        NUMBER: Code <0,94>
+    """
+    code = ord(char)
+    if 0 <= code <= 31 or code == 127:    # Is white
+        code = 0
+    else:
+        code -= 32
+
+    return code
+
 # ------------------------- PRIVATE ----------------------------------
 
 

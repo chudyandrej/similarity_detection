@@ -1,6 +1,6 @@
 from keras.models import Model, load_model
 from keras import backend as K
-from keras.layers import Concatenate, Input, TimeDistributed, LSTM, Bidirectional, Embedding
+from keras.layers import Concatenate, Input, TimeDistributed, LSTM, Bidirectional, Embedding, GRU
 
 import trainer.custom_components as cc
 
@@ -82,7 +82,7 @@ def load_hierarchy_lstm_model(model_path, embedder_path, quantile_shape=(11, 64)
     return hierarchy_encoder_model
 
 
-def load_trained_hierarchy_lstm_model(model_path):
+def load_hierarchy_model(model_path):
     trained_model = load_model(model_path, custom_objects={'contrastive_loss': cc.contrastive_loss})
     model = Model(trained_model.inputs[0], trained_model.layers[6].get_output_at(0))
     return model
@@ -99,6 +99,26 @@ def load_hierarchy_lstm_base_model(quantile_shape=(11, 64)):
     value_encoded = TimeDistributed(value_encoder)(embedded)
 
     quantile_encoder = Bidirectional(LSTM(128, dropout=0.50, recurrent_dropout=0.50), name='quantile_encoder')
+    encoded = quantile_encoder(value_encoded)
+
+    # Compile and train Joint Model
+    model = Model(inputs=net_input, outputs=encoded)
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+    model.summary(line_length=120)
+    return model
+
+
+def load_hierarchy_gru_base_model(quantile_shape=(11, 64)):
+    # Ensemble Joint Model
+    net_input = Input(shape=quantile_shape, name='left_input')
+
+    value_embedder = Embedding(input_dim=65536, output_dim=128, name='value_embedder')
+    embedded = TimeDistributed(value_embedder)(net_input)
+
+    value_encoder = GRU(128, dropout=0.50, recurrent_dropout=0.50, name='value_encoder')
+    value_encoded = TimeDistributed(value_encoder)(embedded)
+
+    quantile_encoder = Bidirectional(GRU(128, dropout=0.50, recurrent_dropout=0.50), name='quantile_encoder')
     encoded = quantile_encoder(value_encoded)
 
     # Compile and train Joint Model
