@@ -9,7 +9,7 @@ from evaluater.computing import compute_neighbors
 from evaluater.similarity_detection.evaluation import evaluate_similarity_index
 from keras.preprocessing.sequence import pad_sequences
 
-import data_preparation.cvut as dt
+# import data_preparation.cvut as dt
 import evaluater.load_models as lm
 import evaluater.embedder as em
 
@@ -516,52 +516,9 @@ def experiment_seq2seq_sdep_3():
     ev.evaluate_embeddings(classes, embedding_vectors)
 
 
-# ====================================================================
-#                           EXPERIMENT 15
-# Value embedding of seq2seq with embedder layer over 75k characters.
-#        Percentage of found labels on first 3 index : 50%
-# ====================================================================
-def experiment_seq2seq_embedder(recompute):
-    def preprocess_values(values, pad_maxlen):
-        values = map(str, values)
-        values = map(str.strip, values)
-        values = (x[::-1] for x in values)
-        values = list(map(lambda x: [ord(y) for y in x], values))
-        values = pad_sequences(values, maxlen=pad_maxlen, truncating='pre', padding='pre')
-        return values
 
-    max_text_seqence_len = 64
-    # -------------- SET PARAMETERS OF EXPERIMENT --------------------
-    experiment_name = experiment_seq2seq_embedder.__name__
-    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2seq_embedding_2/model.h5"
-    emb_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2seq_embedding_2/embedding_model.h5"
 
-    print("Experiment " + experiment_name + " running ...")
-    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20, train_size=0.5)
 
-    # -------------- COMPUTING EXPERIMENT BODY --------------------
-    if os.path.exists(CHECKPOINT_PATH+experiment_name) and not recompute:
-        print("Checkpoint found ...")
-        class_embedding = pickle.load(open(CHECKPOINT_PATH+experiment_name, "rb"))
-    else:
-        encoder_model = lm.load_seq2seq_embedder(model_path, emb_path)
-        print("Model successfully loaded. ")
-        test_profiles = ev.get_test_dataset()
-        print(str(len(test_profiles)) + " classes!")
-        class_values = [(profile, value) for profile in test_profiles for value in profile.quantiles]
-        tokened_data = preprocess_values(map(lambda x: x[1], class_values), max_text_seqence_len)
-        value_embeddings = encoder_model.predict(tokened_data)
-        class_embeddings = list(map(lambda x: x[0], class_values))
-        print(str(len(value_embeddings)) + " values for activation.")
-        print(str(len(class_embeddings)) + " classes for data.")
-
-        class_embedding = em.create_column_embedding_by_avg(list(zip(class_embeddings, value_embeddings)))
-        pickle.dump(class_embedding, open(CHECKPOINT_PATH + experiment_name, "wb"))
-
-    # -------------- EVALUATE EXPERIMENT --------------------
-    classes, embedding_vectors = zip(*class_embedding)
-    print("Count of classes: " + str(len(set(classes))))
-    ev.evaluate_embeddings(classes, embedding_vectors)
 
 
 # ====================================================================
@@ -673,14 +630,15 @@ def experiment_seq2seq_hierarchy_lstm_trained(recompute):
 
     print("Experiment " + experiment_name + " running ...")
     ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20)
-    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/kubo_lstm/joint_model_002.hdf5"
+    # model_path = os.environ['PYTHONPATH'].split(":")[0] + "/mnt/data/joint_model_014.hdf5"
+    model_path = "/mnt/data/joint_model_014.hdf5"
 
     # -------------- COMPUTING EXPERIMENT BODY --------------------
     if os.path.exists(CHECKPOINT_PATH+experiment_name) and not recompute:
         print("Checkpoint found ...")
         class_embedding = pickle.load(open(CHECKPOINT_PATH+experiment_name, "rb"))
     else:
-        encoder_model = lm.load_trained_hierarchy_lstm_model(model_path)
+        encoder_model = lm.load_hierarchy_kubo(model_path)
         # encoder_model = lm.load_hierarchy_seq2seq_convolution_model(model_path)
 
         print("Checkpoint not found. Calculating...")
@@ -698,4 +656,6 @@ def experiment_seq2seq_hierarchy_lstm_trained(recompute):
     classes, embedding_vectors = zip(*class_embedding)
     print("Count of classes: " + str(len(set(classes))))
     ev.evaluate_embeddings(classes, embedding_vectors)
+
+
 

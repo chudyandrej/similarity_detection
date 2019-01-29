@@ -2,62 +2,83 @@
 from keras.models import Model
 from keras.layers import Input, LSTM, Dense, Embedding
 from keras.preprocessing.sequence import pad_sequences
+from unidecode import unidecode
 
 
 import tensorflow as tf
 import numpy as np
 import pandas as pd
 
+import trainer.custom_components as cc
+
 MAX_TEXT_SEQUENCE_LEN = 64
 TOKEN_COUNT = 95
 # Model constants
-BATCH_SIZE = 4096  # Batch size for training.
+BATCH_SIZE = 1024  # Batch size for training.
 EPOCHS = 1000  # Number of epochs to train for.
 LSTM_DIM = 256  # Latent dimensionality of the encoding space.
-ENCODER_OUTPUT_DIM = 128
+ENCODER_OUTPUT_DIM = 256
 
 
-def embedding_convert_model():
+def create_model_fullunicode():
     encoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="encoder_Input")
-    embedding = Embedding(65536, output_dim=ENCODER_OUTPUT_DIM)
-    encoder_output = embedding(encoder_inputs)
-    model = Model(encoder_inputs, encoder_output)
-    return model
+    decoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="decoder_Input")
+    target = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="target_Input")
 
-
-def create_model():
-    encoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN, ENCODER_OUTPUT_DIM), name="encoder_Input")
-    decoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN, ENCODER_OUTPUT_DIM), name="decoder_Input")
+    embedding = Embedding(65536, output_dim=ENCODER_OUTPUT_DIM, trainable=False, name="embedding_layer")
+    embedded_encoder_input = embedding(encoder_inputs)
+    embedded_decoder_input = embedding(decoder_inputs)
+    emedded_target = embedding(target)
 
     # Define an input sequence and process it.
     encoder = LSTM(LSTM_DIM, return_state=True, dropout=0.2, recurrent_dropout=0.2, name="encoder")
-    encoder_outputs, state_h, state_c = encoder(encoder_inputs)
+    encoder_outputs, state_h, state_c = encoder(embedded_encoder_input)
     encoder_states = [state_h, state_c]
 
     decoder_lstm = LSTM(LSTM_DIM, return_sequences=True, return_state=True, dropout=0.2, recurrent_dropout=0.2,
                         name="decoder")
-    decoder_outputs, _, _ = decoder_lstm(decoder_inputs, initial_state=encoder_states)
+    decoder_outputs, _, _ = decoder_lstm(embedded_decoder_input, initial_state=encoder_states)
 
-    decoder_dense = Dense(ENCODER_OUTPUT_DIM,  name="dense")
-    decoder_outputs = decoder_dense(decoder_outputs)
-
-    model = Model([encoder_inputs, decoder_inputs], decoder_outputs)
+    decoder_dense = Dense(ENCODER_OUTPUT_DIM, activation='sigmoid', name="dense")
+    decoder_output = decoder_dense(decoder_outputs)
+    output = cc.CustomRegularization()([emedded_target, decoder_output])
+    model = Model([encoder_inputs, decoder_inputs, target], output)
     return model
 
 
-def generate_batches(data, embedding_model):
+def create_model_unidecode():
+    encoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="encoder_Input")
+    decoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="decoder_Input")
+    target = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="target_Input")
+
+    embedding = Embedding(95, output_dim=ENCODER_OUTPUT_DIM, trainable=False, name="embedding_layer")
+    embedded_encoder_input = embedding(encoder_inputs)
+    embedded_decoder_input = embedding(decoder_inputs)
+    emedded_target = embedding(target)
+
+    # Define an input sequence and process it.
+    encoder = LSTM(LSTM_DIM, return_state=True, dropout=0.2, recurrent_dropout=0.2, name="encoder")
+    encoder_outputs, state_h, state_c = encoder(embedded_encoder_input)
+    encoder_states = [state_h, state_c]
+
+    decoder_lstm = LSTM(LSTM_DIM, return_sequences=True, return_state=True, dropout=0.2, recurrent_dropout=0.2,
+                        name="decoder")
+    decoder_outputs, _, _ = decoder_lstm(embedded_decoder_input, initial_state=encoder_states)
+
+    decoder_dense = Dense(ENCODER_OUTPUT_DIM, activation='sigmoid', name="dense")
+    decoder_output = decoder_dense(decoder_outputs)
+    output = cc.CustomRegularization()([emedded_target, decoder_output])
+    model = Model([encoder_inputs, decoder_inputs, target], output)
+    return model
+
+
+def generate_batches(data):
     data_batches = cut_data_to_batches(data)
 
     while True:
         for data_slide in data_batches:
             input_paded, input_decoder_paded, target_paded = convert_to_vec(data_slide)
-            print(len(data_batches))
-
-            d1 = embedding_model.predict(input_paded)
-            d2 = embedding_model.predict(input_decoder_paded)
-            d3 = embedding_model.predict(target_paded)
-
-            yield [d1, d2], d3
+            yield [input_paded, input_decoder_paded, target_paded], target_paded
 
 
 def load_data(data_path):
@@ -105,3 +126,21 @@ def cut_data_to_batches(data):
 
     return result
 
+
+def tokening(char):
+    """Reduce he alphabet replace all white symbols as space
+
+    Args:
+        char (STRING): Char
+
+    Returns:
+        NUMBER: Code <0,94>
+    """
+    char = unidecode(char)
+    code = ord(char)
+    if 0 <= code <= 31 or code == 127:    # Is white
+        code = 0
+    else:
+        code -= 32
+
+    return code

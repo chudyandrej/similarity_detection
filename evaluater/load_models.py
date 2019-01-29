@@ -2,6 +2,8 @@ from keras.models import Model, load_model
 from keras import backend as K
 from keras.layers import Concatenate, Input, TimeDistributed, LSTM, Bidirectional, Embedding
 
+import trainer.custom_components as cc
+
 
 def load_seq2seq_siamese(model_path):
     model = load_model(model_path)
@@ -81,14 +83,7 @@ def load_hierarchy_lstm_model(model_path, embedder_path, quantile_shape=(11, 64)
 
 
 def load_trained_hierarchy_lstm_model(model_path):
-    def contrastive_loss(y_true, y_pred):
-        '''Contrastive loss from Hadsell-et-al.'06
-        http://yann.lecun.com/exdb/publis/pdf/hadsell-chopra-lecun-06.pdf
-        '''
-        margin = 1
-        return K.mean(y_true * K.square(y_pred) + (1 - y_true) * K.square(K.maximum(margin - y_pred, 0)))
-
-    trained_model = load_model(model_path, custom_objects={'contrastive_loss': contrastive_loss})
+    trained_model = load_model(model_path, custom_objects={'contrastive_loss': cc.contrastive_loss})
     model = Model(trained_model.inputs[0], trained_model.layers[6].get_output_at(0))
     return model
 
@@ -114,12 +109,19 @@ def load_hierarchy_lstm_base_model(quantile_shape=(11, 64)):
 
 
 def load_hierarchy_seq2seq_convolution_model(model_path):
-    def contrastive_loss(y_true, y_pred):
-        '''Contrastive loss from Hadsell-et-al.'06
-        http://yann.lecun.com/exdb/publis/pdf/hadsell-chopra-lecun-06.pdf
-        '''
-        margin = 1
-        return K.mean(y_true * K.square(y_pred) + (1 - y_true) * K.square(K.maximum(margin - y_pred, 0)))
-
-    model = load_model(model_path, custom_objects={'contrastive_loss': contrastive_loss})
+    model = load_model(model_path, custom_objects={'contrastive_loss': cc.contrastive_loss})
     return Model(model.inputs[0], model.layers[17].get_output_at(0))
+
+
+def load_hierarchy_kubo(model_path):
+    trained_model = load_model(model_path, custom_objects={"l2_loss": cc.l2_loss, "l2_similarity": cc.l2_similarity})
+    model = Model(trained_model.inputs[0], trained_model.layers[6].get_output_at(0))
+    return model
+
+
+def seq2seq_embedder_jointly(model_path):
+    model = load_model(model_path, custom_objects={
+        "CustomRegularization": cc.CustomRegularization,
+        "zero_loss": cc.zero_loss
+    })
+    return Model(model.get_layer(name="encoder_Input").input, model.get_layer(name="encoder").output[0])

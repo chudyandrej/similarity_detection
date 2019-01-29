@@ -2,8 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d3daed69-9682-4673-9397-f4a458b7e5cc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/sync_repo.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/evaluater/similarity_detection/experiments_valueEncoder.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/trainer/custom_components.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ai-train-ataccama.sh" beforeDir="false" afterPath="$PROJECT_DIR$/ai-train-ataccama.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluater/load_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater/load_models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluater/similarity_detection/experiments.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater/similarity_detection/experiments.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluater/similarity_detection/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater/similarity_detection/run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trainer/seq2seq_embedding/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/trainer/seq2seq_embedding/model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trainer/seq2seq_embedding/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/trainer/seq2seq_embedding/task.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -23,59 +30,37 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/trainer/lstm_hierarchical/model.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="128">
-              <caret line="62" selection-start-line="62" selection-end-line="62" />
-              <folding>
-                <element signature="e#1#31#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/trainer/lstm_hierarchical/task.py">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/trainer/seq2seq_embedding/task.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="375">
-              <caret line="25" column="11" lean-forward="true" selection-start-line="25" selection-start-column="11" selection-end-line="25" selection-end-column="11" />
+              <caret line="25" column="52" selection-start-line="25" selection-start-column="52" selection-end-line="25" selection-end-column="52" />
               <folding>
-                <element signature="e#442#513#0" expanded="true" />
+                <element signature="e#203#257#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/sync_repo.sh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="31" selection-start-line="6" selection-start-column="31" selection-end-line="6" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/evaluater/similarity_detection/experiments.py">
+        <entry file="file://$PROJECT_DIR$/evaluater/similarity_detection/experiments_valueEncoder.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="661" column="52" lean-forward="true" selection-start-line="661" selection-start-column="52" selection-end-line="661" selection-end-column="52" />
+            <state relative-caret-position="540">
+              <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
-                <marker date="1548447644500" expanded="true" signature="481:586" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/evaluater/load_models.py">
+        <entry file="file://$PROJECT_DIR$/trainer/custom_components.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1335">
-              <caret line="91" column="65" selection-start-line="91" selection-start-column="65" selection-end-line="91" selection-end-column="65" />
+            <state relative-caret-position="825">
+              <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="56" />
               <folding>
-                <element signature="e#0#42#0" expanded="true" />
+                <element signature="e#0#30#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -93,14 +78,11 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>index</find>
-      <find>Count of classes</find>
       <find>similarities</find>
       <find>experiment_cnn_kim_sdep</find>
       <find>data_path</find>
       <find>MAX_TEXT_SEQUENCE_LEN</find>
       <find>experiment_seq2seq_sdep</find>
-      <find>========================================================================================================================</find>
       <find>generate_random_fit</find>
       <find>embedding_model</find>
       <find>max_count_tokens</find>
@@ -119,10 +101,13 @@
       <find>quantile_shape</find>
       <find>print_similar_domain</find>
       <find>quantiles</find>
-      <find>experiment_seq2seq_embedder</find>
       <find>experiment_seq2seq_hierarchy_lstm_trained</find>
       <find>CNN_LAYERS</find>
       <find>contrastive_loss</find>
+      <find>valid_size</find>
+      <find>quantile_encoder</find>
+      <find>========================================================================================================================</find>
+      <find>experiment_seq2seq_embedder</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -131,11 +116,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/trainer/seq2seq_siamese/task.py" />
-        <option value="$PROJECT_DIR$/evaluating/helper_modules/seq2seq_siamese_model_helper.py" />
-        <option value="$PROJECT_DIR$/evaluater/key_analyzer.py" />
-        <option value="$PROJECT_DIR$/evaluater/key_analyzer/data_analytics.py" />
-        <option value="$PROJECT_DIR$/evaluater/key_analyzer/profile_class.py" />
         <option value="$PROJECT_DIR$/trainer/seq2_siamese/task.py" />
         <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/.env" />
@@ -175,19 +155,26 @@
         <option value="$PROJECT_DIR$/trainer/seq2seq_embedding_l_2/model.py" />
         <option value="$PROJECT_DIR$/trainer/lstm_hierarchical_base/model.py" />
         <option value="$PROJECT_DIR$/trainer/lstm_hierarchical_base/task.py" />
-        <option value="$PROJECT_DIR$/ai-train-ataccama.sh" />
-        <option value="$PROJECT_DIR$/evaluater/similarity_detection/run.py" />
         <option value="$PROJECT_DIR$/trainer/lstm_hierarchical/model.py" />
         <option value="$PROJECT_DIR$/trainer/lstm_hierarchical/task.py" />
-        <option value="$PROJECT_DIR$/evaluater/load_models.py" />
-        <option value="$PROJECT_DIR$/evaluater/similarity_detection/experiments.py" />
         <option value="$PROJECT_DIR$/sync_repo.sh" />
+        <option value="$PROJECT_DIR$/evaluater/similarity_detection/run.py" />
+        <option value="$PROJECT_DIR$/ai-train-ataccama.sh" />
+        <option value="$PROJECT_DIR$/trainer/customComponents.py" />
+        <option value="$PROJECT_DIR$/evaluater/similarity_detection/run_valueEncoders.py" />
+        <option value="$PROJECT_DIR$/evaluater/similarity_detection/experiments.py" />
+        <option value="$PROJECT_DIR$/evaluater/load_models.py" />
+        <option value="$PROJECT_DIR$/evaluater/similarity_detection/experiments_valueEncoder.py" />
+        <option value="$PROJECT_DIR$/trainer/seq2seq_embedding/model.py" />
+        <option value="$PROJECT_DIR$/trainer/seq2seq_embedding/task.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="width" value="1680" />
-    <option name="height" value="1050" />
+    <option name="x" value="-425" />
+    <option name="y" value="-1440" />
+    <option name="width" value="2560" />
+    <option name="height" value="1440" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -201,6 +188,28 @@
             <path>
               <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
               <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
+              <item name="evaluater" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
+              <item name="evaluater" type="462c0819:PsiDirectoryNode" />
+              <item name="similarity_detection" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
+              <item name="trainer" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
+              <item name="trainer" type="462c0819:PsiDirectoryNode" />
+              <item name="seq2seq_embedding" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -467,7 +476,11 @@
       <workItem from="1548144942845" duration="7445000" />
       <workItem from="1548232439249" duration="28238000" />
       <workItem from="1548405193522" duration="5684000" />
-      <workItem from="1548447562191" duration="886000" />
+      <workItem from="1548447562191" duration="1472000" />
+      <workItem from="1548615281939" duration="520000" />
+      <workItem from="1548664029971" duration="12888000" />
+      <workItem from="1548687850551" duration="2544000" />
+      <workItem from="1548750716886" duration="1775000" />
     </task>
     <task id="LOCAL-00001" summary="Evaluation similarity detection">
       <created>1543940803928</created>
@@ -560,11 +573,18 @@
       <option name="project" value="LOCAL" />
       <updated>1548447813841</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="add sync script for thesis">
+      <created>1548611880363</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1548611880363</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="266700000" />
+    <option name="totallyTimeSpent" value="285013000" />
   </component>
   <component name="TodoView" selected-index="2">
     <todo-panel id="selected-file">
@@ -576,59 +596,61 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
+    <frame x="-425" y="-1440" width="2560" height="1440" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49718875" visible="true" weight="0.10561661" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49718875" visible="true" weight="0.10047657" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.50281125" side_tool="true" weight="0.10206513" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32919708" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.329927" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32959184" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.329927" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.329927" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32959184" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5007943" side_tool="true" weight="0.21240877" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.20437956" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.1729927" />
-      <window_info anchor="bottom" id="File Transfer" order="13" sideWeight="0.4992057" visible="true" weight="0.09081633" />
+      <window_info anchor="bottom" id="File Transfer" order="13" sideWeight="0.4992057" visible="true" weight="0.08978102" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Remote Host" order="3" visible="true" weight="0.12515263" />
+      <window_info anchor="right" id="Remote Host" order="3" visible="true" weight="0.16401906" />
       <window_info anchor="right" id="SciView" order="4" weight="0.32962668" />
       <window_info anchor="right" x="0" y="0" width="590" height="1217" id="Documentation" order="5" side_tool="true" weight="0.32843527" />
       <window_info anchor="right" id="Database" order="6" />
+      <window_info anchor="right" id="Coverage" order="7" side_tool="true" />
     </layout>
     <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49718875" visible="true" weight="0.10365369" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49718875" visible="true" weight="0.10047657" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.50281125" side_tool="true" weight="0.10206513" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32919708" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.329927" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32959184" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.329927" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.329927" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32959184" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5007943" side_tool="true" weight="0.21240877" />
-      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.20437956" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.20437956" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.1729927" />
-      <window_info anchor="bottom" id="File Transfer" order="13" sideWeight="0.4992057" weight="0.091240875" />
+      <window_info anchor="bottom" id="File Transfer" order="13" sideWeight="0.4992057" weight="0.08979592" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Remote Host" order="3" visible="true" weight="0.12549643" />
+      <window_info anchor="right" id="Remote Host" order="3" weight="0.16422467" />
       <window_info anchor="right" id="SciView" order="4" weight="0.32962668" />
       <window_info anchor="right" x="0" y="0" width="590" height="1217" id="Documentation" order="5" side_tool="true" weight="0.32843527" />
       <window_info anchor="right" id="Database" order="6" />
+      <window_info anchor="right" id="Coverage" order="7" side_tool="true" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -661,7 +683,8 @@
     <MESSAGE value="Add embeddings model and evaluations" />
     <MESSAGE value="Add hierarchical model with fix value encoder" />
     <MESSAGE value="contrastive loss, kim after seq2seq try" />
-    <option name="LAST_COMMIT_MESSAGE" value="contrastive loss, kim after seq2seq try" />
+    <MESSAGE value="add sync script for thesis" />
+    <option name="LAST_COMMIT_MESSAGE" value="add sync script for thesis" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -719,29 +742,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/evaluater/key_analyzer/run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-927">
-          <caret column="9" lean-forward="true" selection-start-column="9" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/evaluater/key_analyzer/evaluation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="29" column="35" selection-start-line="29" selection-start-column="35" selection-end-line="29" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/log.txt" />
-    <entry file="file://$PROJECT_DIR$/data/cvutProfiles_gnumbers.csv">
-      <provider selected="true" editor-type-id="LargeFileEditor">
-        <state relative-caret-position="-257728" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/model1.png" />
     <entry file="file://$PROJECT_DIR$/model2.png" />
     <entry file="file://$PROJECT_DIR$/.env">
@@ -812,7 +812,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/results.txt" />
     <entry file="file://$PROJECT_DIR$/trainer/cnn_kim/task.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="660">
@@ -892,32 +891,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/trainer/seq2seq_embedding/task.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="840">
-          <caret line="56" column="45" selection-start-line="56" selection-start-column="45" selection-end-line="56" selection-end-column="45" />
-          <folding>
-            <element signature="e#203#257#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/trainer/seq2_siamese/model.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="20" column="4" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="4" />
           <folding>
             <element signature="e#1#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/evaluater/embedder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="24" selection-start-line="26" selection-start-column="24" selection-end-line="26" selection-end-column="24" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -949,16 +928,6 @@
     <entry file="file://$PROJECT_DIR$/trainer/seq2seq_embedding_l/model.py" />
     <entry file="file://$PROJECT_DIR$/trainer/seq2seq_embedding_l/task.py" />
     <entry file="file://$PROJECT_DIR$/trainer/seq2seq_2/model.py" />
-    <entry file="file://$PROJECT_DIR$/trainer/seq2seq_embedding/model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1140">
-          <caret line="76" lean-forward="true" selection-start-line="76" selection-end-line="76" />
-          <folding>
-            <element signature="e#1#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/evaluater/similarity_detection/evaluation.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -983,20 +952,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/trainer/seq2seq/model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="25" column="38" selection-start-line="25" selection-start-column="20" selection-end-line="25" selection-end-column="38" />
-          <folding>
-            <element signature="e#1#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.venv/lib/python3.6/site-packages/keras/engine/network.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="675">
           <caret line="1252" column="21" lean-forward="true" selection-start-line="1252" selection-start-column="21" selection-end-line="1252" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sync_repo.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="31" lean-forward="true" selection-start-line="6" selection-start-column="31" selection-end-line="6" selection-end-column="31" />
         </state>
       </provider>
     </entry>
@@ -1007,20 +973,76 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.venv/lib/python3.6/site-packages/keras/engine/base_layer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="407">
+          <caret line="933" column="8" selection-start-line="933" selection-start-column="8" selection-end-line="933" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/trainer/lstm_hierarchical/task.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="660">
+          <caret line="55" column="47" lean-forward="true" selection-start-line="55" selection-start-column="47" selection-end-line="55" selection-end-column="47" />
+          <folding>
+            <element signature="e#442#513#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/results.txt">
+      <provider selected="true" editor-type-id="LargeFileEditor">
+        <state relative-caret-position="388">
+          <caret line="9744" column="120" selection-start-line="9744" selection-end-line="9744" selection-end-column="120" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluater/similarity_detection/run_valueEncoders.py" />
     <entry file="file://$PROJECT_DIR$/evaluater/similarity_detection/run.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="840">
-          <caret line="56" lean-forward="true" selection-start-line="56" selection-end-line="56" />
+        <state relative-caret-position="394">
+          <caret line="48" column="47" selection-start-line="48" selection-start-column="20" selection-end-line="48" selection-end-column="47" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/evaluater/similarity_detection/experiments.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="17" selection-start-line="17" selection-end-line="18" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+            <marker date="1548683253571" expanded="true" signature="483:588" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluater/embedder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2175">
+          <caret line="147" column="41" selection-start-line="147" selection-start-column="20" selection-end-line="147" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/trainer/lstm_hierarchical/model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="43" column="40" selection-start-line="43" selection-start-column="22" selection-end-line="43" selection-end-column="40" />
+          <folding>
+            <element signature="e#1#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/trainer/cnn_kim/model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="30" column="8" selection-start-line="30" selection-start-column="8" selection-end-line="31" selection-end-column="31" />
+        <state relative-caret-position="150">
+          <caret line="17" column="58" selection-start-line="17" selection-start-column="58" selection-end-line="17" selection-end-column="58" />
           <folding>
             <element signature="e#1#31#0" expanded="true" />
           </folding>
@@ -1029,56 +1051,65 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.venv/lib/python3.6/site-packages/sdep/evaluator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="406">
-          <caret line="239" column="4" selection-start-line="239" selection-start-column="4" selection-end-line="239" selection-end-column="4" />
+        <state relative-caret-position="468">
+          <caret line="153" column="87" selection-start-line="153" selection-start-column="87" selection-end-line="153" selection-end-column="87" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/evaluater/load_models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1335">
-          <caret line="91" column="65" selection-start-line="91" selection-start-column="65" selection-end-line="91" selection-end-column="65" />
+        <state relative-caret-position="1143">
+          <caret line="121" column="4" selection-start-line="121" selection-start-column="4" selection-end-line="121" selection-end-column="4" />
           <folding>
             <element signature="e#0#42#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/evaluater/similarity_detection/experiments.py">
+    <entry file="file://$PROJECT_DIR$/trainer/seq2seq/model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="661" column="52" lean-forward="true" selection-start-line="661" selection-start-column="52" selection-end-line="661" selection-end-column="52" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-            <marker date="1548447644500" expanded="true" signature="481:586" ph="..." />
-          </folding>
+        <state relative-caret-position="75">
+          <caret line="5" column="27" lean-forward="true" selection-start-line="5" selection-end-line="6" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/trainer/lstm_hierarchical/model.py">
+    <entry file="file://$PROJECT_DIR$/trainer/seq2seq_embedding/model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="62" selection-start-line="62" selection-end-line="62" />
+        <state relative-caret-position="645">
+          <caret line="43" column="30" selection-start-line="43" selection-start-column="30" selection-end-line="43" selection-end-column="30" />
           <folding>
             <element signature="e#1#31#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/trainer/lstm_hierarchical/task.py">
+    <entry file="file://$PROJECT_DIR$/trainer/custom_components.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="25" column="11" lean-forward="true" selection-start-line="25" selection-start-column="11" selection-end-line="25" selection-end-column="11" />
+        <state relative-caret-position="825">
+          <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="56" />
           <folding>
-            <element signature="e#442#513#0" expanded="true" />
+            <element signature="e#0#30#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sync_repo.sh">
+    <entry file="file://$PROJECT_DIR$/evaluater/similarity_detection/experiments_valueEncoder.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="31" selection-start-line="6" selection-start-column="31" selection-end-line="6" selection-end-column="31" />
+        <state relative-caret-position="540">
+          <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/trainer/seq2seq_embedding/task.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="25" column="52" selection-start-line="25" selection-start-column="52" selection-end-line="25" selection-end-column="52" />
+          <folding>
+            <element signature="e#203#257#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
