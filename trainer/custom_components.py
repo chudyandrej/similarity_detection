@@ -42,7 +42,7 @@ def zero_loss(y_true, y_pred):
 ##################################################
 
 class CustomRegularization(Layer):
-    def __init__(self, loss_function, **kwargs):
+    def __init__(self, loss_function="mean_squared_error", **kwargs):
         super(CustomRegularization, self).__init__(**kwargs)
         self.loss_function = loss_function
 

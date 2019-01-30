@@ -144,4 +144,5 @@ def seq2seq_embedder_jointly(model_path):
         "CustomRegularization": cc.CustomRegularization,
         "zero_loss": cc.zero_loss
     })
-    return Model(model.get_layer(name="encoder_Input").input, model.get_layer(name="encoder").output[0])
+    encoder = Model(model.inputs[0], model.layers[4].output[1])
+    return encoder

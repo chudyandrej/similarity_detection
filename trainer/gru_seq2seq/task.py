@@ -22,7 +22,7 @@ CHECKPOINT_FILE_PATH = 'best_model.h5'
 def main(data_file, job_dir):
     input_data, input_decoder_data, target_data = model.load_data(data_file)
 
-    model_seq2seq = model.create_model_onehot_layer()
+    model_seq2seq = model.create_model_onehot()
     os.makedirs(job_dir)
 
     train_data, valid_data = train_test_split(list(zip(input_data, input_decoder_data, target_data)), train_size=0.9,
@@ -30,7 +30,7 @@ def main(data_file, job_dir):
     print("Training set has " + str(len(train_data)) + "values!")
     print("Validation set has " + str(len(valid_data)) + "values!")
     valid_data = next(model.generate_batches(valid_data))
-    model_seq2seq.compile(optimizer='adam', loss=cc.zero_loss)
+    model_seq2seq.compile(optimizer='rmsprop', loss=cc.zero_loss)
     model_seq2seq.summary()
     model_seq2seq.fit_generator(model.generate_batches(train_data),
                                 steps_per_epoch=len(train_data) // model.BATCH_SIZE,

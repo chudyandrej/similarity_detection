@@ -93,17 +93,7 @@ def convert_to_vec_tok_over_columns(encoder_model, data, max_seq_len, full_unico
     return output
 
 
-def create_column_embedding_by_avg(type_embedding):
-    """Create column embedding from value embeddings by vector AVERAGE
-
-    Args:
-        type_embedding (Array): Array of Tuples
-        weights (None, optional): Array of numbers with same size as value_embeddings.
-
-    Returns:
-        Array of Tuple: [(column_name, Numpy), ...]
-
-    """
+def create_column_embedding_by(type_embedding, ag_method):
     type_embedding = list(type_embedding)
     assert (len(type_embedding) > 0), "Input data are empty!"
 
@@ -111,7 +101,7 @@ def create_column_embedding_by_avg(type_embedding):
     [class_embeddings_index[key].append(embedding) for key, embedding in type_embedding]
     class_embeddings_index = dict(class_embeddings_index)
 
-    class_embedding = Parallel(n_jobs=-1)(delayed(job)(column_name, embeddings)
+    class_embedding = Parallel(n_jobs=-1)(delayed(job)(column_name, embeddings, ag_method)
                                           for column_name, embeddings in class_embeddings_index.items())
     return class_embedding
 
@@ -160,10 +150,14 @@ def tokenizer_0_96(char):
 # ------------------------- PRIVATE ----------------------------------
 
 
-def job(column_name, embeddings):
-
-    mean_embedding = np.average(np.array(embeddings), axis=0)
-    return column_name, mean_embedding
+def job(column_name, embeddings, ag_method):
+    if ag_method == "mean":
+        summary = np.average(np.array(embeddings), axis=0)
+    elif ag_method == "sum":
+        summary = np.sum(np.array(embeddings), axis=0)
+    else:
+        summary = []
+    return column_name, summary
 
 
 def tokenizer(char, full_unicode):

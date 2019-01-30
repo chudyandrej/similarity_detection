@@ -71,12 +71,12 @@ def create_model_fullunicode():
 #     return model
 
 
-def create_model_onehot_layer():
+def create_model_onehot():
     encoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="encoder_Input", dtype="int32")
     decoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="decoder_Input", dtype="int32")
     target = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="target_Input", dtype="int32")
 
-    embedding = cc.OneHot(input_dim=2000, input_length=MAX_TEXT_SEQUENCE_LEN)
+    embedding = cc.OneHot(input_dim=2100, input_length=MAX_TEXT_SEQUENCE_LEN)
     embedded_encoder_input = embedding(encoder_inputs)
     embedded_decoder_input = embedding(decoder_inputs)
     emedded_target = embedding(target)
@@ -86,10 +86,10 @@ def create_model_onehot_layer():
 
     decoder_gru = GRU(GRU_DIM, return_sequences=True)
     decoder_outputs = decoder_gru(embedded_decoder_input, initial_state=state_h)
-    decoder_dense = Dense(ENCODER_OUTPUT_DIM, activation='sigmoid')
+    decoder_dense = Dense(2100, activation='softmax')
     decoder_outputs = decoder_dense(decoder_outputs)
 
-    output = cc.CustomRegularization(loss_function="mean_squared_error")([emedded_target, decoder_outputs])
+    output = cc.CustomRegularization(loss_function="categorical_crossentropy")([emedded_target, decoder_outputs])
     model = Model([encoder_inputs, decoder_inputs, target], output)
     return model
 
