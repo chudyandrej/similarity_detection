@@ -1,5 +1,5 @@
 import argparse
-import evaluater.similarity_detection.experiments as ex
+import evaluater.similarity_detection.experiments_column as ex
 
 if __name__ == '__main__':
 

@@ -9,9 +9,8 @@ Original file is located at
 
 from keras.callbacks import EarlyStopping, TensorBoard
 
-import trainer.seq2seq_embedding.model as model
+import trainer.lstm_seq2seq.model as model
 import trainer.custom_components as cc
-from keras import backend as K
 from trainer.modelCheckpoint import ModelCheckpointMLEngine
 from sklearn.model_selection import train_test_split
 import argparse
@@ -28,6 +27,8 @@ def main(data_file, job_dir):
 
     train_data, valid_data = train_test_split(list(zip(input_data, input_decoder_data, target_data)), train_size=0.9,
                                               random_state=18)
+    print("Training set has " + str(len(train_data)) + "values!")
+    print("Validation set has " + str(len(valid_data)) + "values!")
     valid_data = next(model.generate_batches(valid_data))
     model_seq2seq.compile(optimizer='adam', loss=cc.zero_loss)
     model_seq2seq.summary()

@@ -5,8 +5,6 @@ from keras.preprocessing.sequence import pad_sequences
 from unidecode import unidecode
 from keras import backend as K
 
-
-
 import tensorflow as tf
 import numpy as np
 import pandas as pd
@@ -16,7 +14,7 @@ import trainer.custom_components as cc
 MAX_TEXT_SEQUENCE_LEN = 64
 TOKEN_COUNT = 95
 # Model constants
-BATCH_SIZE = 1024  # Batch size for training.
+BATCH_SIZE = 512  # Batch size for training.
 EPOCHS = 1000  # Number of epochs to train for.
 LSTM_DIM = 256  # Latent dimensionality of the encoding space.
 ENCODER_OUTPUT_DIM = 256
@@ -75,11 +73,11 @@ def create_model_unidecode():
 
 
 def create_model_onehot_layer():
-    encoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="encoder_Input", dtype="int32")
-    decoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="decoder_Input", dtype="int32")
-    target = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="target_Input", dtype="int32")
+    encoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="encoder_Input")
+    decoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="decoder_Input")
+    target = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="target_Input")
 
-    embedding = cc.OneHot(input_dim=95, input_length=MAX_TEXT_SEQUENCE_LEN)
+    embedding = cc.OneHot(input_dim=2100, input_length=MAX_TEXT_SEQUENCE_LEN)
     embedded_encoder_input = embedding(encoder_inputs)
     embedded_decoder_input = embedding(decoder_inputs)
     emedded_target = embedding(target)
@@ -93,8 +91,9 @@ def create_model_onehot_layer():
                         name="decoder")
     decoder_outputs, _, _ = decoder_lstm(embedded_decoder_input, initial_state=encoder_states)
 
-    decoder_dense = Dense(95, activation='softmax', name="dense")
+    decoder_dense = Dense(2100, activation='softmax', name="dense")
     decoder_output = decoder_dense(decoder_outputs)
+
     output = cc.CustomRegularization(loss_function="categorical_crossentropy")([emedded_target, decoder_output])
     model = Model([encoder_inputs, decoder_inputs, target], output)
     return model
@@ -115,7 +114,8 @@ def load_data(data_path):
     train_data = map(str, train_data)
     train_data = list(map(str.strip, train_data))
     train_data = list(map(lambda x: x[:MAX_TEXT_SEQUENCE_LEN - 1], train_data))
-
+    print(len(list(filter(lambda x: x < 2100, [ord(x) for tmp in train_data for x in tmp]))))
+    exit()
     input_texts = list(map(lambda x: x[::-1], train_data))
 
     input_decoder_texts = list(map(lambda x: '\t' + x, train_data))

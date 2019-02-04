@@ -55,21 +55,6 @@ def load_cnn_tcn(model_path):
     return model.layers[2]
 
 
-def load_seq2seq_embedder(model_path, embedder_path):
-    embedder = load_model(embedder_path)
-    seq2seq = load_model(model_path)
-
-    encoder_inputs = embedder.input
-    x = embedder.layers[1](encoder_inputs)
-    _ = seq2seq.layers[2](x)
-    encoder_outputs, state_h_enc, state_c_enc = seq2seq.layers[2].get_output_at(1)
-    encoder_states = [state_h_enc, state_c_enc]
-    x = Concatenate()(encoder_states)
-    encoder_model = Model(encoder_inputs, x)
-    encoder_model.compile(loss='binary_crossentropy', optimizer='adam')
-    return encoder_model
-
-
 def load_hierarchy_lstm_model(model_path, embedder_path, quantile_shape=(11, 64)):
     seq2seq = load_seq2seq_embedder(model_path, embedder_path)
 
@@ -88,23 +73,22 @@ def load_hierarchy_model(model_path):
     return model
 
 
-def load_hierarchy_lstm_base_model(quantile_shape=(11, 64)):
+def load_hierarchy_lstm_base_model(embedding_i_dim=67000, embedding_o_dim=128, lstm_dim=128, quantile_shape=(11, 64)):
     # Ensemble Joint Model
     net_input = Input(shape=quantile_shape, name='left_input')
 
-    value_embedder = Embedding(input_dim=65536, output_dim=128, name='value_embedder')
+    value_embedder = Embedding(input_dim=embedding_i_dim, output_dim=embedding_o_dim, name='value_embedder')
     embedded = TimeDistributed(value_embedder)(net_input)
 
-    value_encoder = LSTM(128, dropout=0.50, recurrent_dropout=0.50, name='value_encoder')
+    value_encoder = LSTM(lstm_dim, dropout=0.50, recurrent_dropout=0.50, name='value_encoder')
     value_encoded = TimeDistributed(value_encoder)(embedded)
 
-    quantile_encoder = Bidirectional(LSTM(128, dropout=0.50, recurrent_dropout=0.50), name='quantile_encoder')
+    quantile_encoder = Bidirectional(LSTM(lstm_dim, dropout=0.50, recurrent_dropout=0.50), name='quantile_encoder')
     encoded = quantile_encoder(value_encoded)
 
     # Compile and train Joint Model
     model = Model(inputs=net_input, outputs=encoded)
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-    model.summary(line_length=120)
     return model
 
 

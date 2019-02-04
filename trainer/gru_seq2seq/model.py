@@ -18,7 +18,7 @@ TOKEN_COUNT = 95
 # Model constants
 BATCH_SIZE = 1024  # Batch size for training.
 EPOCHS = 1000  # Number of epochs to train for.
-GRU_DIM = 128  # Latent dimensionality of the encoding space.
+GRU_DIM = 256  # Latent dimensionality of the encoding space.
 ENCODER_OUTPUT_DIM = 256
 
 
