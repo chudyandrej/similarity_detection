@@ -2,96 +2,72 @@ import os
 import pickle
 import argparse
 import numpy as np
+
+from keras.models import Model, load_model
+from keras.preprocessing.sequence import pad_sequences
+
 from unidecode import unidecode
-
-
-from evaluater.embedder import convert_to_vec, create_column_embedding
-from evaluater.load_models import load_seq2seq_siamese, load_seq2_siamese, load_seq2seq
-from evaluater.key_analyzer.evaluation import evaluate_stats
-from evaluater.computing import compute_neighbors
+import trainer.custom_components as cc
+import evaluater.embedder as em
 import data_preparation.cvut as dataset
-from evaluater.key_analyzer.profile_class import Profile
+
 
 PROF_PATH = os.environ['PYTHONPATH'].split(":")[0] + "/data/cvut/profiles.pkl"
 PK_FK_PATH = os.environ['PYTHONPATH'].split(":")[0] + "/data/cvut/foreign_keys.pkl"
 CHECKPOINT_PATH = os.environ['PYTHONPATH'].split(":")[0] + "/evaluater/key_analyzer/pickles/"
 
 
-def compute_embedding_pipeline(experiment_name, dataclass, encoder_model):
-
-    print("Checkpoint not found ... Calculating...")
-    data = dataclass.df
-    data.value = data.value.map(lambda x: unidecode(str(x))[:63])
-
-    value_embedding = convert_to_vec(encoder_model, data["value"].values, 64, 95)
-    print("Vectoring success!")
-    class_embedding = create_column_embedding(list(zip(data["type"].values, value_embedding)))
-    pickle.dump(class_embedding, open(CHECKPOINT_PATH + experiment_name, "wb"))
-    print("Saved!")
-    return class_embedding
-
-
-def experiment_seq2seq_siamese():
-    # -------------- SET PARAMETERS OF EXPERIMENT --------------------
-    experiment_name = experiment_seq2seq_siamese.__name__
-    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2seq_siamese1543504392-model.h5"
-    encoder_model = load_seq2seq_siamese(model_path)
-    data_object = dataset.CvutDataset(dataset.SelectData.load_key_analyzer)
-
-    print("Loading testing data Success!")
-    if os.path.exists(CHECKPOINT_PATH+experiment_name):
-        print("Checkpoint found :)")
-        class_embedding = pickle.load(open(CHECKPOINT_PATH+experiment_name, "rb"))
+def preprocess_values(values, pad_maxlen, full_unicode=True):
+    values = map(lambda x: str(x)[:pad_maxlen], values)
+    values = map(str.strip, values)
+    values = (x[::-1] for x in values)
+    if full_unicode:
+        values = list(map(lambda x: [ord(y) for y in x], values))
     else:
-        class_embedding = compute_embedding_pipeline(experiment_name, data_object, encoder_model)
+        # TODO
+        values = map(lambda x: unidecode(x), values)
+        # values = map(lambda x: [tokenizer_0_96(y) for y in x], values)
+    # print(list(values)[:100])
+    values = pad_sequences(list(values), maxlen=pad_maxlen, truncating='pre', padding='pre')
+    return values
 
-    # -------------- EVALUATE EXPERIMENT --------------------
-    classes, embedding_vectors = zip(*class_embedding)
-    candFK_candPK = compute_neighbors(np.array(embedding_vectors), np.array(classes),
-                                       n_neighbors=200, radius=0.15, mode="radius+kneighbors")
-    return evaluate_stats(candFK_candPK, data_object.pk_fk, data_object.profiles)
 
-
-def experiment_seq2_siamese():
+def experiment_seq2seq_gru():
+    def load_h5(path):
+        model = load_model(path, custom_objects={
+            "CustomRegularization": cc.CustomRegularization,
+            "zero_loss": cc.zero_loss
+        })
+        encoder = Model(model.inputs[0], model.layers[4].output[1])
+        return encoder
     # -------------- SET PARAMETERS OF EXPERIMENT --------------------
-    experiment_name = experiment_seq2_siamese.__name__
-    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2_siamese1543913096-model.h5"
-    encoder_model = load_seq2_siamese(model_path)
-    data_object = dataset.CvutDataset(dataset.SelectData.load_key_analyzer)
-
-    print("Loading testing data Success!")
-    if os.path.exists(CHECKPOINT_PATH+experiment_name):
-        print("Checkpoint found :)")
-        class_embedding = pickle.load(open(CHECKPOINT_PATH+experiment_name, "rb"))
-    else:
-        class_embedding = compute_embedding_pipeline(experiment_name, data_object, encoder_model)
-
-    # -------------- EVALUATE EXPERIMENT --------------------
-    classes, embedding_vectors = zip(*class_embedding)
-    candFK_candPK = compute_neighbors(np.array(embedding_vectors), np.array(classes),
-                                       n_neighbors=200, radius=0.15, mode="radius+kneighbors")
-    return evaluate_stats(candFK_candPK, data_object.pk_fk, data_object.profiles)
-
-
-def experiment_seq2seq():
-    # -------------- SET PARAMETERS OF EXPERIMENT --------------------
-    experiment_name = experiment_seq2seq.__name__
+    experiment_name = experiment_seq2seq_gru.__name__
     model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2seq1544020916-model.h5"
-    encoder_model = load_seq2seq(model_path)
-    data_object = dataset.CvutDataset(dataset.SelectData.load_key_analyzer)
 
-    print("Loading testing data Success!")
-    if os.path.exists(CHECKPOINT_PATH+experiment_name):
-        print("Checkpoint found :)")
-        class_embedding = pickle.load(open(CHECKPOINT_PATH+experiment_name, "rb"))
-    else:
-        class_embedding = compute_embedding_pipeline(experiment_name, data_object, encoder_model)
+    # -------------- LOAD DATA AND MODEL --------------------
+    print("Experiment " + experiment_name + " running ...")
+    data_object = dataset.CvutDataset(dataset.SelectData.load_key_analyzer)
+    encoder_model = load_h5(model_path)
+    encoder_model.summary()
+    print("Model successfully loaded. ")
+
+    # -------------- COMPUTING --------------------
+    data = data_object.df
+    values = preprocess_values(data['value'].values, 64)
+    value_embeddings = encoder_model.predict(values)
+    class_embeddings = data['type'].values
+    print(str(len(value_embeddings)) + " values for activation.")
+    print(str(len(class_embeddings)) + " classes for data.")
+    class_embedding = em.create_column_embedding_by(list(zip(class_embeddings, value_embeddings)), "mean")
 
     # -------------- EVALUATE EXPERIMENT --------------------
-    classes, embedding_vectors = zip(*class_embedding)
-    candFK_candPK = compute_neighbors(np.array(embedding_vectors), np.array(classes),
-                                       n_neighbors=200, radius=0.15, mode="radius+kneighbors")
-    return evaluate_stats(candFK_candPK, data_object.pk_fk, data_object.profiles)
+    print("Count of classes: " + str(len(set(class_embedding))))
+    return evaluate_stats(class_embedding, data_object.pk_fk, data_object.profiles)
+
+
+    # -------------- EVALUATE EXPERIMENT --------------------
+
+
 
 
 if __name__ == "__main__":

@@ -11,39 +11,19 @@ import evaluater.load_models as lm
 import evaluater.embedder as em
 
 import trainer.custom_components as cc
+from evaluater.preprocessing import preprocess_values_standard
 from keras.models import Model, load_model
 
 
 CHECKPOINT_PATH = os.environ['PYTHONPATH'].split(":")[0] + "/evaluater/similarity_detection/pickles/"
 
-os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
-os.environ["CUDA_VISIBLE_DEVICES"] = ""
-
-
-def preprocess_values(values, pad_maxlen, full_unicode=True):
-    values = map(lambda x: str(x), values)
-    values = map(str.strip, values)
-    values = (x[::-1] for x in values)
-    if full_unicode:
-        values = list(map(lambda x: [ord(y) for y in x], values))
-    else:
-        values = map(lambda x: unidecode(x), values)
-        values = map(lambda x: [tokenizer_0_96(y) for y in x], values)
-    # print(list(values)[:100])
-    values = pad_sequences(list(values), maxlen=pad_maxlen, truncating='pre', padding='pre')
-    return values
+# os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
+# os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
 
 def calculate_value_vectors(model, authority_evaluator, max_seqence_len):
-    test_profiles = authority_evaluator.get_test_dataset()
-    print(str(len(test_profiles)) + " classes!")
-    class_values = [(profile, value) for profile in test_profiles for value in profile.quantiles]
-    tokened_data = preprocess_values(map(lambda x: x[1], class_values), max_seqence_len, full_unicode=False)
-    value_embeddings = model.predict(tokened_data)
-    class_embeddings = list(map(lambda x: x[0], class_values))
-    print(str(len(value_embeddings)) + " values for activation.")
-    print(str(len(class_embeddings)) + " classes for data.")
-    return class_embeddings, value_embeddings
+
+    return uids, embeddings
 
 
 # ====================================================================
@@ -149,7 +129,7 @@ def experiment_seq2seq_gru_embedder_jointly_2():
     model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/gru_seq2seq_embedder1548800105/model.h5"
 
     print("Experiment " + experiment_name + " running ...")
-    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20, train_size=0.5)
+    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20, train_size=0.99)
 
     # -------------- COMPUTING EXPERIMENT BODY --------------------
     encoder_model = load_h5(model_path)
@@ -308,20 +288,29 @@ def experiment_seq2seq_gru_onehot_1():
     model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/gru_seq2seq_one-hot1548861624/model.h5"
 
     print("Experiment " + experiment_name + " running ...")
-    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=5, radius=20, train_size=0.5)
+    ev = sdep.AuthorityEvaluator(username='andrej', data_source="s3", neighbors=5, train_size=0.99)
 
     # -------------- COMPUTING EXPERIMENT BODY --------------------
     encoder_model = load_h5(model_path)
     encoder_model.summary()
     print("Model successfully loaded. ")
-    class_embeddings, value_embeddings = calculate_value_vectors(encoder_model, ev, 64)
+
+    # Get data
+    test_profiles = ev.get_test_dataset()
+    # Transform to value level
+    uid_values = [(profile['uid'], value) for profile in test_profiles for value in profile['quantiles']]
+    tokened_data = preprocess_values_standard(map(lambda x: x[1], uid_values), 64)
+    embeddings = encoder_model.predict(tokened_data)
+    uids = list(map(lambda x: x[0], uid_values))
+
     print("Clustering value vectors to column representation")
-    class_embedding = em.create_column_embedding_by(list(zip(class_embeddings, value_embeddings)), "mean")
+    uid_embedding = em.create_column_embedding_by(list(zip(uids, embeddings)), "mean")
+    uid_profile_index = dict(map(lambda profile: (profile['uid'], profile), test_profiles))
+    profile_embedding = [(uid_profile_index[uid], embedding) for uid, embedding in uid_embedding]
 
     # -------------- EVALUATE EXPERIMENT --------------------
-    classes, embedding_vectors = zip(*class_embedding)
-    print("Count of classes: " + str(len(set(classes))))
-    ev.evaluate_embeddings(classes, embedding_vectors)
+    print("Count of classes: " + str(len(uid_embedding)))
+    ev.evaluate_embeddings(profile_embedding)
 
 
 if __name__ == '__main__':

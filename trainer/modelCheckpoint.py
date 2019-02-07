@@ -90,6 +90,7 @@ class ModelCheckpointMLEngine(keras.callbacks.Callback):
                             self.model.save_weights(filepath, overwrite=True)
                         else:
                             if self.filepath.startswith('gs://'):
+                                print("Gcloud_save")
                                 save_model_to_cloud(self.model, self.filepath)
                             else:
                                 self.model.save(filepath, overwrite=True)
@@ -105,14 +106,16 @@ class ModelCheckpointMLEngine(keras.callbacks.Callback):
                     self.model.save_weights(filepath, overwrite=True)
                 else:
                     if self.filepath.startswith('gs://'):
+                        print("Gcloud_save")
                         save_model_to_cloud(self.model, self.filepath)
                     else:
                         self.model.save(filepath, overwrite=True)
 
 
 def save_model_to_cloud(model, filepath):
-    filename = filepath.split("/")[0]
+    filename = filepath.split("/")[-1]
+    print(filename)
     model.save(filename)
     with file_io.FileIO(filename, mode='rb') as inputFile:
-        with file_io.FileIO(filepath, mode='w+') as outFile:
+        with file_io.FileIO(filepath, mode='wb+') as outFile:
             outFile.write(inputFile.read())

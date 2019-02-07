@@ -2,30 +2,33 @@
 from keras.models import Model
 from keras.layers import Input, LSTM, Dense, Embedding, Lambda
 from keras.preprocessing.sequence import pad_sequences
-from unidecode import unidecode
 from keras import backend as K
+from keras.preprocessing.text import Tokenizer
+
 
 import tensorflow as tf
 import numpy as np
 import pandas as pd
-from evaluater.embedder import tokenizer_0_96
+from evaluater.embedder import tekonizing
 import trainer.custom_components as cc
 
 MAX_TEXT_SEQUENCE_LEN = 64
 TOKEN_COUNT = 95
 # Model constants
-BATCH_SIZE = 512  # Batch size for training.
+BATCH_SIZE = 1024  # Batch size for training.
 EPOCHS = 1000  # Number of epochs to train for.
-LSTM_DIM = 256  # Latent dimensionality of the encoding space.
+LSTM_DIM = 128  # Latent dimensionality of the encoding space.
 ENCODER_OUTPUT_DIM = 256
 
+tokenizer = Tokenizer(char_level=True)
 
-def create_model_fullunicode():
+
+def create_model_embedding(embedding_size):
     encoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="encoder_Input")
     decoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="decoder_Input")
     target = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="target_Input")
 
-    embedding = Embedding(65536, output_dim=ENCODER_OUTPUT_DIM, trainable=False, name="embedding_layer")
+    embedding = Embedding(embedding_size, output_dim=ENCODER_OUTPUT_DIM, trainable=False, name="embedding_layer")
     embedded_encoder_input = embedding(encoder_inputs)
     embedded_decoder_input = embedding(decoder_inputs)
     emedded_target = embedding(target)
@@ -46,38 +49,12 @@ def create_model_fullunicode():
     return model
 
 
-def create_model_unidecode():
+def create_model_onehot_layer(embedding_size):
     encoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="encoder_Input")
     decoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="decoder_Input")
     target = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="target_Input")
 
-    embedding = Embedding(95, output_dim=ENCODER_OUTPUT_DIM, trainable=False, name="embedding_layer")
-    embedded_encoder_input = embedding(encoder_inputs)
-    embedded_decoder_input = embedding(decoder_inputs)
-    emedded_target = embedding(target)
-
-    # Define an input sequence and process it.
-    encoder = LSTM(LSTM_DIM, return_state=True, dropout=0.2, recurrent_dropout=0.2, name="encoder")
-    encoder_outputs, state_h, state_c = encoder(embedded_encoder_input)
-    encoder_states = [state_h, state_c]
-
-    decoder_lstm = LSTM(LSTM_DIM, return_sequences=True, return_state=True, dropout=0.2, recurrent_dropout=0.2,
-                        name="decoder")
-    decoder_outputs, _, _ = decoder_lstm(embedded_decoder_input, initial_state=encoder_states)
-
-    decoder_dense = Dense(ENCODER_OUTPUT_DIM, activation='sigmoid', name="dense")
-    decoder_output = decoder_dense(decoder_outputs)
-    output = cc.CustomRegularization()([emedded_target, decoder_output])
-    model = Model([encoder_inputs, decoder_inputs, target], output)
-    return model
-
-
-def create_model_onehot_layer():
-    encoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="encoder_Input")
-    decoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="decoder_Input")
-    target = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="target_Input")
-
-    embedding = cc.OneHot(input_dim=2100, input_length=MAX_TEXT_SEQUENCE_LEN)
+    embedding = cc.OneHot(input_dim=embedding_size, input_length=MAX_TEXT_SEQUENCE_LEN)
     embedded_encoder_input = embedding(encoder_inputs)
     embedded_decoder_input = embedding(decoder_inputs)
     emedded_target = embedding(target)
@@ -104,44 +81,29 @@ def generate_batches(data):
 
     while True:
         for data_slide in data_batches:
-            input_paded, input_decoder_paded, target_paded = convert_to_vec(data_slide, full_unicode=False)
+            input, imput_decoder, target = zip(*data_slide)
+
+            input_paded = pad_sequences(input, maxlen=MAX_TEXT_SEQUENCE_LEN, truncating='pre', padding='pre')
+            input_decoder_paded = pad_sequences(imput_decoder, maxlen=MAX_TEXT_SEQUENCE_LEN, truncating='pre',
+                                                padding='post')
+            target_paded = pad_sequences(target, maxlen=MAX_TEXT_SEQUENCE_LEN, truncating='pre', padding='post')
             yield [input_paded, input_decoder_paded, target_paded], target_paded
 
 
-def load_data(data_path):
+def load_and_preprocess_data(data_path, save_index_path):
     df = pd.read_csv(tf.gfile.Open(data_path))
     train_data = df['value'].values
     train_data = map(str, train_data)
     train_data = list(map(str.strip, train_data))
     train_data = list(map(lambda x: x[:MAX_TEXT_SEQUENCE_LEN - 1], train_data))
-    print(len(list(filter(lambda x: x < 2100, [ord(x) for tmp in train_data for x in tmp]))))
-    exit()
+
     input_texts = list(map(lambda x: x[::-1], train_data))
-
     input_decoder_texts = list(map(lambda x: '\t' + x, train_data))
-
     target_texts = train_data
 
-    return input_texts, input_decoder_texts, target_texts
-
-
-def convert_to_vec(batch_data, full_unicode=True):
-
-    if full_unicode:
-        tokenizer_custom = ord
-    else:
-        batch_data = map(lambda x: (unidecode(x[0]), unidecode(x[1]), unidecode(x[2])), batch_data)
-        tokenizer_custom = tokenizer_0_96
-
-    input_texts, imput_decoder_texts, target_texts = zip(*batch_data)
-    input_tokenized = list(map(lambda x: [tokenizer_custom(y) for y in x], input_texts))
-    imput_decoder_tokenized = list(map(lambda x: [tokenizer_custom(y) for y in x], imput_decoder_texts))
-    target_tokenized = list(map(lambda x: [tokenizer_custom(y) for y in x], target_texts))
-
-    input_paded = pad_sequences(input_tokenized, maxlen=MAX_TEXT_SEQUENCE_LEN, truncating='pre', padding='pre')
-    input_decoder_paded = pad_sequences(imput_decoder_tokenized, maxlen=MAX_TEXT_SEQUENCE_LEN, truncating='pre', padding='post')
-    target_paded = pad_sequences(target_tokenized, maxlen=MAX_TEXT_SEQUENCE_LEN, truncating='pre', padding='post')
-    return input_paded, input_decoder_paded, target_paded
+    tokenized_data, count_chars = tekonizing([input_texts, input_decoder_texts, target_texts], method="ord",
+                                             save_path=save_index_path)
+    return tokenized_data, count_chars
 
 
 def cut_data_to_batches(data):

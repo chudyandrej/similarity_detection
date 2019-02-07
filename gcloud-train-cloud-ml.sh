@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
-JOB_NAME="seq2seq"$(date +%s)
-JOB_DIR="gs://seq2seq_europe/"${JOB_NAME}
-DATA_FILE="gs://seq2seq_europe/data/s3+cvut_data.csv"
+JOB_NAME="lstm_seq2seq_onehot"$(date +%s)
+JOB_DIR="gs://similarity-detection/"${JOB_NAME}
+DATA_FILE="gs://similarity-detection/data/s3+cvut_data.csv"
 GPU_CONFIG="./trainer/cloudml-gpu.yaml"
 
 gcloud ml-engine jobs submit training ${JOB_NAME} \
                                     --job-dir ${JOB_DIR} \
                                     --runtime-version 1.8 \
                                     --package-path trainer \
-                                    --module-name trainer.seq2seq.task \
+                                    --module-name trainer.lstm_seq2seq.task \
                                     --region europe-west4 \
                                     --python-version 3.5 \
                                     --config ${GPU_CONFIG} \

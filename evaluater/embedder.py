@@ -1,6 +1,31 @@
 import numpy as np
 from joblib import Parallel, delayed
 from collections import defaultdict
+from unidecode import unidecode
+from keras.preprocessing.text import Tokenizer
+from tensorflow.python.lib.io import file_io
+
+import json
+
+
+def tekonizing(data_inputs, method, save_path):
+    if method == "unidecode":
+        data_inputs = [list(map(lambda value: list(map(lambda char: unidecode(char), value)), data_input))
+                       for data_input in data_inputs]
+
+    t = Tokenizer(char_level=True)
+    [t.fit_on_texts(data_input) for data_input in data_inputs]
+    if method == 'ord':
+        result = ([list(map(lambda value: list(map(lambda char: ord(char), value)), data_input))
+                  for data_input in data_inputs]), None
+    elif method == 'tokenizer' or method == "unidecode":
+        result = ([t.texts_to_sequences(data_input) for data_input in data_inputs]), len(t.index_word)
+    else:
+        assert False, "Unknown tekonizing method"
+
+    with file_io.FileIO(save_path, mode='w+') as fp:
+        json.dump(t.word_index, fp)
+    return result
 
 
 def convert_to_vec_onehot(encoder_model, data, max_seq_len, max_count_tokens):
@@ -93,17 +118,23 @@ def convert_to_vec_tok_over_columns(encoder_model, data, max_seq_len, full_unico
     return output
 
 
-def create_column_embedding_by(type_embedding, ag_method):
-    type_embedding = list(type_embedding)
-    assert (len(type_embedding) > 0), "Input data are empty!"
+def create_column_embedding_by(uid_embedding, ag_method):
+    uid_embedding = list(uid_embedding)
+    assert (len(uid_embedding) > 0), "Input data are empty!"
 
-    class_embeddings_index = defaultdict(list)
-    [class_embeddings_index[key].append(embedding) for key, embedding in type_embedding]
-    class_embeddings_index = dict(class_embeddings_index)
+    uid_embeddings_index = defaultdict(list)
+    [uid_embeddings_index[uid].append(embedding) for uid, embedding in uid_embedding]
 
-    class_embedding = Parallel(n_jobs=-1)(delayed(job)(column_name, embeddings, ag_method)
-                                          for column_name, embeddings in class_embeddings_index.items())
-    return class_embedding
+    uid_embedding = []
+    for uid, embeddings in uid_embeddings_index.items():
+        if ag_method == "mean":
+            vector = np.average(np.array(embeddings), axis=0)
+        else:
+            vector = np.sum(np.array(embeddings), axis=0)
+
+        uid_embedding.append((uid, vector))
+
+    return uid_embedding
 
 
 def create_column_embedding_by_mrc(type_embedding):
@@ -150,14 +181,14 @@ def tokenizer_0_96(char):
 # ------------------------- PRIVATE ----------------------------------
 
 
-def job(column_name, embeddings, ag_method):
+def job(uid, embeddings, ag_method):
+    # print(embeddings)
+    vector = []
     if ag_method == "mean":
-        summary = np.average(np.array(embeddings), axis=0)
+        vector = np.average(np.array(embeddings), axis=0)
     elif ag_method == "sum":
-        summary = np.sum(np.array(embeddings), axis=0)
-    else:
-        summary = []
-    return column_name, summary
+        vector = np.sum(np.array(embeddings), axis=0)
+    return uid, vector
 
 
 def tokenizer(char, full_unicode):

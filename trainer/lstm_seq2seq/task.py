@@ -20,13 +20,14 @@ CHECKPOINT_FILE_PATH = 'best_model.h5'
 
 
 def main(data_file, job_dir):
-    input_data, input_decoder_data, target_data = model.load_data(data_file)
-
-    model_seq2seq = model.create_model_onehot_layer()
     os.makedirs(job_dir)
 
-    train_data, valid_data = train_test_split(list(zip(input_data, input_decoder_data, target_data)), train_size=0.9,
-                                              random_state=18)
+    tokenized_data, count_chars = model.load_and_preprocess_data(data_file, job_dir + '/char_index.json')
+    print("Index contains " + str(count_chars) + " chars!")
+    # model_seq2seq = model.create_model_fullunicode(count_chars + 2)
+    model_seq2seq = model.create_model_onehot_layer(2100)
+    train_data, valid_data = train_test_split(list(zip(tokenized_data[0], tokenized_data[1], tokenized_data[2])),
+                                              train_size=0.9, random_state=18)
     print("Training set has " + str(len(train_data)) + "values!")
     print("Validation set has " + str(len(valid_data)) + "values!")
     valid_data = next(model.generate_batches(valid_data))

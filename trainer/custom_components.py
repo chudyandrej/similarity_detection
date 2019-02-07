@@ -2,12 +2,8 @@ from keras import backend as K
 from keras.engine.topology import Layer
 from keras import objectives
 from keras.layers import Lambda
-
-
-
-
-
-
+from keras.preprocessing.text import Tokenizer
+import json
 
 
 ##################################################

@@ -1,4 +1,5 @@
 import os
+import json
 import sdep
 import pickle
 
@@ -13,22 +14,21 @@ import evaluater.embedder as em
 import trainer.custom_components as cc
 from keras.models import Model, load_model
 
-
 CHECKPOINT_PATH = os.environ['PYTHONPATH'].split(":")[0] + "/evaluater/similarity_detection/pickles/"
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
 
-def preprocess_values(values, pad_maxlen, full_unicode=True):
+def preprocess_values(values, pad_maxlen, char_index=None):
     values = map(lambda x: str(x), values)
     values = map(str.strip, values)
     values = (x[::-1] for x in values)
-    if full_unicode:
+    if char_index is None:
         values = list(map(lambda x: [ord(y) for y in x], values))
     else:
-        values = map(lambda x: unidecode(x), values)
-        values = map(lambda x: [tokenizer_0_96(y) for y in x], values)
+        # values = map(lambda x: unidecode(x), values)
+        values = map(lambda x: [char_index[y] for y in x], values)
     # print(list(values)[:100])
     values = pad_sequences(list(values), maxlen=pad_maxlen, truncating='pre', padding='pre')
     return values
@@ -38,7 +38,7 @@ def calculate_value_vectors(model, authority_evaluator, max_seqence_len):
     test_profiles = authority_evaluator.get_test_dataset()
     print(str(len(test_profiles)) + " classes!")
     class_values = [(profile, value) for profile in test_profiles for value in profile.quantiles]
-    tokened_data = preprocess_values(map(lambda x: x[1], class_values), max_seqence_len, full_unicode=False)
+    tokened_data = preprocess_values(map(lambda x: x[1], class_values), max_seqence_len)
     value_embeddings = model.predict(tokened_data)
     class_embeddings = list(map(lambda x: x[0], class_values))
     print(str(len(value_embeddings)) + " values for activation.")
@@ -79,7 +79,7 @@ def experiment_seq2seq_lstm_embedder():
     emb_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2seq_embedding_2/embedding_model.h5"
 
     print("Experiment " + experiment_name + " running ...")
-    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20, train_size=0.5)
+    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, train_size=0.5)
 
     encoder_model = load_h5(model_path, emb_path)
     print("Model successfully loaded. ")
@@ -119,6 +119,8 @@ def experiment_seq2seq_lstm_onehot():
             "CustomRegularization": cc.CustomRegularization,
             "zero_loss": cc.zero_loss
         })
+        print(model.layers)
+        exit()
     
         encoder = Model(model.inputs[0], Concatenate()([model.layers[4].output[1], model.layers[4].output[2]]))
         encoder.summary()
@@ -126,16 +128,19 @@ def experiment_seq2seq_lstm_onehot():
 
     # -------------- SET PARAMETERS OF EXPERIMENT --------------------
     experiment_name = experiment_seq2seq_lstm_onehot.__name__
-    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/lstm_seq2seq_one-hot1548930325/model.h5"
+    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/lstm_seq2seq_onehot_tokenizer1549359842/" \
+                                                          "lstm_seq2seq_onehot-model.h5"
+    char_index_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/lstm_seq2seq_onehot_tokenizer1549359842/" \
+                                                               "lstm_seq2seq_onehot-model.h5"
 
     print("Experiment " + experiment_name + " running ...")
-    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20, train_size=0.5)
+    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, train_size=0.5)
     encoder_model = load_h5(model_path)
     print("Model successfully loaded. ")
     test_profiles = ev.get_test_dataset()
     print(str(len(test_profiles)) + " classes!")
     class_values = [(profile, value) for profile in test_profiles for value in profile.quantiles]
-    tokened_data = preprocess_values(map(lambda x: x[1], class_values), 64)
+    tokened_data = preprocess_values(map(lambda x: x[1], class_values), 64, char_index=char_index)
     value_embeddings = encoder_model.predict(tokened_data)
     class_embeddings = list(map(lambda x: x[0], class_values))
     print(str(len(value_embeddings)) + " values for activation.")
