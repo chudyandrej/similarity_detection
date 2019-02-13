@@ -90,7 +90,7 @@ def generate_batches(data):
             yield [input_paded, input_decoder_paded, target_paded], target_paded
 
 
-def load_and_preprocess_data(data_path, save_index_path):
+def load_and_preprocess_data(data_path):
     df = pd.read_csv(tf.gfile.Open(data_path))
     train_data = df['value'].values
     train_data = map(str, train_data)
@@ -101,8 +101,7 @@ def load_and_preprocess_data(data_path, save_index_path):
     input_decoder_texts = list(map(lambda x: '\t' + x, train_data))
     target_texts = train_data
 
-    tokenized_data, count_chars = tekonizing([input_texts, input_decoder_texts, target_texts], method="ord",
-                                             save_path=save_index_path)
+    tokenized_data, count_chars = tekonizing([input_texts, input_decoder_texts, target_texts], method="ord")
     return tokenized_data, count_chars
 
 

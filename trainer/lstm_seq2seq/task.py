@@ -22,7 +22,7 @@ CHECKPOINT_FILE_PATH = 'best_model.h5'
 def main(data_file, job_dir):
     os.makedirs(job_dir)
 
-    tokenized_data, count_chars = model.load_and_preprocess_data(data_file, job_dir + '/char_index.json')
+    tokenized_data, count_chars = model.load_and_preprocess_data(data_file)
     print("Index contains " + str(count_chars) + " chars!")
     # model_seq2seq = model.create_model_fullunicode(count_chars + 2)
     model_seq2seq = model.create_model_onehot_layer(2100)
@@ -33,7 +33,7 @@ def main(data_file, job_dir):
     valid_data = next(model.generate_batches(valid_data))
     model_seq2seq.compile(optimizer='adam', loss=cc.zero_loss)
     model_seq2seq.summary()
-    model_seq2seq.fit_generator(model.generate_batches(train_data),
+    model_seq2seq.fit(model.generate_batches(train_data),
                                 steps_per_epoch=len(train_data) // model.BATCH_SIZE,
                                 epochs=model.EPOCHS,
                                 workers=0,

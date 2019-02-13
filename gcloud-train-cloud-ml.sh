@@ -11,7 +11,7 @@ gcloud ml-engine jobs submit training ${JOB_NAME} \
                                     --package-path trainer \
                                     --module-name trainer.lstm_seq2seq.task \
                                     --region europe-west4 \
-                                    --python-version 3.5 \
+                                    --python-version 3.6 \
                                     --config ${GPU_CONFIG} \
                                     -- \
                                     --data-file ${DATA_FILE}

@@ -24,25 +24,28 @@ def main(data_file, job_dir):
 
     model_seq2seq = model.create_model_onehot()
     os.makedirs(job_dir)
-
-    train_data, valid_data = train_test_split(list(zip(input_data, input_decoder_data, target_data)), train_size=0.9,
-                                              random_state=18)
-    print("Training set has " + str(len(train_data)) + "values!")
-    print("Validation set has " + str(len(valid_data)) + "values!")
-    valid_data = next(model.generate_batches(valid_data))
+    #
+    # train_data, valid_data = train_test_split(list(zip(input_data, input_decoder_data, target_data)), train_size=0.6,
+    # #                                           random_state=18)
+    # print("Training set has " + str(len(train_data)) + "values!")
+    # print("Validation set has " + str(len(valid_data)) + "values!")
     model_seq2seq.compile(optimizer='rmsprop', loss=cc.zero_loss)
     model_seq2seq.summary()
-    model_seq2seq.fit_generator(model.generate_batches(train_data),
-                                steps_per_epoch=len(train_data) // model.BATCH_SIZE,
-                                epochs=model.EPOCHS,
-                                workers=0,
-                                validation_data=valid_data,
-                                callbacks=[
-                                    ModelCheckpointMLEngine(job_dir + '/model.h5', monitor='val_loss', verbose=1,
-                                                            save_best_only=True, mode='min'),
-                                    EarlyStopping(monitor='val_loss', patience=15, verbose=1),
-                                    TensorBoard(log_dir=job_dir + '/log', write_graph=True, embeddings_freq=0)
-                                ])
+    # valid_data = list(model.convert_to_vec(valid_data, full_unicode=True))
+    train_data = list(model.convert_to_vec(list(zip(input_data, input_decoder_data, target_data)), full_unicode=True))
+    print("Training set has " + str(len(train_data[0])) + " values!")
+
+    model_seq2seq.fit(x=train_data,
+                      y=train_data[2],
+                      epochs=model.EPOCHS,
+                      batch_size=model.BATCH_SIZE,
+                      validation_split=0.3,
+                      callbacks=[
+                          ModelCheckpointMLEngine(job_dir + '/model.h5', monitor='val_loss', verbose=1,
+                                                save_best_only=True, mode='min'),
+                          EarlyStopping(monitor='val_loss', patience=15, verbose=1),
+                          TensorBoard(log_dir=job_dir + '/log', write_graph=True, embeddings_freq=0)
+                    ])
 
 
 if __name__ == "__main__":

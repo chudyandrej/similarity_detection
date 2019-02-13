@@ -105,7 +105,7 @@ def generate_batches(data):
 
 def load_data(data_path):
     df = pd.read_csv(tf.gfile.Open(data_path))
-    train_data = df['value'].values
+    train_data = list(df['value'].values)
     train_data = map(str, train_data)
     train_data = list(map(str.strip, train_data))
     train_data = list(map(lambda x: x[:MAX_TEXT_SEQUENCE_LEN - 1], train_data))

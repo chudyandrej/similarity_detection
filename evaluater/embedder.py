@@ -8,7 +8,7 @@ from tensorflow.python.lib.io import file_io
 import json
 
 
-def tekonizing(data_inputs, method, save_path):
+def tekonizing(data_inputs, method, save_path=None):
     if method == "unidecode":
         data_inputs = [list(map(lambda value: list(map(lambda char: unidecode(char), value)), data_input))
                        for data_input in data_inputs]
@@ -22,9 +22,9 @@ def tekonizing(data_inputs, method, save_path):
         result = ([t.texts_to_sequences(data_input) for data_input in data_inputs]), len(t.index_word)
     else:
         assert False, "Unknown tekonizing method"
-
-    with file_io.FileIO(save_path, mode='w+') as fp:
-        json.dump(t.word_index, fp)
+    if save_path is None:
+        with file_io.FileIO(save_path, mode='w+') as fp:
+            json.dump(t.word_index, fp)
     return result
 
 
