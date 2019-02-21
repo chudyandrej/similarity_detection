@@ -1,6 +1,6 @@
 import os
 import numpy as np
-import keras
+import keras, codecs
 import evaluater.embedder as em
 
 import trainer.custom_components as cc
@@ -8,19 +8,20 @@ from evaluater.preprocessing import preprocess_values_standard
 from keras.models import Model, load_model
 from typing import List, Optional, Tuple
 
-from sdep import Profile, S3Profile, AuthorityEvaluator    # Needed
+from sdep import AuthorityEvaluator, Profile   # Needed
 
 CHECKPOINT_PATH = os.environ['PYTHONPATH'].split(":")[0] + "/evaluater/similarity_detection/pickles/"
 
-os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
-os.environ["CUDA_VISIBLE_DEVICES"] = ""
+# os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
+# os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
 
-def computing_body_by_interface(model: keras.engine.training.Model, test_profiles: List[S3Profile],
+def computing_body_by_interface(model: keras.engine.training.Model, test_profiles: List[Profile],
                                 ev: AuthorityEvaluator, ag_method='mean'):
     # -------------- COMPUTING EXPERIMENT BODY --------------------
     uid_values: List[Tuple[Tuple, str]] = [(profile.uid, value) for profile in test_profiles
                                            for value in profile.quantiles]
+
     tokened_data: np.array = preprocess_values_standard(map(lambda x: x[1], uid_values), 64)
     embeddings = model.predict(tokened_data)
     uids = list(map(lambda x: x[0], uid_values))
@@ -60,7 +61,7 @@ def experiment_seq2seq_gru_embedder_jointly():
 
     print("Experiment " + experiment_name + " running ...")
     ev = AuthorityEvaluator(username='andrej', neighbors=100, train_size=0.5)
-    test_profiles: List[S3Profile] = ev.get_test_dataset("s3")
+    test_profiles: List[Profile] = ev.get_test_dataset("s3")
 
     # -------------- COMPUTING EXPERIMENT BODY --------------------
     encoder_model = load_h5(model_path)
@@ -94,7 +95,7 @@ def experiment_seq2seq_gru_embedder_jointly_1():
 
     print("Experiment " + experiment_name + " running ...")
     ev = AuthorityEvaluator(username='andrej', neighbors=100, radius=20, train_size=0.5)
-    test_profiles: List[S3Profile] = ev.get_test_dataset("s3")
+    test_profiles: List[Profile] = ev.get_test_dataset("s3")
 
     # -------------- COMPUTING EXPERIMENT BODY --------------------
     encoder_model = load_h5(model_path)
@@ -127,12 +128,13 @@ def experiment_seq2seq_gru_embedder_jointly_2():
 
     print("Experiment " + experiment_name + " running ...")
     ev = AuthorityEvaluator(username='andrej', neighbors=100, radius=20, train_size=0.99)
-    test_profiles: List[S3Profile] = ev.get_test_dataset("s3")
+    test_profiles: List[Profile] = ev.get_test_dataset("s3")
 
     # -------------- COMPUTING EXPERIMENT BODY --------------------
     encoder_model = load_h5(model_path)
     encoder_model.summary()
     computing_body_by_interface(encoder_model, test_profiles, ev)
+
 
 # ====================================================================
 #                           EXPERIMENT 1.3
@@ -161,12 +163,14 @@ def experiment_seq2seq_gru_embedder_jointly_3():
 
     print("Experiment " + experiment_name + " running ...")
     ev = AuthorityEvaluator(username='andrej', neighbors=100, train_size=0.5)
-    test_profiles: List[S3Profile] = ev.get_test_dataset("s3")
+    test_profiles: List[Profile] = ev.get_test_dataset("s3")
 
     # -------------- COMPUTING EXPERIMENT BODY --------------------
     encoder_model = load_h5(model_path)
     encoder_model.summary()
     computing_body_by_interface(encoder_model, test_profiles, ev)
+
+
 # ====================================================================
 #                           EXPERIMENT 1.4
 # Select STATE output from GRU as embedding vector
@@ -192,7 +196,7 @@ def experiment_seq2seq_gru_embedder_jointly_4():
 
     print("Experiment " + experiment_name + " running ...")
     ev = AuthorityEvaluator(username='andrej', neighbors=100, train_size=0.5)
-    test_profiles: List[S3Profile] = ev.get_test_dataset("s3")
+    test_profiles: List[Profile] = ev.get_test_dataset("s3")
 
     # -------------- COMPUTING EXPERIMENT BODY --------------------
     encoder_model = load_h5(model_path)
@@ -224,7 +228,7 @@ def experiment_seq2seq_gru_onehot():
 
     print("Experiment " + experiment_name + " running ...")
     ev = AuthorityEvaluator(username='andrej', neighbors=100, train_size=0.5)
-    test_profiles: List[S3Profile] = ev.get_test_dataset("s3")
+    test_profiles: List[Profile] = ev.get_test_dataset("s3")
 
     # -------------- COMPUTING EXPERIMENT BODY --------------------
     encoder_model = load_h5(model_path)
@@ -238,9 +242,12 @@ def experiment_seq2seq_gru_onehot():
 
 # TOKEN_COUNT = 2100, GRU_DIM = 256, loss_function=categorical_crossentropy,
 # TRAINING_DATA=./data/s3+cvut_data.csv
-# RESULT:{'total': 63585, 0: 25336, None: 21520, 1: 5726, 2: 2733, 3: 1684, 4: 1314, 5: 1096, 6: 815, 7: 671, 8: 557,
-# 9: 487, 10: 405, 11: 352, 12: 268, 13: 238, 14: 134, 15: 130, 16: 66, 17: 39, 18: 14}
+# RESULT [OLD_S3_PROFILE]:{'total': 63585, 0: 25336, None: 21520, 1: 5726, 2: 2733, 3: 1684, 4: 1314, 5: 1096, 6: 815,
+# 7: 671, 8: 557, 9: 487, 10: 405, 11: 352, 12: 268, 13: 238, 14: 134, 15: 130, 16: 66, 17: 39, 18: 14}
 # Percentage of found labels on first 3 index : 53%
+# RESULT [NEW_S3_PROFILE]:{'total': 73758, 0: 37016, None: 13843, 1: 8179, 2: 3845, 3: 2514, 4: 1816, 5: 1447,
+# 6: 1077, 7: 932, 8: 730, 9: 629, 10: 483, 11: 418, 12: 277, 13: 253, 14: 143, 15: 100, 16: 36, 17: 16, 18: 4}
+# Percentage of found labels on first 3 index : 66%
 # ====================================================================
 def sim_detection_seq2seq_gru_onehot_1():
     def load_h5(path):
@@ -257,7 +264,7 @@ def sim_detection_seq2seq_gru_onehot_1():
     print("Experiment " + experiment_name + " running ...")
     ev = AuthorityEvaluator(username='andrej', neighbors=20, train_size=0.50,
                             results_file="./results/"+experiment_name+".txt")
-    test_profiles: List[S3Profile] = ev.get_test_dataset("s3")
+    test_profiles: List[Profile] = ev.get_test_dataset("s3")
 
     # -------------- COMPUTING EXPERIMENT BODY --------------------
     encoder_model = load_h5(model_path)
@@ -265,71 +272,7 @@ def sim_detection_seq2seq_gru_onehot_1():
     computing_body_by_interface(encoder_model, test_profiles, ev)
 
 
-def cal_threshold():
-    from sklearn.neighbors import NearestNeighbors
-    from collections import defaultdict
-    import matplotlib.pyplot as pl
-    import numpy as np
-    import pickle
-
-    def load_h5(path):
-        model = load_model(path, custom_objects={
-            "CustomRegularization": cc.CustomRegularization,
-            "zero_loss": cc.zero_loss
-        })
-        encoder = Model(model.inputs[0], model.layers[4].output[1])
-        return encoder
-    # -------------- SET PARAMETERS OF EXPERIMENT --------------------
-    experiment_name = cal_threshold.__name__
-    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/gru_seq2seq-hot1549903432/model.h5"
-
-    print("Experiment " + experiment_name + " running ...")
-    ev = AuthorityEvaluator(username='andrej', neighbors=20, train_size=0.50,
-                            results_file="./results/"+experiment_name+".txt")
-    test_profiles: List[S3Profile] = ev.get_test_dataset("s3")
-
-    # -------------- COMPUTING EXPERIMENT BODY --------------------
-    encoder_model = load_h5(model_path)
-    encoder_model.summary()
-
-    uid_values: List[Tuple[Tuple, str]] = [(profile.uid, value) for profile in test_profiles
-                                           for value in profile.quantiles]
-    tokened_data: np.array = preprocess_values_standard(map(lambda x: x[1], uid_values), 64)
-    embeddings = encoder_model.predict(tokened_data)
-    uids = list(map(lambda x: x[0], uid_values))
-
-    print("Clustering value vectors to column representation")
-    uid_embedding = em.create_column_embedding_by(list(zip(uids, embeddings)), 'mean')
-    uid_profile_index = dict(map(lambda profile: (profile.uid, profile), test_profiles))
-    profile_embedding = [(uid_profile_index[uid], embedding) for uid, embedding in uid_embedding]
-
-    # -------------- EVALUATE EXPERIMENT --------------------
-    print("Count of classes: " + str(len(uid_embedding)))
-
-    partitions = defaultdict(list)
-    for profile, embedding in profile_embedding:
-        partitions[profile.uid[:2]].append(embedding)
-
-    distances_all = []
-    for key, embeddings in partitions.items():
-        if len(embeddings) < 5:
-            continue
-        index = NearestNeighbors(metric='l2', n_jobs=-1).fit(embeddings)
-        distances, _ = index.kneighbors(embeddings)
-        distances_all.append(list(map(lambda x: list(x[1:]), distances.copy())))
-
-    distances_all = np.array(distances_all).ravel()
-    with open('parrot.pkl', 'wb') as f:
-        pickle.dump(distances_all, f)
-
-    print(np.quantile(distances_all, 0.95))
-    fig = pl.hist(distances_all, normed=0)
-    pl.title('Mean')
-    pl.xlabel("value")
-    pl.ylabel("Frequency")
-    pl.savefig("hist.png")
-
 if __name__ == '__main__':
-    cal_threshold()
+    sim_detection_seq2seq_gru_onehot_1()
 
 

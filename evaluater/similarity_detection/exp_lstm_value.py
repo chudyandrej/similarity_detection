@@ -137,7 +137,7 @@ def experiment_seq2seq_lstm_onehot():
     ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, train_size=0.5)
     encoder_model = load_h5(model_path)
     print("Model successfully loaded. ")
-    test_profiles = ev.get_test_dataset()
+    test_profiles = ev.get_test_dataset(data_src="s3")
     print(str(len(test_profiles)) + " classes!")
     class_values = [(profile, value) for profile in test_profiles for value in profile.quantiles]
     tokened_data = preprocess_values(map(lambda x: x[1], class_values), 64, char_index=char_index)

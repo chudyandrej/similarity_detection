@@ -17,13 +17,16 @@ Original file is located at
 from keras.callbacks import ModelCheckpoint, EarlyStopping, TensorBoard
 import trainer.lstm_hierarchical.model as model
 from trainer.modelCheckpoint import ModelCheckpointMLEngine
-from keras.optimizers import RMSprop, SGD, Adam
-from keras import backend as K
+from evaluater.preprocessing import preprocess_values_standard
+
+from keras.optimizers import Adam
 
 
+import trainer.custom_components as cc
 import numpy as np
 import argparse
 import sdep
+from sdep import Profile
 
 CHECKPOINT_FILE_PATH = 'best_model.h5'
 #
@@ -32,32 +35,20 @@ CHECKPOINT_FILE_PATH = 'best_model.h5'
 # os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
 
-def contrastive_loss(y_true, y_pred):
-    '''Contrastive loss from Hadsell-et-al.'06
-    http://yann.lecun.com/exdb/publis/pdf/hadsell-chopra-lecun-06.pdf
-    '''
-    margin = 1
-    return K.mean(y_true * K.square(y_pred) + (1 - y_true) * K.square(K.maximum(margin - y_pred, 0)))
-
-
 def main(data_file, job_dir):
-    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20, train_size=0.5)
+    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=20, train_size=0.5, valid_size=0.2)
 
+    joint_model = model.model3()
+    joint_model.compile(loss=cc.contrastive_loss, optimizer=Adam(lr=0.001))
 
-    joint_model = model.create_model((11, 64))
+    train_profiles, valid_profile = ev.get_train_dataset(data_src="s3")
 
-    joint_model.compile(loss=contrastive_loss, optimizer=Adam(lr=0.001))
+    left, right, label, _ = next(sdep.pairs_generator(valid_profile, 50000))
 
-    # joint_model.compile(loss='binary_crossentropy', optimizer=Adam(lr=0.00006))
-    joint_model.summary(line_length=120)
+    left = np.array(list(map(lambda x: preprocess_values_standard(x.quantiles, model.MAX_TEXT_SEQUENCE_LEN), left)))
+    right = np.array(list(map(lambda x: preprocess_values_standard(x.quantiles, model.MAX_TEXT_SEQUENCE_LEN), right)))
 
-    _, valid_profile = ev.get_train_dataset()
-
-    left, right, label, _ = next(sdep.pairs_generator(valid_profile, model.BATCH_SIZE))
-    left = np.array(list(map(lambda x: model.preprocess_quantiles(x.quantiles, model.MAX_TEXT_SEQUENCE_LEN), left)))
-    right = np.array(list(map(lambda x: model.preprocess_quantiles(x.quantiles, model.MAX_TEXT_SEQUENCE_LEN), right)))
-
-    joint_model.fit_generator(model.generate_random_fit(ev),
+    joint_model.fit_generator(model.generate_random_fit(train_profiles),
                               steps_per_epoch=model.TRAINING_SAMPLES // model.BATCH_SIZE,
                               epochs=model.EPOCHS,
                               validation_data=([left, right], label),

@@ -1,47 +1,53 @@
 
 from keras.models import Model
 from keras.layers import Input, LSTM, Embedding, TimeDistributed, Bidirectional, Lambda, Dense, Dot, Convolution1D
-from keras.layers import GlobalMaxPooling1D, Concatenate, AlphaDropout
-from keras import backend as K
-from collections import defaultdict
-from collections import Counter
-from keras.utils import plot_model
+from keras.layers import GlobalMaxPooling1D, Concatenate, AlphaDropout, SeparableConv1D, MaxPooling1D
+from keras.layers import GlobalAveragePooling1D
 
-from keras.preprocessing.sequence import pad_sequences
+from keras import backend as K
+
+
 import numpy as np
-from sdep import pairs_generator
+import sdep
 import os
 
-from evaluater.load_models import load_seq2seq_embedder
+from keras.models import Model, load_model
+from evaluater.preprocessing import preprocess_values_standard
+import trainer.custom_components as cc
 
 
 MAX_TEXT_SEQUENCE_LEN = 64
 # Model constants
-BATCH_SIZE = 1024  # Batch size for training.
+BATCH_SIZE = 512  # Batch size for training.
 EPOCHS = 1000  # Number of epochs to train for.
-LSTM_DIM = 256  # Latent dimensionality of the encoding space.
-TRAINING_SAMPLES = 500000
+LSTM_DIM = 128  # Latent dimensionality of the encoding space.
+TRAINING_SAMPLES = 200000
 
 
-def create_model(quantile_shape):
-    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2seq_embedding_2/model.h5"
-    emb_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2seq_embedding_2/embedding_model.h5"
+def model1():
+    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/gru_seq2seq-hot1549903432/model.h5"
+    model = load_model(model_path, custom_objects={
+        "CustomRegularization": cc.CustomRegularization,
+        "zero_loss": cc.zero_loss
+    })
+    value_encoder = Model(model.inputs[0], model.layers[4].output[1])
+    for layer in value_encoder.layers:
+        layer.trainable = False
 
     # Ensemble Joint Model
-    left_input = Input(shape=quantile_shape, name='left_input')
-    right_input = Input(shape=quantile_shape, name='right_input')
+    left_input = Input(shape=(11, 64), name='left_input')
+    right_input = Input(shape=(11, 64), name='right_input')
 
     # Value embedding model trained as seq2seq.
-    value_encoder = load_seq2seq_embedder(model_path, emb_path)
-    left_value_encoded = TimeDistributed(value_encoder, trainable=False)(left_input)
-    right_value_encoded = TimeDistributed(value_encoder, trainable=False)(right_input)
+    left_value_encoded = TimeDistributed(value_encoder)(left_input)
+    right_value_encoded = TimeDistributed(value_encoder)(right_input)
 
     quantile_encoder = Bidirectional(LSTM(LSTM_DIM, dropout=0.20, recurrent_dropout=0.20), name='quantile_encoder')
     left_encoded = quantile_encoder(left_value_encoded)
     right_encoded = quantile_encoder(right_value_encoded)
 
     # If cosine similary wanted, use the other comparer instead
-    comparer = Lambda(euclidean_distance)
+    comparer = Lambda(cc.l2_similarity)
     # comparer = Dot(axes=1, normalize=True, name='comparer')
     # comparer = Lambda(function=l2_similarity, name='comparer')
     # comparer = Lambda(lambda tensors: K.abs(tensors[0] - tensors[1]))
@@ -49,13 +55,58 @@ def create_model(quantile_shape):
 
     # Compile and train Joint Model
     joint_model = Model(inputs=[left_input, right_input], outputs=output)
+    joint_model.summary(line_length=120)
     return joint_model
 
 
-def create_model_base(quantile_shape):
+def model2():
+
+    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/gru_seq2seq-hot1549903432/model.h5"
+    model = load_model(model_path, custom_objects={
+        "CustomRegularization": cc.CustomRegularization,
+        "zero_loss": cc.zero_loss
+    })
+    for layer in model.layers:
+        layer.trainable = False
+
+    value_encoder = Model(model.inputs[0], model.layers[4].output[1])
+
     # Ensemble Joint Model
-    left_input = Input(shape=quantile_shape, name='left_input')
-    right_input = Input(shape=quantile_shape, name='right_input')
+    left_input = Input(shape=(11, 64), name='left_input')
+    right_input = Input(shape=(11, 64), name='right_input')
+
+    # Value embedding model trained as seq2seq.
+    left_value_encoded = TimeDistributed(value_encoder)(left_input)
+    left_encoded = Lambda(lambda xin: K.mean(xin, axis=1))(left_value_encoded)
+
+    right_value_encoded = TimeDistributed(value_encoder)(right_input)
+    right_encoded = Lambda(lambda xin: K.mean(xin, axis=1))(right_value_encoded)
+
+    dense1 = Dense(256, activation="relu")
+    left_encoded = dense1(left_encoded)
+    right_encoded = dense1(right_encoded)
+
+    dense2 = Dense(256, activation="relu")
+    left_encoded = dense2(left_encoded)
+    right_encoded = dense2(right_encoded)
+
+    # If cosine similary wanted, use the other comparer instead
+    comparer = Lambda(cc.euclidean_distance)
+    # comparer = Dot(axes=1, normalize=True, name='comparer')
+    # comparer = Lambda(function=l2_similarity, name='comparer')
+    # comparer = Lambda(lambda tensors: K.abs(tensors[0] - tensors[1]))
+    output = comparer([left_encoded, right_encoded])
+
+    # Compile and train Joint Model
+    joint_model = Model(inputs=[left_input, right_input], outputs=output)
+    joint_model.summary()
+    return joint_model
+
+
+def model3():
+    # Ensemble Joint Model
+    left_input = Input(shape=(11, 64), name='left_input')
+    right_input = Input(shape=(11, 64), name='right_input')
 
     value_embedder = Embedding(input_dim=65536, output_dim=128, name='value_embedder')
     left_embedded = TimeDistributed(value_embedder)(left_input)
@@ -70,16 +121,18 @@ def create_model_base(quantile_shape):
     right_encoded = quantile_encoder(right_value_encoded)
 
     # If cosine similary wanted, use the other comparer instead
-    comparer = Dot(axes=1, normalize=True, name='comparer')
+    comparer = Lambda(cc.euclidean_distance)
     # comparer = Lambda(function=l2_similarity, name='comparer')
     output = comparer([left_encoded, right_encoded])
 
     # Compile and train Joint Model
     joint_model = Model(inputs=[left_input, right_input], outputs=output)
+    joint_model.summary(line_length=120)
+
     return joint_model
 
 
-def create_model_convolution(quantile_shape):
+def model4(quantile_shape):
     CNN_LAYERS = [[256, 10], [256, 7], [256, 5], [256, 3]]
 
     model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2seq_embedding_2/model.h5"
@@ -128,28 +181,11 @@ def create_model_convolution(quantile_shape):
     # Compile and train Joint Model
     joint_model = Model(inputs=[left_input, right_input], outputs=output)
     # plot_model(joint_model, to_file='model.png')
+    joint_model.summary(line_length=120)
     return joint_model
 
 
-def l1_similarity(x):
-    return K.exp(-1 * K.sum(K.abs(x[0] - x[1]), axis=-1, keepdims=True))
-
-
-def l2_similarity(x):
-    return K.exp(-1 * K.sqrt(K.sum(K.square(x[0] - x[1]), axis=-1, keepdims=True)))
-
-
-def euclidean_distance(vects):
-    x, y = vects
-    return K.sqrt(K.sum(K.square(x - y), axis=1, keepdims=True))
-
-
-def eucl_dist_output_shape(shapes):
-    shape1, shape2 = shapes
-    return shape1[0], 1
-
-
-def generate_random_fit(ev):
+def generate_random_fit(train_profiles):
     """Generator for fitting
 
     Args:
@@ -159,23 +195,12 @@ def generate_random_fit(ev):
     Yields:
         TYPE: Batch of data
     """
-    train_profiles, _ = ev.get_train_dataset()
     while True:
-        left, right, label, weights = next(pairs_generator(train_profiles, BATCH_SIZE))
+        left, right, label, weights = next(sdep.pairs_generator(train_profiles, BATCH_SIZE))
 
-        left = np.array(list(map(lambda x: preprocess_quantiles(x.quantiles, MAX_TEXT_SEQUENCE_LEN), left)))
-        right = np.array(list(map(lambda x: preprocess_quantiles(x.quantiles, MAX_TEXT_SEQUENCE_LEN), right)))
+        left = np.array(list(map(lambda x: preprocess_values_standard(x.quantiles, MAX_TEXT_SEQUENCE_LEN), left)))
+        right = np.array(list(map(lambda x: preprocess_values_standard(x.quantiles, MAX_TEXT_SEQUENCE_LEN), right)))
 
         yield [left, right], label
-
-
-def preprocess_quantiles(quantiles, pad_maxlen):
-    quantiles = map(str, quantiles)
-    quantiles = map(str.strip, quantiles)
-    quantiles = map(lambda x: x[:pad_maxlen], quantiles)
-    quantiles = (x[::-1] for x in quantiles)
-    quantiles = list(map(lambda x: [ord(y) for y in x], quantiles))
-    quantiles = pad_sequences(quantiles, maxlen=pad_maxlen, truncating='pre', padding='pre')
-    return quantiles
 
 

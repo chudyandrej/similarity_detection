@@ -1,16 +1,26 @@
 import os
-
+import pickle
 from typing import List, Optional, Tuple
-from sdep import Profile, S3Profile, AuthorityEvaluator
+from sdep import Profile, AuthorityEvaluator
 from keras.models import Model, load_model
 from evaluater.preprocessing import preprocess_values_standard
 
 import trainer.custom_components as cc
 import evaluater.embedder as em
 
+# os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
+# os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
-def computing_body_by_interface(model, test_profiles: List[Profile], ev: AuthorityEvaluator, ag_method='mean'):
+
+def computing_body_by_interface(model, test_profiles: List[Profile], ev: AuthorityEvaluator, name, ag_method='mean'):
     print("Predicting vectors")
+    os.makedirs("./check-points")
+    if os.path.isfile(f"./check-points/{name}"):
+        with open(f'./check-points/{name}', 'rb') as f:
+            profile_embedding = pickle.load(f)
+        ev.evaluate_foreign_keys(profile_embedding)
+        return
+
     uid_values = [(profile.uid, value) for profile in test_profiles for value in profile.quantiles]
     tokenized_data = preprocess_values_standard(map(lambda x: x[1], uid_values), 64)
     embeddings = model.predict(tokenized_data)
@@ -23,16 +33,18 @@ def computing_body_by_interface(model, test_profiles: List[Profile], ev: Authori
 
     # -------------- EVALUATE EXPERIMENT --------------------
     print("Count of classes: " + str(len(profile_embedding)))
+    with open('tmp.pkl', 'wb') as f:
+        pickle.dump(profile_embedding, f)
     ev.evaluate_foreign_keys(profile_embedding)
 
 
 # ====================================================================
 #                           EXPERIMENT 1.0
-# Experiment with GRU seq2seq with one-hot layer.
+# Experiment with GRU seq2seq with one-hot layer 2100 chars.
 
-# RESULT:{'total': 63585, 0: 25282, None: 14353, 1: 5569, 2: 2545,
-# 3: 1824, 4: 1271, 5: 1059, 6: 913, 7: 703, 8: 589, 9: 561, 10: 510}
-# Percentage of found labels on first 3 index : 52%
+# RESULT:
+# Found 491973 candidate key pairs
+# Found 1132 / 1053 keys => 93.02120141342756 %
 # ====================================================================
 def key_discovery_seq2seq_gru():
     def load_h5(path):
@@ -48,14 +60,14 @@ def key_discovery_seq2seq_gru():
 
     # -------------- LOAD DATA AND MODEL --------------------
     print("Experiment " + experiment_name + " running ...")
-    ev_object = AuthorityEvaluator(username='andrej', radius=0.8, results_file="./results/"+experiment_name+".txt")
+    ev_object = AuthorityEvaluator(username='andrej', neighbors=100, results_file="./results/"+experiment_name+".txt")
     test_profiles: List[Profile] = ev_object.cvut_profiles
     [profile.reduce_quantiles(range(0, 101, 10)) for profile in test_profiles]
     assert len(test_profiles) != 11, "Quantiles have invalid count"
     encoder_model = load_h5(model_path)
     encoder_model.summary()
     print("Model successfully loaded. ")
-    computing_body_by_interface(encoder_model, test_profiles, ev_object)
+    computing_body_by_interface(encoder_model, test_profiles, ev_object, experiment_name)
 
 
 if __name__ == "__main__":
