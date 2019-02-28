@@ -1,7 +1,8 @@
 from keras.preprocessing.sequence import pad_sequences
+from typing import List, Optional, Tuple
 
 
-def preprocess_values_standard(values, pad_maxlen, char_index=None):
+def preprocess_values_standard(values: List[str], pad_maxlen: int, char_index: dict = None):
     """
     Standard preprocess pipeline into encoder. Cut to max size, revert,
     tokenizing by index or ascii value and padding.
@@ -19,3 +20,6 @@ def preprocess_values_standard(values, pad_maxlen, char_index=None):
         values = map(lambda x: [char_index[y] for y in x], values)
     values = pad_sequences(list(values), maxlen=pad_maxlen, truncating='pre', padding='pre')
     return values
+
+
+

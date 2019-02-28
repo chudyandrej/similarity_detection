@@ -23,7 +23,7 @@ ENCODER_OUTPUT_DIM = 256
 tokenizer = Tokenizer(char_level=True)
 
 
-def create_model_embedding(embedding_size):
+def model1(embedding_size):
     encoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="encoder_Input")
     decoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="decoder_Input")
     target = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="target_Input")
@@ -49,7 +49,7 @@ def create_model_embedding(embedding_size):
     return model
 
 
-def create_model_onehot_layer(embedding_size):
+def model2(embedding_size):
     encoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="encoder_Input")
     decoder_inputs = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="decoder_Input")
     target = Input(shape=(MAX_TEXT_SEQUENCE_LEN,), name="target_Input")

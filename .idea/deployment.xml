@@ -17,6 +17,9 @@
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$" web="http://ai01.shr.prg-krl.atc" />
           </mappings>
+          <excludedPaths>
+            <excludedPath path="/gru_hierarchical1550841088/model.h5" />
+          </excludedPaths>
         </serverdata>
       </paths>
     </serverData>

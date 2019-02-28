@@ -42,7 +42,7 @@ def main(data_file, job_dir):
                       validation_split=0.3,
                       callbacks=[
                           ModelCheckpointMLEngine(job_dir + '/model.h5', monitor='val_loss', verbose=1,
-                                                save_best_only=True, mode='min'),
+                                                  save_best_only=True, mode='min'),
                           EarlyStopping(monitor='val_loss', patience=15, verbose=1),
                           TensorBoard(log_dir=job_dir + '/log', write_graph=True, embeddings_freq=0)
                     ])

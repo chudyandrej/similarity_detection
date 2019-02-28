@@ -15,51 +15,67 @@ Original file is located at
 # !pip install unidecode
 
 from keras.callbacks import ModelCheckpoint, EarlyStopping, TensorBoard
+from keras.optimizers import SGD
 import trainer.gru_hierarchical.model as model
 from trainer.modelCheckpoint import ModelCheckpointMLEngine
-from keras.optimizers import RMSprop, SGD, Adam
-from keras import backend as K
+from typing import List, Optional, Tuple
+from keras.utils import multi_gpu_model
+
 import trainer.custom_components as cc
+from evaluater.preprocessing import preprocess_values_standard
 
 
 import numpy as np
 import argparse
+import json
+from sdep.profiler import Profile
 import sdep
 
 CHECKPOINT_FILE_PATH = 'best_model.h5'
 #
-# import os
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+# OR
 # os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
 # os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
 
 def main(data_file, job_dir):
-    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=100, radius=20, train_size=0.5)
+    os.makedirs(job_dir)
 
-    joint_model = model.create_model_base((11, 64))
+    ev = sdep.AuthorityEvaluator(username='andrej', neighbors=20, train_size=0.5, valid_size=0.2)
+    train_profiles,  valid_profile = ev.get_train_dataset(data_src="s3")
+    joint_model = model.model4()
 
-    joint_model.compile(loss=cc.contrastive_loss, optimizer=Adam(lr=0.001))
+    joint_model.compile(optimizer="adam", loss=cc.contrastive_loss)
 
-    # joint_model.compile(loss='binary_crossentropy', optimizer=Adam(lr=0.00006))
-    joint_model.summary(line_length=120)
+    profile_left_val, profile_right_val, label_val, _ = next(sdep.pairs_generator(valid_profile, 50000))
+    left_val = np.array(list(map(lambda x: preprocess_values_standard(x.quantiles, model.MAX_TEXT_SEQUENCE_LEN),
+                                 profile_left_val)))
+    right_val = np.array(list(map(lambda x: preprocess_values_standard(x.quantiles, model.MAX_TEXT_SEQUENCE_LEN),
+                                  profile_right_val)))
 
-    _, valid_profile = ev.get_train_dataset()
+    train_data_gen = cc.fit_generator_profile_pairs(train_profiles, model.MAX_TEXT_SEQUENCE_LEN, 200000,
+                                                    neg_ratio=2)
+    val_loss = 100
+    not_improve_count = 0
+    for epoch_id in range(model.EPOCHS):
+        print(f"Epoch number {epoch_id}  not improve {not_improve_count}")
 
-    left, right, label, _ = next(sdep.pairs_generator(valid_profile, model.BATCH_SIZE*5))
-    left = np.array(list(map(lambda x: model.preprocess_quantiles(x.quantiles, model.MAX_TEXT_SEQUENCE_LEN), left)))
-    right = np.array(list(map(lambda x: model.preprocess_quantiles(x.quantiles, model.MAX_TEXT_SEQUENCE_LEN), right)))
+        [left_train, right_train], label_train = next(train_data_gen)
+        history = joint_model.fit(x=[left_train, right_train],
+                                  y=label_train,
+                                  batch_size=model.BATCH_SIZE,
+                                  epochs=1,
+                                  validation_data=([left_val, right_val], label_val))
 
-    joint_model.fit_generator(model.generate_random_fit(ev),
-                              steps_per_epoch=model.TRAINING_SAMPLES // model.BATCH_SIZE,
-                              epochs=model.EPOCHS,
-                              validation_data=([left, right], label),
-                              # class_weight={1: 10., -1: 1.},
-                              callbacks=[
-                                  ModelCheckpointMLEngine(job_dir + '/model.h5', monitor='val_loss', verbose=1,
-                                                          save_best_only=True, mode='min'),
-                                  EarlyStopping(monitor='val_loss', patience=10, verbose=1),
-                                  TensorBoard(log_dir=job_dir + '/log', write_graph=True, embeddings_freq=0)
-                                ])
+        if val_loss > history.history['val_loss'][0]:
+            val_loss = history.history['val_loss'][0]
+            print(f"Saving model{epoch_id}")
+            joint_model.save(f"{job_dir}/model{epoch_id}_{history.history['val_loss']}.h5")
+            not_improve_count = 0
+        else:
+            not_improve_count += 1
 
 
 if __name__ == "__main__":

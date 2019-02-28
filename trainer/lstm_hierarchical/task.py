@@ -38,7 +38,7 @@ CHECKPOINT_FILE_PATH = 'best_model.h5'
 def main(data_file, job_dir):
     ev = sdep.AuthorityEvaluator(username='andrej', neighbors=20, train_size=0.5, valid_size=0.2)
 
-    joint_model = model.model3()
+    joint_model = model.model1()
     joint_model.compile(loss=cc.contrastive_loss, optimizer=Adam(lr=0.001))
 
     train_profiles, valid_profile = ev.get_train_dataset(data_src="s3")

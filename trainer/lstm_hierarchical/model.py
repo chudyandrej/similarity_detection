@@ -18,7 +18,7 @@ import trainer.custom_components as cc
 
 MAX_TEXT_SEQUENCE_LEN = 64
 # Model constants
-BATCH_SIZE = 512  # Batch size for training.
+BATCH_SIZE = 256  # Batch size for training.
 EPOCHS = 1000  # Number of epochs to train for.
 LSTM_DIM = 128  # Latent dimensionality of the encoding space.
 TRAINING_SAMPLES = 200000
@@ -42,12 +42,15 @@ def model1():
     left_value_encoded = TimeDistributed(value_encoder)(left_input)
     right_value_encoded = TimeDistributed(value_encoder)(right_input)
 
-    quantile_encoder = Bidirectional(LSTM(LSTM_DIM, dropout=0.20, recurrent_dropout=0.20), name='quantile_encoder')
-    left_encoded = quantile_encoder(left_value_encoded)
-    right_encoded = quantile_encoder(right_value_encoded)
+    quantile_encoder1 = Bidirectional(LSTM(LSTM_DIM, dropout=0.20, recurrent_dropout=0.20, return_sequences=True),
+                                      name='quantile_encoder1')
+    quantile_encoder2 = Bidirectional(LSTM(LSTM_DIM, dropout=0.20, recurrent_dropout=0.20), name='quantile_encoder2')
+
+    left_encoded = quantile_encoder2(quantile_encoder1(left_value_encoded))
+    right_encoded = quantile_encoder2(quantile_encoder1(right_value_encoded))
 
     # If cosine similary wanted, use the other comparer instead
-    comparer = Lambda(cc.l2_similarity)
+    comparer = Lambda(cc.euclidean_distance)
     # comparer = Dot(axes=1, normalize=True, name='comparer')
     # comparer = Lambda(function=l2_similarity, name='comparer')
     # comparer = Lambda(lambda tensors: K.abs(tensors[0] - tensors[1]))
@@ -77,25 +80,36 @@ def model2():
 
     # Value embedding model trained as seq2seq.
     left_value_encoded = TimeDistributed(value_encoder)(left_input)
-    left_encoded = Lambda(lambda xin: K.mean(xin, axis=1))(left_value_encoded)
+    # left_encoded = Lambda(lambda xin: K.mean(xin, axis=1))(left_value_encoded)
+    left_encoded = left_value_encoded
 
     right_value_encoded = TimeDistributed(value_encoder)(right_input)
-    right_encoded = Lambda(lambda xin: K.mean(xin, axis=1))(right_value_encoded)
+    # right_encoded = Lambda(lambda xin: K.mean(xin, axis=1))(right_value_encoded)
+    right_encoded = right_value_encoded
+    print(left_encoded)
+    exit()
+    conv = SeparableConv1D(128, 3, activation='relu')
+    l = conv(left_encoded)
+    r = conv(right_encoded)
+    for i in range(2):
+        conv1 = SeparableConv1D(64, 3, activation='relu')
+        conv2 = SeparableConv1D(128, 3, activation='relu')
+        pool = MaxPooling1D(2)
 
-    dense1 = Dense(256, activation="relu")
-    left_encoded = dense1(left_encoded)
-    right_encoded = dense1(right_encoded)
-
-    dense2 = Dense(256, activation="relu")
-    left_encoded = dense2(left_encoded)
-    right_encoded = dense2(right_encoded)
+        l = pool(conv2(conv1(l)))
+        r = pool(conv2(conv1(r)))
+        print(l)
+        print(r)
+    dense = Dense(256, activation='relu')
+    l = dense(l)
+    r = dense(r)
 
     # If cosine similary wanted, use the other comparer instead
     comparer = Lambda(cc.euclidean_distance)
     # comparer = Dot(axes=1, normalize=True, name='comparer')
     # comparer = Lambda(function=l2_similarity, name='comparer')
     # comparer = Lambda(lambda tensors: K.abs(tensors[0] - tensors[1]))
-    output = comparer([left_encoded, right_encoded])
+    output = comparer([l, r])
 
     # Compile and train Joint Model
     joint_model = Model(inputs=[left_input, right_input], outputs=output)
@@ -108,15 +122,15 @@ def model3():
     left_input = Input(shape=(11, 64), name='left_input')
     right_input = Input(shape=(11, 64), name='right_input')
 
-    value_embedder = Embedding(input_dim=65536, output_dim=128, name='value_embedder')
-    left_embedded = TimeDistributed(value_embedder)(left_input)
-    right_embedded = TimeDistributed(value_embedder)(right_input)
+    value_embedder = Embedding(input_dim=65536, output_dim=256, name='value_embedder')
+    left_embedded = TimeDistributed(value_embedder, trainable=False)(left_input)
+    right_embedded = TimeDistributed(value_embedder, trainable=False)(right_input)
 
-    value_encoder = LSTM(128, dropout=0.2, recurrent_dropout=0.20, name='value_encoder')
+    value_encoder = LSTM(256, dropout=0.2, recurrent_dropout=0.20, name='value_encoder')
     left_value_encoded = TimeDistributed(value_encoder)(left_embedded)
     right_value_encoded = TimeDistributed(value_encoder)(right_embedded)
 
-    quantile_encoder = Bidirectional(LSTM(128, dropout=0.20, recurrent_dropout=0.20), name='quantile_encoder')
+    quantile_encoder = Bidirectional(LSTM(256, dropout=0.20, recurrent_dropout=0.20), name='quantile_encoder')
     left_encoded = quantile_encoder(left_value_encoded)
     right_encoded = quantile_encoder(right_value_encoded)
 
@@ -129,59 +143,6 @@ def model3():
     joint_model = Model(inputs=[left_input, right_input], outputs=output)
     joint_model.summary(line_length=120)
 
-    return joint_model
-
-
-def model4(quantile_shape):
-    CNN_LAYERS = [[256, 10], [256, 7], [256, 5], [256, 3]]
-
-    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2seq_embedding_2/model.h5"
-    emb_path = os.environ['PYTHONPATH'].split(":")[0] + "/data/models/seq2seq_embedding_2/embedding_model.h5"
-
-    # Ensemble Joint Model
-    left_input = Input(shape=quantile_shape, name='left_input')
-    right_input = Input(shape=quantile_shape, name='right_input')
-
-    # Value embedding model trained as seq2seq.
-    value_encoder = load_seq2seq_embedder(model_path, emb_path)
-    left_value_encoded = TimeDistributed(value_encoder, trainable=False)(left_input)
-    right_value_encoded = TimeDistributed(value_encoder, trainable=False)(right_input)
-
-    # Convolution layers
-    convolution_output1 = []
-    convolution_output2 = []
-
-    for num_filters, filter_width in CNN_LAYERS:
-        conv = Convolution1D(filters=num_filters,
-                             kernel_size=filter_width,
-                             activation='tanh',
-                             name='Conv1D_{}_{}'.format(num_filters, filter_width))
-        c1 = conv(left_value_encoded)
-        c2 = conv(right_value_encoded)
-        pool = GlobalMaxPooling1D(name='MaxPoolingOverTime_{}_{}'.format(num_filters, filter_width))
-        p1 = pool(c1)
-        p2 = pool(c2)
-        convolution_output1.append(p1)
-        convolution_output2.append(p2)
-    x1 = Concatenate()(convolution_output1)
-    x2 = Concatenate()(convolution_output2)
-    dense1 = Dense(LSTM_DIM, activation='selu', kernel_initializer='lecun_normal')
-    x1 = dense1(x1)
-    x2 = dense1(x2)
-    x1 = AlphaDropout(0.2)(x1)
-    x2 = AlphaDropout(0.2)(x2)
-    dense2 = Dense(256, activation='selu', kernel_initializer='lecun_normal')
-    x1 = dense2(x1)
-    x2 = dense2(x2)
-    # If cosine similary wanted, use the other comparer instead
-    # comparer = Dot(axes=1, normalize=True, name='comparer')
-    comparer = Lambda(euclidean_distance, output_shape=eucl_dist_output_shape)
-    # comparer = Lambda(function=l2_similarity, name='comparer')
-    output = comparer([x1, x2])
-    # Compile and train Joint Model
-    joint_model = Model(inputs=[left_input, right_input], outputs=output)
-    # plot_model(joint_model, to_file='model.png')
-    joint_model.summary(line_length=120)
     return joint_model
 
 
@@ -202,5 +163,3 @@ def generate_random_fit(train_profiles):
         right = np.array(list(map(lambda x: preprocess_values_standard(x.quantiles, MAX_TEXT_SEQUENCE_LEN), right)))
 
         yield [left, right], label
-
-
