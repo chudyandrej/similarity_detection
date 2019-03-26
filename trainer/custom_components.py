@@ -1,3 +1,4 @@
+import keras
 from keras import backend as K
 from keras import objectives
 from keras.layers import Lambda, Bidirectional, CuDNNGRU, GRU
@@ -8,6 +9,12 @@ import numpy as np
 from keras.callbacks import *
 from evaluater.preprocessing import preprocess_values_standard
 import sdep
+
+import keras
+import warnings
+import numpy as np
+from tensorflow.python.lib.io import file_io
+
 
 
 def dot_product(x, kernel):
@@ -29,7 +36,11 @@ def dot_product(x, kernel):
 ##################################################
 #             FIT GENERATORS
 ##################################################
-def fit_generator_profile_pairs(profiles: List[sdep.Profile], max_text_sequence_len: int, batch_size: int, neg_ratio: int = 2):
+def fit_generator_profile_pairs(profiles: List[sdep.Profile],
+                                max_text_sequence_len: int,
+                                batch_size: int,
+                                neg_ratio: int = 2,
+                                get_raw_profiles=True):
     """
     Fit generator for generate similar and unsimilar pairs for training of siamese model with similarity distance
     optimization
@@ -46,6 +57,26 @@ def fit_generator_profile_pairs(profiles: List[sdep.Profile], max_text_sequence_
 
         yield [left, right], label
 
+
+def fit_generator_profile_pairs_with_dict(profiles: List[sdep.Profile],
+                                          profile_vector_dict: dict,
+                                          batch_size: int,
+                                          neg_ratio: int = 2):
+    """
+    Fit generator for generate similar and unsimilar pairs for training of siamese model with similarity distance
+    optimization
+    :param profiles: List of profiles
+    :param profile_vector_dict:
+    :param batch_size:
+    :param neg_ratio: default 2 = equal positive and  negative, 4 => 1:4 POS: NEG
+    """
+    profile_generator = sdep.pairs_generator(profiles, batch_size, neg_ratio=neg_ratio)
+    while True:
+        left, right, label, weights = next(profile_generator)
+        left = np.array([profile_vector_dict[prof] for prof in left])
+        right = np.array([profile_vector_dict[prof] for prof in right])
+
+        yield [left, right], label
 
 
 ##################################################
@@ -86,6 +117,18 @@ def contrastive_loss(y_true, y_pred):
 
 def zero_loss(y_true, y_pred):
     return K.zeros_like(y_pred)
+
+
+def mean_squared_error_from_pred(y_true, y_pred):
+    y_true = y_pred[:, 0]
+    y_pred = y_pred[:, 1]
+    return objectives.mean_squared_error(y_true, y_pred)
+
+
+def categorical_crossentropy_form_pred(y_true, y_pred):
+    y_true = y_pred[:, 0]
+    y_pred = y_pred[:, 1]
+    return objectives.categorical_crossentropy(y_true, y_pred)
 
 
 ##################################################
@@ -251,295 +294,143 @@ class AttentionWithContext(Layer):
             return input_shape[0], input_shape[-1]
 
 
+class EmbeddingRet(keras.layers.Embedding):
+    """Embedding layer with weights returned."""
+
+    def compute_output_shape(self, input_shape):
+        return [
+            super(EmbeddingRet, self).compute_output_shape(input_shape),
+            (self.input_dim, self.output_dim),
+        ]
+
+    def compute_mask(self, inputs, mask=None):
+        return [
+            super(EmbeddingRet, self).compute_mask(inputs, mask),
+            None,
+        ]
+
+    def call(self, inputs):
+        return [
+            super(EmbeddingRet, self).call(inputs),
+            self.embeddings,
+        ]
+
 ##################################################
 #                 CALLBACKS
 ##################################################
-class CyclicLR(Callback):
-    """This callback implements a cyclical learning rate policy (CLR).
-    The method cycles the learning rate between two boundaries with
-    some constant frequency, as detailed in this paper (https://arxiv.org/abs/1506.01186).
-    The amplitude of the cycle can be scaled on a per-iteration or
-    per-cycle basis.
-    This class has three built-in policies, as put forth in the paper.
-    "triangular":
-        A basic triangular cycle w/ no amplitude scaling.
-    "triangular2":
-        A basic triangular cycle that scales initial amplitude by half each cycle.
-    "exp_range":
-        A cycle that scales initial amplitude by gamma**(cycle iterations) at each
-        cycle iteration.
-    For more detail, please see paper.
 
-    # Example
-        ```python
-            clr = CyclicLR(base_lr=0.001, max_lr=0.006,
-                                step_size=2000., mode='triangular')
-            model.fit(X_train, Y_train, callbacks=[clr])
-        ```
 
-    Class also supports custom scaling functions:
-        ```python
-            clr_fn = lambda x: 0.5*(1+np.sin(x*np.pi/2.))
-            clr = CyclicLR(base_lr=0.001, max_lr=0.006,
-                                step_size=2000., scale_fn=clr_fn,
-                                scale_mode='cycle')
-            model.fit(X_train, Y_train, callbacks=[clr])
-        ```
+class ModelCheckpointMLEngine(keras.callbacks.Callback):
+    """Save the model after every epoch.
+    `filepath` can contain named formatting options,
+    which will be filled the value of `epoch` and
+    keys in `logs` (passed in `on_epoch_end`).
+    For example: if `filepath` is `weights.{epoch:02d}-{val_loss:.2f}.hdf5`,
+    then the model checkpoints will be saved with the epoch number and
+    the validation loss in the filename.
     # Arguments
-        base_lr: initial learning rate which is the
-            lower boundary in the cycle.
-        max_lr: upper boundary in the cycle. Functionally,
-            it defines the cycle amplitude (max_lr - base_lr).
-            The lr at any cycle is the sum of base_lr
-            and some scaling of the amplitude; therefore
-            max_lr may not actually be reached depending on
-            scaling function.
-        step_size: number of training iterations per
-            half cycle. Authors suggest setting step_size
-            2-8 x training iterations in epoch.
-        mode: one of {triangular, triangular2, exp_range}.
-            Default 'triangular'.
-            Values correspond to policies detailed above.
-            If scale_fn is not None, this argument is ignored.
-        gamma: constant in 'exp_range' scaling function:
-            gamma**(cycle iterations)
-        scale_fn: Custom scaling policy defined by a single
-            argument lambda function, where
-            0 <= scale_fn(x) <= 1 for all x >= 0.
-            mode paramater is ignored
-        scale_mode: {'cycle', 'iterations'}.
-            Defines whether scale_fn is evaluated on
-            cycle number or cycle iterations (training
-            iterations since start of cycle). Default is 'cycle'.
+        filepath: string, path to save the model file.
+        monitor: quantity to monitor.
+        verbose: verbosity mode, 0 or 1.
+        save_best_only: if `save_best_only=True`,
+            the latest best model according to
+            the quantity monitored will not be overwritten.
+        mode: one of {auto, min, max}.
+            If `save_best_only=True`, the decision
+            to overwrite the current save file is made
+            based on either the maximization or the
+            minimization of the monitored quantity. For `val_acc`,
+            this should be `max`, for `val_loss` this should
+            be `min`, etc. In `auto` mode, the direction is
+            automatically inferred from the name of the monitored quantity.
+        save_weights_only: if True, then only the model's weights will be
+            saved (`model.save_weights(filepath)`), else the full model
+            is saved (`model.save(filepath)`).
+        period: Interval (number of epochs) between checkpoints.
     """
 
-    def __init__(self, base_lr=0.001, max_lr=0.006, step_size=2000., mode='triangular',
-                 gamma=1., scale_fn=None, scale_mode='cycle'):
-        super(CyclicLR, self).__init__()
+    def __init__(self, filepath, monitor='val_loss', verbose=0,
+                 save_best_only=False, save_weights_only=False,
+                 mode='auto', period=1):
+        super(ModelCheckpointMLEngine, self).__init__()
+        self.monitor = monitor
+        self.verbose = verbose
+        self.filepath = filepath
+        self.save_best_only = save_best_only
+        self.save_weights_only = save_weights_only
+        self.period = period
+        self.epochs_since_last_save = 0
 
-        self.base_lr = base_lr
-        self.max_lr = max_lr
-        self.step_size = step_size
-        self.mode = mode
-        self.gamma = gamma
-        if scale_fn == None:
-            if self.mode == 'triangular':
-                self.scale_fn = lambda x: 1.
-                self.scale_mode = 'cycle'
-            elif self.mode == 'triangular2':
-                self.scale_fn = lambda x: 1 / (2. ** (x - 1))
-                self.scale_mode = 'cycle'
-            elif self.mode == 'exp_range':
-                self.scale_fn = lambda x: gamma ** (x)
-                self.scale_mode = 'iterations'
+        if mode not in ['auto', 'min', 'max']:
+            warnings.warn('ModelCheckpoint mode %s is unknown, '
+                          'fallback to auto mode.' % (mode),
+                          RuntimeWarning)
+            mode = 'auto'
+
+        if mode == 'min':
+            self.monitor_op = np.less
+            self.best = np.Inf
+        elif mode == 'max':
+            self.monitor_op = np.greater
+            self.best = -np.Inf
         else:
-            self.scale_fn = scale_fn
-            self.scale_mode = scale_mode
-        self.clr_iterations = 0.
-        self.trn_iterations = 0.
-        # self.history = {}
+            if 'acc' in self.monitor or self.monitor.startswith('fmeasure'):
+                self.monitor_op = np.greater
+                self.best = -np.Inf
+            else:
+                self.monitor_op = np.less
+                self.best = np.Inf
 
-        self._reset()
+    def on_epoch_end(self, epoch, logs=None):
 
-    def _reset(self, new_base_lr=None, new_max_lr=None,
-               new_step_size=None):
-        """Resets cycle iterations.
-        Optional boundary/step size adjustment.
-        """
-        if new_base_lr != None:
-            self.base_lr = new_base_lr
-        if new_max_lr != None:
-            self.max_lr = new_max_lr
-        if new_step_size != None:
-            self.step_size = new_step_size
-        self.clr_iterations = 0.
+        logs = logs or {}
+        self.epochs_since_last_save += 1
+        if self.epochs_since_last_save >= self.period:
+            self.epochs_since_last_save = 0
+            filepath = self.filepath.format(epoch=epoch + 1, **logs)
+            if self.save_best_only:
+                current = logs.get(self.monitor)
+                if current is None:
+                    warnings.warn('Can save best model only with %s available, '
+                                  'skipping.' % (self.monitor), RuntimeWarning)
+                else:
+                    if self.monitor_op(current, self.best):
+                        if self.verbose > 0:
+                            print('\nEpoch %05d: %s improved from %0.5f to %0.5f,'
+                                  ' saving model to %s'
+                                  % (epoch + 1, self.monitor, self.best,
+                                     current, filepath))
+                        self.best = current
+                        if self.save_weights_only:
+                            self.model.save_weights(filepath, overwrite=True)
+                        else:
+                            if self.filepath.startswith('gs://'):
+                                print("Gcloud_save")
+                                save_model_to_cloud(self.model, self.filepath)
+                            else:
+                                self.model.save(filepath, overwrite=True)
 
-    def clr(self):
-        cycle = np.floor(1 + self.clr_iterations / (2 * self.step_size))
-        x = np.abs(self.clr_iterations / self.step_size - 2 * cycle + 1)
-        if self.scale_mode == 'cycle':
-            return self.base_lr + (self.max_lr - self.base_lr) * np.maximum(0, (1 - x)) * self.scale_fn(cycle)
-        else:
-            return self.base_lr + (self.max_lr - self.base_lr) * np.maximum(0, (1 - x)) * self.scale_fn(
-                self.clr_iterations)
-
-    def on_train_begin(self, logs={}):
-        # logs = logs or {}
-
-        if self.clr_iterations == 0:
-            K.set_value(self.model.optimizer.lr, self.base_lr)
-        else:
-            K.set_value(self.model.optimizer.lr, self.clr())
-
-    def on_batch_end(self, epoch, logs=None):
-
-        # logs = logs or {}
-        self.trn_iterations += 1
-        self.clr_iterations += 1
-
-        # self.history.setdefault('lr', []).append(K.get_value(self.model.optimizer.lr))
-        # self.history.setdefault('iterations', []).append(self.trn_iterations)
-
-        # for k, v in logs.items():
-        #    self.history.setdefault(k, []).append(v)
-
-        K.set_value(self.model.optimizer.lr, self.clr())
-
-
-class CyclicMT(Callback):
-    def __init__(self, base_mt=0.85, max_mt=0.95, step_size=2000., mode='triangular',
-                 gamma=1., scale_fn=None, scale_mode='cycle'):
-        super(CyclicMT, self).__init__()
-
-        self.base_mt = base_mt
-        self.max_mt = max_mt
-        self.step_size = step_size
-        self.mode = mode
-        self.gamma = gamma
-        if scale_fn == None:
-            if self.mode == 'triangular':
-                self.scale_fn = lambda x: 1.
-                self.scale_mode = 'cycle'
-            elif self.mode == 'triangular2':
-                self.scale_fn = lambda x: 1 / (2. ** (x - 1))
-                self.scale_mode = 'cycle'
-            elif self.mode == 'exp_range':
-                self.scale_fn = lambda x: gamma ** (x)
-                self.scale_mode = 'iterations'
-        else:
-            self.scale_fn = scale_fn
-            self.scale_mode = scale_mode
-        self.cmt_iterations = 0.
-        self.trn_iterations = 0.
-        # self.history = {}
-
-        self._reset()
-
-    def _reset(self, new_base_mt=None, new_max_mt=None,
-               new_step_size=None):
-        """Resets cycle iterations.
-        Optional boundary/step size adjustment.
-        """
-        if new_base_mt != None:
-            self.base_mt = new_base_mt
-        if new_max_mt != None:
-            self.max_mt = new_max_mt
-        if new_step_size != None:
-            self.step_size = new_step_size
-        self.cmt_iterations = 0.
-
-    def cmt(self):
-        cycle = np.floor(1 + self.cmt_iterations / (2 * self.step_size))
-        x = np.abs(self.cmt_iterations / self.step_size - 2 * cycle + 1)
-        if self.scale_mode == 'cycle':
-            return self.base_mt + (-self.max_mt + self.base_mt) * np.maximum(0, (1 - x)) * self.scale_fn(cycle)
-        else:
-            return self.base_mt + (-self.max_mt + self.base_mt) * np.maximum(0, (1 - x)) * self.scale_fn(
-                self.cmt_iterations)
-
-    def on_train_begin(self, logs={}):
-        # logs = logs or {}
-
-        if self.cmt_iterations == 0:
-            K.set_value(self.model.optimizer.momentum, self.base_mt)
-        else:
-            K.set_value(self.model.optimizer.momentum, self.cmt())
-
-    def on_batch_end(self, epoch, logs=None):
-
-        # logs = logs or {}
-        self.trn_iterations += 1
-        self.cmt_iterations += 1
-
-        # self.history.setdefault('mt', []).append(K.get_value(self.model.optimizer.momentum))
-        # self.history.setdefault('iterations', []).append(self.trn_iterations)
-
-        # for k, v in logs.items():
-        #    self.history.setdefault(k, []).append(v)
-
-        K.set_value(self.model.optimizer.momentum, self.cmt())
+                    else:
+                        if self.verbose > 0:
+                            print('\nEpoch %05d: %s did not improve from %0.5f' %
+                                  (epoch + 1, self.monitor, self.best))
+            else:
+                if self.verbose > 0:
+                    print('\nEpoch %05d: saving model to %s' % (epoch + 1, filepath))
+                if self.save_weights_only:
+                    self.model.save_weights(filepath, overwrite=True)
+                else:
+                    if self.filepath.startswith('gs://'):
+                        print("Gcloud_save")
+                        save_model_to_cloud(self.model, self.filepath)
+                    else:
+                        self.model.save(filepath, overwrite=True)
 
 
-class PerClassAccHistory(Callback):
-    '''
-    a note about the confusion matrix:
-    Cij = nb of obs known to be in group i and predicted to be in group j. So:
-    - the nb of right predictions is given by the diagonal
-    - the total nb of observations for a group is given by summing the corresponding row
-    - the total nb of predictions for a group is given by summing the corresponding col
-    accuracy is (nb of correct preds)/(total nb of preds)
-    # https://developers.google.com/machine-learning/crash-course/classification/accuracy
-    '''
-
-    def __init__(self, my_n_cats, my_rd, my_n_steps):
-        super().__init__()
-        self.my_n_cats = my_n_cats
-        self.my_rd = my_rd
-        self.my_n_steps = my_n_steps
-
-    def on_train_begin(self, logs={}):
-        self.per_class_accuracy = []
-
-    def on_epoch_end(self, epoch, logs={}):
-        cmat = np.zeros(shape=(self.my_n_cats, self.my_n_cats))
-        for repeat in range(self.my_n_steps):
-            docs, labels = self.my_rd.__next__()
-            preds_floats = self.model.predict(docs)
-            y_pred = np.argmax(np.array(preds_floats), axis=1)
-            y_true = np.argmax(labels, axis=1)
-            cmat = np.add(cmat, confusion_matrix(y_true, y_pred))
-            if repeat % round(self.my_n_steps / 5) == 0:
-                print(repeat)
-        accs = list(np.round(1e2 * cmat.diagonal() / cmat.sum(axis=0), 2))
-        self.per_class_accuracy.append(accs)
-
-
-class TimeHistory(Callback):
-    def on_train_begin(self, logs=None):
-        self.times = []
-
-    def on_epoch_begin(self, batch, logs=None):
-        self.epoch_time_start = time()
-
-    def on_epoch_end(self, batch, logs=None):
-        self.times.append(round(time() - self.epoch_time_start, 2))
-
-
-class LossHistory(Callback):
-    '''
-    records the average loss on the full *training* set so far
-    the loss returned by logs is just that of the current batch!
-    '''
-
-    def on_train_begin(self, logs=None):
-        self.losses = []
-        self.loss_avg = []
-
-    def on_batch_end(self, batch, logs=None):
-        self.losses.append(round(float(logs.get('loss')), 6))
-        self.loss_avg.append(round(np.mean(self.losses, dtype=np.float64), 6))
-
-    def on_epoch_end(self, batch, logs={}):
-        self.losses = []
-
-
-class LRHistory(Callback):
-    ''' records the current learning rate'''
-
-    def on_train_begin(self, logs=None):
-        self.lrs = []
-
-    def on_batch_end(self, batch, logs=None):
-        my_lr = K.eval(self.model.optimizer.lr)
-        self.lrs.append(my_lr)
-
-
-class MTHistory(Callback):
-    ''' records the current momentum'''
-
-    def on_train_begin(self, logs=None):
-        self.mts = []
-
-    def on_batch_end(self, batch, logs=None):
-        my_mt = K.eval(self.model.optimizer.momentum)
-        self.mts.append(my_mt)
+def save_model_to_cloud(model, filepath):
+    filename = filepath.split("/")[-1]
+    print(filename)
+    model.save(filename)
+    with file_io.FileIO(filename, mode='rb') as inputFile:
+        with file_io.FileIO(filepath, mode='wb+') as outFile:
+            outFile.write(inputFile.read())

@@ -1,6 +1,8 @@
 import os
 import numpy as np
-import keras, codecs
+import keras
+import codecs
+import datetime
 import evaluater.embedder as em
 
 import trainer.custom_components as cc
@@ -9,11 +11,107 @@ from keras.models import Model, load_model
 from typing import List, Optional, Tuple
 
 from sdep import AuthorityEvaluator, Profile   # Needed
+from preprocessor.preprocessor import DataPreprocessorSeq2seq
 
-CHECKPOINT_PATH = os.environ['PYTHONPATH'].split(":")[0] + "/evaluater/similarity_detection/pickles/"
 
-# os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
-# os.environ["CUDA_VISIBLE_DEVICES"] = ""
+# ====================================================================
+def exp1():
+    def load_h5(path):
+        model = load_model(path, custom_objects={
+            "CustomRegularization": cc.CustomRegularization,
+            "zero_loss": cc.zero_loss
+        })
+        encoder = Model(model.inputs[0], model.layers[4].output[1])
+        return encoder
+    # -------------- SET PARAMETERS OF EXPERIMENT --------------------
+    experiment_name = sim_detection_seq2seq_gru_onehot_1.__name__
+    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/outcome/vec2vec_gpt2_embedding/training/model2/model.h5"
+
+    print("Experiment " + experiment_name + " running ...")
+    ev = AuthorityEvaluator(username='andrej', neighbors=20, train_size=0.50,
+                            results_file="./results/"+experiment_name+".txt")
+    test_profiles: List[Profile] = ev.get_test_dataset("s3")
+
+    # -------------- COMPUTING EXPERIMENT BODY --------------------
+    encoder_model = load_h5(model_path)
+    encoder_model.summary()
+    uid_values: List[Tuple[Tuple, str]] = [(profile.uid, value) for profile in test_profiles
+                                           for value in profile.quantiles]
+
+
+    tokened_data: np.array = preprocess_values_standard(map(lambda x: x[1], uid_values), 64)
+    embeddings = model.predict(tokened_data)
+    uids = list(map(lambda x: x[0], uid_values))
+
+    print("Clustering value vectors to column representation")
+    uid_embedding = em.create_column_embedding_by(list(zip(uids, embeddings)), ag_method)
+    uid_profile_index = dict(map(lambda profile: (profile.uid, profile), test_profiles))
+    profile_embedding = [(uid_profile_index[uid], embedding) for uid, embedding in uid_embedding]
+
+    # -------------- EVALUATE EXPERIMENT --------------------
+    print("Count of classes: " + str(len(uid_embedding)))
+    ev.evaluate_embeddings(profile_embedding)
+
+
+if __name__ == '__main__':
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def computing_body_by_interface(model: keras.engine.training.Model, test_profiles: List[Profile],
@@ -270,6 +368,85 @@ def sim_detection_seq2seq_gru_onehot_1():
     encoder_model = load_h5(model_path)
     encoder_model.summary()
     computing_body_by_interface(encoder_model, test_profiles, ev)
+
+
+
+
+
+# ====================================================================
+#                           EXPERIMENT 8
+# [GPT2 fix]-[DENSE linear]
+# ====================================================================
+def exp8():
+    def load_h5(model_src):
+        model = load_model(model_src, custom_objects={
+            "euclidean_distance": cc.euclidean_distance,
+            "contrastive_loss": cc.contrastive_loss
+        })
+        encoder = Model(model.inputs[0], model.layers[3].get_output_at(0))
+        encoder.summary()
+        return encoder
+
+    # -------------- SET PARAMETERS OF EXPERIMENT --------------------
+    date = datetime.datetime.now().strftime("%m-%d_%H:%M")
+    eval_space = os.environ['PYTHONPATH'].split(":")[0] + '/outcome/GPT2/eval_'+date
+    training_space = os.environ['PYTHONPATH'].split(":")[0] + '/outcome/GPT2/training'
+    os.makedirs(eval_space)
+
+    # -------------- LOAD DATA  --------------------
+    ev = AuthorityEvaluator(username='andrej', neighbors=20, metric="euclidean", results_file=eval_space)
+    test_profiles = ev.get_test_dataset(data_src="s3")
+
+    # -------------- COMPUTING EXPERIMENT BODY --------------------
+    final_tune_model = load_h5(training_space+"/model.h5")
+    print("Model successfully loaded. ")
+    profile2embedding = get_index_profile2embedding_gpt2(test_profiles, training_space)
+    embeddings = [profile2embedding[prof] for prof in test_profiles]
+    final_embeddings = final_tune_model.predict(np.array(embeddings))
+    print("Processed " + str(len(final_embeddings)) + " value embeddings")
+
+    # -------------- EVALUATE EXPERIMENT --------------------
+    print("Count of classes: " + str(len(set(test_profiles))))
+    ev.evaluate_embeddings(list(zip(test_profiles, final_embeddings)))
+
+
+# ====================================================================
+# ====================================================================
+def exp11():
+    def load_h5(path):
+        model = load_model(path, custom_objects={
+            "CustomRegularization": cc.CustomRegularization,
+            "zero_loss": cc.zero_loss
+        })
+        encoder = Model(model.inputs[0], model.layers[4].output[1])
+        return encoder
+    # -------------- SET PARAMETERS OF EXPERIMENT --------------------
+    experiment_name = sim_detection_seq2seq_gru_onehot_1.__name__
+    model_path = os.environ['PYTHONPATH'].split(":")[0] + "/outcome/vec2vec_gpt2_embedding/training/model2/model.h5"
+
+    print("Experiment " + experiment_name + " running ...")
+    ev = AuthorityEvaluator(username='andrej', neighbors=20, train_size=0.50,
+                            results_file="./results/"+experiment_name+".txt")
+    test_profiles: List[Profile] = ev.get_test_dataset("s3")
+
+    # -------------- COMPUTING EXPERIMENT BODY --------------------
+    encoder_model = load_h5(model_path)
+    encoder_model.summary()
+    uid_values: List[Tuple[Tuple, str]] = [(profile.uid, value) for profile in test_profiles
+                                           for value in profile.quantiles]
+
+    tokened_data: np.array = preprocess_values_standard(map(lambda x: x[1], uid_values), 64)
+    embeddings = model.predict(tokened_data)
+    uids = list(map(lambda x: x[0], uid_values))
+
+    print("Clustering value vectors to column representation")
+    uid_embedding = em.create_column_embedding_by(list(zip(uids, embeddings)), ag_method)
+    uid_profile_index = dict(map(lambda profile: (profile.uid, profile), test_profiles))
+    profile_embedding = [(uid_profile_index[uid], embedding) for uid, embedding in uid_embedding]
+
+    # -------------- EVALUATE EXPERIMENT --------------------
+    print("Count of classes: " + str(len(uid_embedding)))
+    ev.evaluate_embeddings(profile_embedding)
 
 
 if __name__ == '__main__':

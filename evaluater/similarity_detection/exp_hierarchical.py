@@ -1,5 +1,6 @@
 import os
 import pickle
+import datetime
 import numpy as np
 from keras.layers import Concatenate, Input, TimeDistributed, LSTM, Bidirectional, Embedding, GRU
 
@@ -7,10 +8,10 @@ from sdep import Profile, AuthorityEvaluator
 from keras.models import Model, load_model
 
 
-from evaluater.preprocessing import preprocess_values_standard
+from evaluater.preprocessing import preprocess_values_standard, get_index_profile2embedding_gpt2
 import trainer.custom_components as cc
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+os.environ['CUDA_VISIBLE_DEVICES'] = '1'
 # os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
 # os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
@@ -168,6 +169,83 @@ def exp5():
     ev.evaluate_embeddings(list(zip(test_profiles, embedding_vectors)))
 
 
+# ====================================================================
+#                           EXPERIMENT 6
+# [Embedding_FIX]-[TimeDistributed[GRU]]-[AttentionWithContext]-[Bidirectional[GRU]]-[AttentionWithContext] (model5)
+# {'total': 73766, 0: 29699, None: 18861, 1: 8058, 2: 4249, 3: 2897, 4: 2172, 5: 1635, 6: 1372, 7: 1161, 8: 901, 9: 768,
+# 10: 607, 11: 469, 12: 396, 13: 248, 14: 128, 15: 83, 16: 40, 17: 17, 18: 5}
+# Percentage of found labels on first 3 index : 56%
+# Experiment with jointly training value and quantile encoder wit Attention layers
+# ====================================================================
+def exp7():
+    def load_h5(model_src):
+        model = load_model(model_src, custom_objects={
+            "AttentionWithContext": cc.AttentionWithContext,
+            "euclidean_distance": cc.euclidean_distance,
+            "contrastive_loss": cc.contrastive_loss
+
+        })
+        encoder = Model(model.inputs[0], model.layers[6].get_output_at(0))
+        encoder.summary()
+        return encoder
+
+    # -------------- SET PARAMETERS OF EXPERIMENT --------------------
+    experiment_name = exp7.__name__
+
+    print("Experiment " + experiment_name + " running ...")
+    ev = AuthorityEvaluator(username='andrej', neighbors=20, metric="euclidean")
+    model_path = os.environ['PYTHONPATH'].split(":")[0] + '/gru_hierarchical1551354775/model7_[3.12760787109375].h5'
+    # -------------- COMPUTING EXPERIMENT BODY --------------------
+    encoder_model = load_h5(model_path)
+    print("Model successfully loaded. ")
+    test_profiles = ev.get_test_dataset(data_src="s3")
+    quantiles_data = np.array(list(map(lambda x: preprocess_values_standard(x.quantiles, 64), test_profiles)))
+    print("Model is invoking ... ")
+    embedding_vectors = encoder_model.predict(quantiles_data)
+    print("Processed " + str(len(embedding_vectors)) + " value embeddings")
+
+    # -------------- EVALUATE EXPERIMENT --------------------
+    print("Count of classes: " + str(len(set(test_profiles))))
+    ev.evaluate_embeddings(list(zip(test_profiles, embedding_vectors)))
+
+
+# ====================================================================
+#                           EXPERIMENT 8
+# [GPT2 fix]-[DENSE linear]
+# ====================================================================
+def exp8():
+    def load_h5(model_src):
+        model = load_model(model_src, custom_objects={
+            "euclidean_distance": cc.euclidean_distance,
+            "contrastive_loss": cc.contrastive_loss
+        })
+        encoder = Model(model.inputs[0], model.layers[3].get_output_at(0))
+        encoder.summary()
+        return encoder
+
+    # -------------- SET PARAMETERS OF EXPERIMENT --------------------
+    date = datetime.datetime.now().strftime("%m-%d_%H:%M")
+    eval_space = os.environ['PYTHONPATH'].split(":")[0] + '/outcome/GPT2/eval_'+date
+    training_space = os.environ['PYTHONPATH'].split(":")[0] + '/outcome/GPT2/training'
+    os.makedirs(eval_space)
+
+    # -------------- LOAD DATA  --------------------
+    ev = AuthorityEvaluator(username='andrej', neighbors=20, metric="euclidean", results_file=eval_space)
+    test_profiles = ev.get_test_dataset(data_src="s3")
+
+    # -------------- COMPUTING EXPERIMENT BODY --------------------
+    final_tune_model = load_h5(training_space+"/model.h5")
+    print("Model successfully loaded. ")
+    profile2embedding = get_index_profile2embedding_gpt2(test_profiles, training_space)
+    embeddings = [profile2embedding[prof] for prof in test_profiles]
+    final_embeddings = final_tune_model.predict(np.array(embeddings))
+    print("Processed " + str(len(final_embeddings)) + " value embeddings")
+
+    # -------------- EVALUATE EXPERIMENT --------------------
+    print("Count of classes: " + str(len(set(test_profiles))))
+    ev.evaluate_embeddings(list(zip(test_profiles, final_embeddings)))
+
+
 ################################################################################
 #                   EXPERIMENT WITH GOOD RESULTS
 ################################################################################
@@ -216,7 +294,7 @@ def exp1():
 
 # ====================================================================
 #                           EXPERIMENT 6
-# [Embedding]-[TimeDistributed[GRU-fix]]-[AttentionWithContext]-[Bidirectional[GRU-128]] (model3)
+# [Embedding_FIX]-[TimeDistributed[GRU_fix]]-[Bidirectional[GRU-128]]-[AttentionWithContext] (model3)
 # RESULT: {'total': 73766, 0: 37854, None: 12854, 1: 8440, 2: 3983, 3: 2587, 4: 1826, 5: 1416, 6: 1137, 7: 917,
 # 8: 708, 9: 585, 10: 479, 11: 342, 12: 259, 13: 178, 14: 115, 15: 52, 16: 19, 17: 13, 18: 2}
 # Percentage of found labels on first 3 index : 68%
@@ -255,4 +333,4 @@ def exp6():
 
 
 if __name__ == '__main__':
-    exp6()
+    exp8()
