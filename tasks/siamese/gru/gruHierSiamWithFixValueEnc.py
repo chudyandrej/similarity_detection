@@ -3,7 +3,7 @@ from keras.layers import *
 from keras.models import *
 from ..siamese import Siamese
 
-import trainer.custom_components as cc
+import custom_components as cc
 
 
 class GruHierSiamWithFixValueEnc(Siamese):

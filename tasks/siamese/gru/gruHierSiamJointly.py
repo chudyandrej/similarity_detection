@@ -3,7 +3,7 @@ from keras.layers import *
 from keras.models import *
 from ..siamese import Siamese
 
-import trainer.custom_components as cc
+import custom_components as cc
 
 
 class GruHierSiamJointly(Siamese):
@@ -33,6 +33,18 @@ class GruHierSiamJointly(Siamese):
         # Ensemble Joint Model
 
     def build_model(self):
+        def value_level():
+            input_layer = Input(shape=(self.max_seq_len,), name='input')
+            embedded_value = Embedding(input_dim=self.encoder.get_vocab_size(), output_dim=self.enc_output_dim,
+                                       name='value_embedder', trainable=False)(input_layer)
+            embedded_value = Dropout(self.dropout)(embedded_value)
+            encoded_value = Bidirectional(
+                CuDNNGRU(units=50, return_sequences=True), merge_mode='concat', weights=None)(embedded_value)
+            encoded_value = cc.AttentionWithContext(return_coefficients=False)(encoded_value)
+            encoded_value = Dropout(self.dropout)(encoded_value)
+            model = Model(input_layer, encoded_value)
+            return model
+
 
         left_input = Input(shape=(11, self.max_seq_len), name='left_input')
         right_input = Input(shape=(11, self.max_seq_len), name='right_input')

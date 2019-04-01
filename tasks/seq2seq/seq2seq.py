@@ -1,9 +1,9 @@
 import os
+import json
 import numpy as np
 import pandas as pd
 import tensorflow as tf
 
-from typing import List
 from keras import Model
 from keras.callbacks import EarlyStopping, TensorBoard
 from keras.preprocessing.sequence import pad_sequences
@@ -12,20 +12,18 @@ from abc import abstractmethod
 from typing import List, Tuple
 
 import evaluater.embedder as em
-import trainer.custom_components as cc
+import custom_components as cc
 from sdep import AuthorityEvaluator, Profile   # Needed
 from ..computing_model import ComputingModel
+from preprocessor.encoder import Encoder
 
 
 class Seq2seq(ComputingModel):
-
-    def __init__(self, encoder, max_seq_len):
+    def __init__(self, encoder: Encoder, max_seq_len, output_path):
         self.encoder = encoder
         self.max_seq_len = max_seq_len
-
-    @abstractmethod
-    def get_output_space(self):
-        pass
+        self.output_path = output_path
+        os.makedirs(self.output_path, exist_ok=True)
 
     @abstractmethod
     def build_model(self):
@@ -37,29 +35,43 @@ class Seq2seq(ComputingModel):
 
     def train_model(self):
         model: Model = self.build_model()
-        string_values = pd.read_csv(tf.gfile.Open(self.DATA_PATH))['value'].values
 
         # Preprocess data
-        input_coder, input_decoder, target = self.preprocess_data_for_training(string_values, 64)
+        input_coder, input_decoder, target = self.preprocess_data_for_training()
 
-        model.fit(x=[input_coder, input_decoder, target],
-                  y=target,
-                  epochs=500,
-                  batch_size=64,
-                  validation_split=0.3,
-                  callbacks=[
-                      cc.ModelCheckpointMLEngine(self.get_output_space() + "/model.h5", monitor='val_loss', verbose=1,
-                                                 save_best_only=True, mode='min'),
-                      EarlyStopping(monitor='val_loss', patience=6, verbose=1),
-                      TensorBoard(log_dir=self.get_output_space() + '/training_log', write_graph=True, embeddings_freq=0)
-                  ])
-        self.evaluate_model()
+        # input_coder = input_coder[:100]
+        # input_decoder = input_decoder[:100]
+        # target = target[:100]
+
+        time_callback = cc.TimeHistory()
+        hist = model.fit(x=[input_coder, input_decoder, target],
+                         y=target,
+                         epochs=300,
+                         batch_size=64,
+
+                         validation_split=0.3,
+                     verbose=1,
+                         callbacks=[
+                                     EarlyStopping(monitor='val_loss', patience=6, verbose=1),
+                             TensorBoard(log_dir=self.output_path + '/training_log', write_graph=True),
+                             time_callback
+                         ])
+        hist.history['times'] = time_callback.times
+
+        string_list = []
+        model.summary(print_fn=lambda x: string_list.append(x))
+        hist.history['model_topology'] = "\n".join(string_list)
+
+        with open(self.output_path+'/training_hist.json', 'w') as f:
+            json.dump(hist.history, f)
+
+        # self.evaluate_model()
 
     def evaluate_model(self):
         print("Experiment FIX GPT2 encoder running ...")
 
         ev = AuthorityEvaluator(username='andrej', neighbors=20, train_size=0.50,
-                                results_file=self.get_output_space())
+                                results_file=self.output_path)
         test_profiles: List[Profile] = ev.get_test_dataset("s3")
 
         # -------------- COMPUTING EXPERIMENT BODY --------------------
@@ -91,16 +103,18 @@ class Seq2seq(ComputingModel):
             result.append(values)
         return np.array(result)
 
-    def preprocess_data_for_training(self, row_src: List[str], max_seq_len: int):
-        self.max_seq_len = max_seq_len
-        strings = map(str, row_src)
-        strings = list(map(str.strip, strings))
-        strings = list(set(strings))
+    def preprocess_data_for_training(self):
+        ev = AuthorityEvaluator(username='andrej', neighbors=20, train_size=0.50, results_file=self.output_path)
+        training_profile = ev.s3_profiles
+        training_values = [value for profile in training_profile for value in profile.quantiles]
+        training_values = map(str, training_values)
+        training_values = list(map(str.strip, training_values))
+        training_values = list(set(training_values))
 
-        embedded_strings = [self.encoder.encode(text)[:max_seq_len - 1] for text in strings]
+        print(f"Training on {len(training_profile)} profiles => {len(training_values)} values!")
 
-        input_coder = pad_sequences(list(map(lambda x: x[::-1], embedded_strings)), maxlen=max_seq_len, padding='pre')
-        input_decoder = pad_sequences(embedded_strings, maxlen=max_seq_len, padding='post')
-        input_decoder = np.roll(input_decoder, 1)
-        target = pad_sequences(embedded_strings, maxlen=max_seq_len, padding='post')
+        embedded_strings = [self.encoder.encode(text)[:self.max_seq_len - 1] for text in training_values]
+        input_coder = pad_sequences(list(map(lambda x: x[::-1], embedded_strings)), maxlen=self.max_seq_len, padding='pre')
+        input_decoder = np.roll(pad_sequences(embedded_strings, maxlen=self.max_seq_len, padding='post'), 1)
+        target = pad_sequences(embedded_strings, maxlen=self.max_seq_len, padding='post')
         return input_coder, input_decoder, target

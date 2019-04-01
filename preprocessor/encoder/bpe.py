@@ -1,18 +1,18 @@
 import os
 import regex as re
 import json
-
 import codecs
 
-# Options for load GPT2
-model_folder = os.environ['PYTHONPATH'].split(":")[0] + '/data/models/117M'
-config_path = os.path.join(model_folder, 'hparams.json')
-checkpoint_path = os.path.join(model_folder, 'model.ckpt')
-encoder_path = os.path.join(model_folder, 'encoder.json')
-vocab_path = os.path.join(model_folder, 'vocab.bpe')
+from .encoder import Encoder
 
 
-class BytePairEncoding(object):
+class BytePairEncoding(Encoder):
+    # Options for load GPT2
+    model_folder = os.environ['PYTHONPATH'].split(":")[0] + '/data/models/117M'
+    config_path = os.path.join(model_folder, 'hparams.json')
+    checkpoint_path = os.path.join(model_folder, 'model.ckpt')
+    encoder_path = os.path.join(model_folder, 'encoder.json')
+    vocab_path = os.path.join(model_folder, 'vocab.bpe')
 
     def __init__(self):
         """Encode and decode of BPE.
@@ -38,12 +38,11 @@ class BytePairEncoding(object):
                 shift += 1
         return byte_encoder
 
-    @staticmethod
-    def load_configuration():
-        with codecs.open(encoder_path, 'r', 'utf8') as reader:
+    def load_configuration(self):
+        with codecs.open(self.encoder_path, 'r', 'utf8') as reader:
             token_dict = json.load(reader)
         bpe_rank = {}
-        with codecs.open(vocab_path, 'r', 'utf8') as reader:
+        with codecs.open(self.vocab_path, 'r', 'utf8') as reader:
             reader.readline()
             for rank, line in enumerate(reader):
                 line = line.strip()
@@ -89,3 +88,8 @@ class BytePairEncoding(object):
     def decode(self, tokens):
         text = ''.join([self.token_dict_inv[token] for token in tokens])
         return bytearray([self.byte_decoder[byte] for byte in text]).decode('utf-8', errors='replace')
+
+    def get_vocab_size(self):
+        with open(self.config_path, 'r') as reader:
+            config = json.load(reader)
+        return config['n_vocab']

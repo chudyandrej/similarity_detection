@@ -5,26 +5,23 @@ import tensorflow as tf
 from keras.layers import *
 from keras.models import *
 from keras.callbacks import *
-from typing import List, Tuple
-import pandas as pd
+from preprocessor.encoder import Encoder
 
-import trainer.custom_components as cc
+
+import custom_components as cc
 from tasks.seq2seq.seq2seq import Seq2seq
 from sdep import AuthorityEvaluator, Profile   # Needed
 
 
 class GruSeq2seqWithGpt2Encoder(Seq2seq):
-    def __init__(self, gru_dim, max_seq_len, version, encoder):
-        super().__init__(encoder, max_seq_len)
-
+    def __init__(self, gru_dim, dropout,  max_seq_len, version, encoder: Encoder):
         self.gru_dim = gru_dim
         self.max_seq_len = max_seq_len
+        self.dropout = dropout
         self.version = version
-        self.output_space = f"{super().OUTPUT_ROOT}/{type(self).__name__}/{self.version}"
-        os.makedirs(self.output_space, exist_ok=True)
 
-    def get_output_space(self):
-        return self.output_space
+        self.output_space = f"{super().OUTPUT_ROOT}/{type(self).__name__}/{self.version}"
+        super().__init__(encoder, max_seq_len, self.output_space)
 
     def build_model(self):
         with open(super().GPT2_CONFIG_PATH, 'r') as reader:
@@ -46,7 +43,7 @@ class GruSeq2seqWithGpt2Encoder(Seq2seq):
 
         decoder_gru = CuDNNGRU(self.gru_dim, return_sequences=True)
         decoder_outputs = decoder_gru(embedded_decoder_input, initial_state=state_h)
-        decoder_dense = Dense(config['n_embd'], activation='sigmoid')
+        decoder_dense = Dense(config['n_embd'], activation='tanh')
         decoder_outputs = decoder_dense(decoder_outputs)
 
         output = Concatenate(axis=1)([embedded_target, decoder_outputs])
@@ -65,7 +62,6 @@ class GruSeq2seqWithGpt2Encoder(Seq2seq):
     def load_encoder(self):
         model = load_model(f"{self.output_space}/model.h5", custom_objects={
             "mean_squared_error_from_pred": cc.mean_squared_error_from_pred,
-            "zero_loss": cc.zero_loss,
             "EmbeddingRet": cc.EmbeddingRet
         })
         model: Model = Model(model.inputs[0], model.layers[4].output[1])

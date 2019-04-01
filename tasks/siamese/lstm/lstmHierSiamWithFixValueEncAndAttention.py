@@ -3,33 +3,34 @@ from keras.layers import *
 from keras.models import *
 from ..siamese import Siamese
 
+from preprocessor.encoder import Encoder
 import custom_components as cc
 
 
 class GruHierSiamWithFixValueEncAndAttention(Siamese):
-    def __init__(self, value_embedder, encoder, max_seq_len, gru_dim, dropout, version):
-        super().__init__(encoder=encoder, max_seq_len=max_seq_len)
+    def __init__(self, value_embedder: Model, encoder: Encoder, max_seq_len, lstm_dim, dropout, version):
+
         self.value_embedder = value_embedder
-        self.gru_dim = gru_dim
+        self.lstm_dim = lstm_dim
         self.dropout = dropout
         self.version = version
 
         self.output_space = f"{super().OUTPUT_ROOT}/{type(self).__name__}/{self.version}"
-        os.makedirs(self.output_space, exist_ok=True)
-
-    def get_output_space(self):
-        return self.output_space
+        super().__init__(encoder=encoder, max_seq_len=max_seq_len, output_path=self.dropout)
 
     def build_model(self):
         # Ensemble Joint Model
         left_input = Input(shape=(11, self.max_seq_len), name='left_input')
         right_input = Input(shape=(11, self.max_seq_len), name='right_input')
 
+        for layer in self.value_embedder.layers:
+            layer.trainable = False
+
         # Value embedding model trained as seq2seq.
         left_value_encoded = TimeDistributed(self.value_embedder)(left_input)
         right_value_encoded = TimeDistributed(self.value_embedder)(right_input)
 
-        quantile_encoder = Bidirectional(CuDNNGRU(units=self.gru_dim, return_sequences=True), merge_mode='concat',
+        quantile_encoder = Bidirectional(LSTM(units=self.lstm_dim, return_sequences=True), merge_mode='concat',
                                          weights=None, name="bidirectional_quantile")
         left_encoded = quantile_encoder(left_value_encoded)
         right_encoded = quantile_encoder(right_value_encoded)

@@ -7,38 +7,36 @@ from ..siamese import Siamese
 import custom_components as cc
 
 
-class GruHierSiamJointly(Siamese):
-    def __init__(self, encoder, max_seq_len, gru_dim, dropout, version):
-        super().__init__(encoder=encoder, max_seq_len=max_seq_len)
-        self.gru_dim = gru_dim
+class LstmHierSiamJointly(Siamese):
+    def __init__(self, encoder, max_seq_len, lstm_dim, dropout, version):
+        self.lstm_dim = lstm_dim
         self.dropout = dropout
         self.version = version
 
         self.output_space = f"{super().OUTPUT_ROOT}/{type(self).__name__}/{self.version}"
-        os.makedirs(self.output_space, exist_ok=True)
-
-    def get_output_space(self):
-        return self.output_space
-
-    def value_embedder(self):
-        input_layer = Input(shape=(self.max_seq_len,), name='input')
-        embedded_value = Embedding(input_dim=65536, output_dim=200, name='value_embedder', trainable=False)(
-            input_layer)
-        embedded_value = Dropout(self.dropout)(embedded_value)
-        encoded_value = Bidirectional(
-            CuDNNGRU(units=self.gru_dim, return_sequences=True), merge_mode='concat', weights=None)(embedded_value)
-        encoded_value = Dropout(self.dropout)(encoded_value)
-        model = Model(input_layer, encoded_value)
-        return model
+        super().__init__(encoder=encoder, max_seq_len=max_seq_len, output_path=self.output_space)
 
     def build_model(self):
+        def value_level():
+            input_layer = Input(shape=(self.max_seq_len,), name='input')
+            embedded_value = Embedding(input_dim=65536, output_dim=200, name='value_embedder', trainable=False)(
+                input_layer)
+            embedded_value = Dropout(self.dropout)(embedded_value)
+            encoded_value = Bidirectional(
+                LSTM(units=self.output_space, return_sequences=True, recurrent_dropout=self.dropout,
+                     recurrent=self.dropout))(embedded_value)
+            encoded_value = Dropout(self.dropout)(encoded_value)
+            model = Model(input_layer, encoded_value)
+            return model
+
         # Ensemble Joint Model
         left_input = Input(shape=(11, self.max_seq_len), name='left_input')
         right_input = Input(shape=(11, self.max_seq_len), name='right_input')
 
         # Value embedding model trained as seq2seq.
-        left_value_encoded = TimeDistributed(self.value_embedder)(left_input)
-        right_value_encoded = TimeDistributed(self.value_embedder)(right_input)
+        value_model = value_level()
+        left_value_encoded = TimeDistributed(value_model)(left_input)
+        right_value_encoded = TimeDistributed(value_model)(right_input)
 
         left_mean = Lambda(lambda xin: K.mean(xin, axis=1))(left_value_encoded)
         right_mean = Lambda(lambda xin: K.mean(xin, axis=1))(right_value_encoded)

@@ -12,10 +12,6 @@ class ComputingModel(object):
     OUTPUT_ROOT = f"{os.environ['PYTHONPATH'].split(':')[0]}/outcome/seq2seq"
 
     @abstractmethod
-    def get_output_space(self):
-        pass
-
-    @abstractmethod
     def build_model(self):
         pass
 

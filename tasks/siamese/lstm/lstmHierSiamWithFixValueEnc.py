@@ -4,47 +4,41 @@ from keras.models import *
 from ..siamese import Siamese
 
 import custom_components as cc
+from preprocessor.encoder import Encoder
 
 
-class GruHierSiamWithFixValueEncAndAttention(Siamese):
-    def __init__(self, value_embedder, encoder, max_seq_len, gru_dim, dropout, version):
-        super().__init__(encoder=encoder, max_seq_len=max_seq_len)
-        self.value_embedder = value_embedder
-        self.gru_dim = gru_dim
+class GruHierSiamWithFixValueEnc(Siamese):
+    def __init__(self, value_model: Model, encoder: Encoder, max_seq_len: int, lstm_dim: int, enc_output_dim: int, dropout, version):
+        self.value_model = value_model
+        self.lstm_dim = lstm_dim
+        self.enc_output_dim = enc_output_dim
         self.dropout = dropout
+        self.encoder = encoder
         self.version = version
 
         self.output_space = f"{super().OUTPUT_ROOT}/{type(self).__name__}/{self.version}"
-        os.makedirs(self.output_space, exist_ok=True)
-
-    def get_output_space(self):
-        return self.output_space
+        super().__init__(encoder=encoder, max_seq_len=max_seq_len, output_path=self.output_space)
 
     def build_model(self):
         # Ensemble Joint Model
         left_input = Input(shape=(11, self.max_seq_len), name='left_input')
         right_input = Input(shape=(11, self.max_seq_len), name='right_input')
 
-        # Value embedding model trained as seq2seq.
-        left_value_encoded = TimeDistributed(self.value_embedder)(left_input)
-        right_value_encoded = TimeDistributed(self.value_embedder)(right_input)
+        for layer in self.value_model.layers:
+            layer.trainable = False
 
-        quantile_encoder = Bidirectional(CuDNNGRU(units=self.gru_dim, return_sequences=True), merge_mode='concat',
-                                         weights=None, name="bidirectional_quantile")
+        # Value embedding model trained as seq2seq.
+        left_value_encoded = TimeDistributed(self.value_model)(left_input)
+        right_value_encoded = TimeDistributed(self.value_model)(right_input)
+        quantile_encoder = Bidirectional(LSTM(units=self.lstm_dim, return_sequences=True, dropout=self.dropout,
+                                              recurrent_dropout=self.dropout), name="bidirectional_quantile")
+
         left_encoded = quantile_encoder(left_value_encoded)
         right_encoded = quantile_encoder(right_value_encoded)
 
-        context_layer = cc.AttentionWithContext(return_coefficients=False)
-        col_att_vec_left = context_layer(left_encoded)
-        col_att_vec_right = context_layer(right_encoded)
-
-        dropout_1 = Dropout(self.dropout)
-        col_att_vec_dr_left = dropout_1(col_att_vec_left)
-        col_att_vec_dr_right = dropout_1(col_att_vec_right)
-
         comparer = Lambda(function=cc.euclidean_distance, name='comparer')
         # comparer = Dot(axes=1, normalize=True, name='comparer')
-        output = comparer([col_att_vec_dr_left, col_att_vec_dr_right])
+        output = comparer([left_encoded, right_encoded])
 
         # Compile and train Joint Model
         joint_model = Model(inputs=[left_input, right_input], outputs=output)
