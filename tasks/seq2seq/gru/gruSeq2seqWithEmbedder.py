@@ -50,6 +50,7 @@ class GruSeq2seqWithEmbedder(Seq2seq):
         model = load_model(f"{self.output_space}/model.h5", custom_objects={
             "mean_squared_error_from_pred": cc.mean_squared_error_from_pred
         })
+
         model: Model = Model(model.inputs[0], model.layers[4].output[1])
         model.summary()
         return model

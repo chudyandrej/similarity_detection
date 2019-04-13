@@ -179,6 +179,9 @@ class AttentionWithContext(Layer):
 
 class EmbeddingRet(Embedding):
     """Embedding layer with weights returned."""
+    def __init__(self, input_dim, output_dim, **kwargs):
+        super().__init__(input_dim, output_dim, **kwargs)
+        super().trainable = False
 
     def compute_output_shape(self, input_shape):
         return [

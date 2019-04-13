@@ -2,31 +2,41 @@
 import os
 from keras.layers import *
 from keras.models import *
-from ..siamese import Siamese
+from tasks.siamese.siamese import Siamese
 
 import custom_components as cc
+from preprocessor.encoder import Encoder
 
 
-class LstmHierSiamJointly(Siamese):
-    def __init__(self, encoder, max_seq_len, lstm_dim, dropout, version):
-        self.lstm_dim = lstm_dim
+class MeanHierSiamJointly(Siamese):
+    def __init__(self, rnn_type: str, attention: bool, encoder: Encoder, enc_out_dim, max_seq_len, rnn_dim, dropout,
+                 version):
+        self.rnn_dim = rnn_dim
         self.dropout = dropout
         self.version = version
+        self.rnn_type = rnn_type
+        self.attention = attention
+        self.enc_out_dim = enc_out_dim
 
-        self.output_space = f"{super().OUTPUT_ROOT}/{type(self).__name__}/{self.version}"
+        self.output_space = f"{super().OUTPUT_ROOT}/{rnn_type}{type(self).__name__}/{self.version}"
+        if attention:
+            self.output_space = f"{super().OUTPUT_ROOT}/{rnn_type}{type(self).__name__}WithAttention/{self.version}"
+
         super().__init__(encoder=encoder, max_seq_len=max_seq_len, output_path=self.output_space)
 
     def build_model(self):
         def value_level():
             input_layer = Input(shape=(self.max_seq_len,), name='input')
-            embedded_value = Embedding(input_dim=65536, output_dim=200, name='value_embedder', trainable=False)(
-                input_layer)
+            embedded_value = Embedding(input_dim=self.encoder.get_vocab_size()+1, output_dim=self.enc_out_dim,
+                                       name='value_embedder', trainable=True)(input_layer)
             embedded_value = Dropout(self.dropout)(embedded_value)
-            encoded_value = Bidirectional(
-                LSTM(units=self.output_space, return_sequences=True, recurrent_dropout=self.dropout,
-                     recurrent=self.dropout))(embedded_value)
-            encoded_value = Dropout(self.dropout)(encoded_value)
-            model = Model(input_layer, encoded_value)
+            rnn = self.get_rnn(rnn_type=self.rnn_type, rnn_dim=self.rnn_dim, dropout=self.dropout,
+                               return_sequences=self.attention)
+            x = rnn(embedded_value)
+            if self.attention:
+                x = cc.AttentionWithContext(return_coefficients=False)(x)
+            x = Dropout(self.dropout)(x)
+            model = Model(input_layer, x)
             return model
 
         # Ensemble Joint Model
@@ -54,12 +64,12 @@ class LstmHierSiamJointly(Siamese):
     def load_encoder(self):
         model = load_model(f"{self.output_space}/model.h5", custom_objects={
             "euclidean_distance": cc.euclidean_distance,
-            "contrastive_loss": cc.contrastive_loss
+            "contrastive_loss": cc.contrastive_loss,
+            "AttentionWithContext": cc.AttentionWithContext
 
         })
-        print(model.layers)
-        exit()
-        model: Model = Model(model.inputs[0], model.layers[6].get_output_at(0))
+
+        model: Model = Model(model.inputs[0], model.layers[4].get_output_at(0))
         model.summary()
         return model
 

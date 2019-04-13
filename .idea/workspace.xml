@@ -1,43 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/tasks/siamese/models/__init__.py" line="9" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="d3daed69-9682-4673-9397-f4a458b7e5cc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/custom_components/callbacks.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/custom_components/layers.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/custom_components/loss_functions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/custom_components/similarity_functions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/preprocessor/encoder/asciEncoder.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithEmbedder.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tasks/seq2seq/lstm/lstmSeq2seqWithEmbedder.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamJointly.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamJointlyWithAttention.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamWithFixValueEnc.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamWithFixValueEncAndAttention.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tasks/siamese/lstm/lstmMeanSiamJointly.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tasks/triplet/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/bashsupport_project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/evaluation/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/evaluation/evaluator.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/evaluation/similarity_task.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tasks/seq2seq/gru/cuDNNGRUSeq2seqWithGpt2Encoder.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tasks/siamese/models/hierSiamJointlyWithSeq2Encoder.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tasks/siamese/models/meanSiamJointlyWithGpt2Encoder.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tasks/triplet/models/hierTripleJointly.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tasks/triplet/triplet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/lstm_embedding.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/lstm_embedding.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/preprocessor/encoder/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/preprocessor/encoder/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/preprocessor/encoder/bpe.py" beforeDir="false" afterPath="$PROJECT_DIR$/preprocessor/encoder/bpe.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/preprocessor/encoder/encoder.py" beforeDir="false" afterPath="$PROJECT_DIR$/preprocessor/encoder/encoder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/preprocessor/preprocessor.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom_components/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom_components/layers.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom_components/layers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom_components/loss_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom_components/loss_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluater/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater_old/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluater/computing.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater_old/computing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluater/embedder.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater_old/embedder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluater/key_analyzer/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater_old/key_analyzer/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluater/key_analyzer/experiments.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater_old/key_analyzer/experiments.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluater/load_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater_old/load_models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluater/preprocessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater_old/preprocessing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluater/similarity_detection/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater_old/similarity_detection/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluater/similarity_detection/evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater_old/similarity_detection/evaluation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluater/similarity_detection/exp_gru_value.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater_old/similarity_detection/exp_gru_value.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluater/similarity_detection/exp_hierarchical.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater_old/similarity_detection/exp_hierarchical.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluater/similarity_detection/exp_lstm_value.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater_old/similarity_detection/exp_lstm_value.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluater/similarity_detection/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluater_old/similarity_detection/run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/preprocessor/encoder/gpt2.py" beforeDir="false" afterPath="$PROJECT_DIR$/preprocessor/encoder/gpt2.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tasks/computing_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/computing_model.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tasks/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/run.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tasks/seq2seq/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/seq2seq/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithEmbedder.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithEmbedder.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithGpt2Encoder.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithGpt2Encoder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithOnehot.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithOnehot.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tasks/seq2seq/lstm/lstmSeq2seqWithGpt2Encoder.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/seq2seq/lstm/lstmSeq2seqWithGpt2Encoder.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tasks/seq2seq/seq2seq.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/seq2seq/seq2seq.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamJointly.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamJointly.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamJointlyWithAttention.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamJointlyWithAttention.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamWithFixValueEnc.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamWithFixValueEnc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamWithFixValueEncAndAttention.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamWithFixValueEncAndAttention.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/siamese/gru/gruMeanSiamJointly.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/siamese/gru/gruMeanSiamJointly.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/siamese/lstm/gpt2_encoder/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/siamese/lstm/gpt2_encoder/config.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/siamese/lstm/gpt2_encoder/evaluate.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/siamese/lstm/gpt2_encoder/train.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasks/siamese/gru/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/siamese/models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamJointly.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamJointlyWithAttention.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamWithFixValueEnc.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/siamese/models/hierSiamFixValueLevel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamWithFixValueEncAndAttention.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasks/siamese/gru/gruMeanSiamJointly.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasks/siamese/lstm/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/triplet/models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamJointly.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamJointlyWithAttention.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/siamese/models/hierSiamJointly.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamWithFixValueEnc.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamWithFixValueEncAndAttention.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasks/siamese/lstm/lstmMeanSiamJointly.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/siamese/models/meanSiamJointly.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tasks/siamese/siamese.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/siamese/siamese.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/custom_components.py" beforeDir="false" afterPath="$PROJECT_DIR$/trainer/custom_components.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -72,12 +88,12 @@
     <favorites_list name="lstm_embedding" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+    <leaf>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamJointly.py">
+        <entry file="file://$PROJECT_DIR$/tasks/run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="570">
-              <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
+            <state relative-caret-position="1070">
+              <caret line="93" column="27" selection-start-line="93" selection-start-column="27" selection-end-line="93" selection-end-column="27" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -86,10 +102,31 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamJointlyWithAttention.py">
+        <entry file="file://$PROJECT_DIR$/tasks/siamese/models/hierSiamJointlyWithSeq2Encoder.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="26" column="99" lean-forward="true" selection-start-line="26" selection-start-column="99" selection-end-line="26" selection-end-column="99" />
+            <state relative-caret-position="690">
+              <caret line="58" column="41" selection-start-line="58" selection-start-column="41" selection-end-line="58" selection-end-column="41" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tasks/siamese/models/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="8" column="42" selection-start-line="8" selection-start-column="42" selection-end-line="8" selection-end-column="42" />
+              <folding>
+                <element signature="e#1#59#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tasks/siamese/siamese.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1203">
+              <caret line="107" column="18" lean-forward="true" selection-start-line="107" selection-start-column="18" selection-end-line="107" selection-end-column="18" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -98,46 +135,37 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamWithFixValueEnc.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="585">
-              <caret line="39" column="65" lean-forward="true" selection-start-line="39" selection-start-column="65" selection-end-line="39" selection-end-column="65" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
+        <entry file="file://$PROJECT_DIR$/tasks/triplet/triplet.py">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamWithFixValueEncAndAttention.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="32" column="65" selection-start-line="32" selection-start-column="65" selection-end-line="32" selection-end-column="65" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
+        <entry file="file://$PROJECT_DIR$/tasks/triplet/models/hierTripleJointly.py">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/tasks/siamese/lstm/lstmMeanSiamJointly.py">
+        <entry file="file://$PROJECT_DIR$/tasks/triplet/models/meanTriplet.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tasks/seq2seq/lstm/lstmSeq2seqWithGpt2Encoder.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="24" column="42" lean-forward="true" selection-start-line="24" selection-start-column="42" selection-end-line="24" selection-end-column="42" />
+            <state relative-caret-position="300">
+              <caret line="20" column="73" selection-start-line="20" selection-start-column="53" selection-end-line="20" selection-end-column="73" />
               <folding>
-                <element signature="e#1#10#0" expanded="true" />
+                <element signature="e#1#24#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamJointly.py">
+        <entry file="file://$PROJECT_DIR$/tasks/seq2seq/seq2seq.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="590">
-              <caret line="40" column="42" lean-forward="true" selection-end-line="85" />
+            <state relative-caret-position="948">
+              <caret line="120" selection-start-line="120" selection-end-line="120" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -146,35 +174,15 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamWithFixValueEnc.py">
+        <entry file="file://$PROJECT_DIR$/tasks/computing_model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="7" lean-forward="true" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
+            <state relative-caret-position="510">
+              <caret line="34" selection-start-line="34" selection-end-line="34" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamWithFixValueEncAndAttention.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="7" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tasks/siamese/gru/gruMeanSiamJointly.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="7" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tasks/siamese/__init__.py">
-          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -189,22 +197,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>uid_profile_index</find>
-      <find>get_index_profile2vector</find>
-      <find>evaluate</find>
-      <find>Conf</find>
-      <find>activa</find>
-      <find>load_e</find>
-      <find>output_space_root</find>
-      <find>super</find>
-      <find>AuthorityEvaluator</find>
-      <find>self.max_seq_len</find>
-      <find>mean</find>
-      <find>GruSeq2seqWithEmbedder</find>
-      <find>get_output_space</find>
-      <find>output_space</find>
-      <find>outp</find>
-      <find>LstmeSeq2seqWithEmbedder</find>
       <find>config</find>
       <find>get_vocab_size</find>
       <find>file_io</find>
@@ -219,6 +211,22 @@
       <find>train_size</find>
       <find>[self.token_dict</find>
       <find>self.get_bpe</find>
+      <find>preprocess_profiles</find>
+      <find>prof</find>
+      <find>traina</find>
+      <find>get_positive_negative_pairs</find>
+      <find>pairs_generator</find>
+      <find>tu</find>
+      <find>EmbeddingRet</find>
+      <find>evaluation</find>
+      <find>ast</find>
+      <find>seen_pairs</find>
+      <find>fit</find>
+      <find>Profile</find>
+      <find>evaluater</find>
+      <find>hash</find>
+      <find>GPT2_CHECKPOINT_PATH</find>
+      <find>MeanHierSiamJointl</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -227,65 +235,65 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/tasks/siamese/gru/hierarchical/models.py" />
-        <option value="$PROJECT_DIR$/tasks/siamese/gru/hierarchical/train.py" />
-        <option value="$PROJECT_DIR$/tasks/seq2seq/preprocess_data.py" />
-        <option value="$PROJECT_DIR$/tasks/seq2seq/gru/gpt2_encoder/models.py" />
-        <option value="$PROJECT_DIR$/tasks/seq2seq/gru/models.py" />
-        <option value="$PROJECT_DIR$/tasks/seq2seq/gru/onehot_encoder/train.py" />
-        <option value="$PROJECT_DIR$/tasks/seq2seq/gru/train.py" />
-        <option value="$PROJECT_DIR$/tasks/siamese/preprocess_data.py" />
-        <option value="$PROJECT_DIR$/tasks/siamese/gru/gruSiamHierWithFixValueEncAndAttention.py" />
-        <option value="$PROJECT_DIR$/tasks/siamese/gru/gruSiamHierWithFixValueEnc.py" />
-        <option value="$PROJECT_DIR$/tasks/seq2seq/lstm/gruSeq2seqWithEmbedder.py" />
-        <option value="$PROJECT_DIR$/tasks/seq2seq/__init__.py" />
-        <option value="$PROJECT_DIR$/tasks/computing_model.py" />
-        <option value="$PROJECT_DIR$/preprocessor/encoder/AsciEncoder.py" />
-        <option value="$PROJECT_DIR$/preprocessor/encoder/encoder.py" />
-        <option value="$PROJECT_DIR$/preprocessor/preprocessor.py" />
-        <option value="$PROJECT_DIR$/preprocessor/encoder/__init__.py" />
-        <option value="$PROJECT_DIR$/preprocessor/encoder/asciEncoder.py" />
-        <option value="$PROJECT_DIR$/custom_components/layers.py" />
-        <option value="$PROJECT_DIR$/custom_components/losses.py" />
-        <option value="$PROJECT_DIR$/custom_components/loss_functions.py" />
-        <option value="$PROJECT_DIR$/trainer/custom_components.py" />
-        <option value="$PROJECT_DIR$/custom_components/similarity_functions.py" />
-        <option value="$PROJECT_DIR$/tasks/seq2seq/gru/__init__.py" />
-        <option value="$PROJECT_DIR$/custom_components/__init__.py" />
-        <option value="$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamJointlyWithAttention.py" />
-        <option value="$PROJECT_DIR$/custom_components/callbacks.py" />
-        <option value="$PROJECT_DIR$/tasks/seq2seq/lstm/lstmSeq2seqWithEmbedder.py" />
-        <option value="$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithEmbedder.py" />
-        <option value="$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithOnehot.py" />
-        <option value="&lt;5f1466bf-e574-48e2-86c5-f903d7af9b07&gt;/outcome/seq2seq/LstmSeq2seqWithGpt2Encoder/v1/training_hist.json" />
-        <option value="$PROJECT_DIR$/.venv/lib/python3.6/site-packages/sdep/evaluator.py" />
-        <option value="$PROJECT_DIR$/tasks/siamese/siamese.py" />
-        <option value="&lt;5f1466bf-e574-48e2-86c5-f903d7af9b07&gt;/outcome/seq2seq/LstmSeq2seqWithEmbedder/AE_v1/training_hist.json" />
-        <option value="$PROJECT_DIR$/tasks/seq2seq/seq2seq.py" />
-        <option value="$PROJECT_DIR$/tasks/seq2seq/lstm/lstmSeq2seqWithGpt2Encoder.py" />
-        <option value="$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithGpt2Encoder.py" />
-        <option value="$PROJECT_DIR$/data/models/117M/encoder.json" />
-        <option value="$PROJECT_DIR$/preprocessor/encoder/bpe.py" />
-        <option value="$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamJointly.py" />
-        <option value="$PROJECT_DIR$/tasks/siamese/lstm/lstmHWithEmbedder.py" />
-        <option value="$PROJECT_DIR$/tasks/run.py" />
-        <option value="$PROJECT_DIR$/tasks/siamese/lstm/gruHierSiamWithFixValueEncAndAttention.py" />
-        <option value="$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamWithFixValueEnc.py" />
-        <option value="$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamWithFixValueEncAndAttention.py" />
-        <option value="$PROJECT_DIR$/tasks/siamese/gru/gruMeanSiamJointly.py" />
-        <option value="$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamJointly.py" />
-        <option value="$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamJointlyWithAttention.py" />
         <option value="$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamWithFixValueEnc.py" />
         <option value="$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamWithFixValueEncAndAttention.py" />
+        <option value="$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamWithFixValueEnc.py" />
+        <option value="$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamWithFixValueEncAndAttention.py" />
+        <option value="$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamJointlyWithAttention.py" />
+        <option value="$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamJointlyWithAttention.py" />
+        <option value="$PROJECT_DIR$/tasks/siamese/gru/gruMeanSiamJointly.py" />
         <option value="$PROJECT_DIR$/tasks/siamese/lstm/lstmMeanSiamJointly.py" />
+        <option value="$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamJointly.py" />
+        <option value="$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamJointly.py" />
+        <option value="$PROJECT_DIR$/tasks/siamese/meanSiamJointly.py" />
+        <option value="$PROJECT_DIR$/tasks/siamese/hierSiamFixValueLevel.py" />
+        <option value="$PROJECT_DIR$/tasks/siamese/hierSiamJointly.py" />
+        <option value="$PROJECT_DIR$/preprocessor/encoder/asciEncoder.py" />
+        <option value="$PROJECT_DIR$/.venv/lib/python3.6/site-packages/sdep/evaluator.py" />
+        <option value="$PROJECT_DIR$/tasks/siamese/models/hierSiamFixValueLevel.py" />
+        <option value="$PROJECT_DIR$/.venv/lib/python3.6/site-packages/sdep/__init__.py" />
+        <option value="&lt;5f1466bf-e574-48e2-86c5-f903d7af9b07&gt;/venv_3.6/lib/python3.6/site-packages/sdep/__init__.py" />
+        <option value="&lt;5f1466bf-e574-48e2-86c5-f903d7af9b07&gt;/venv_3.6/lib/python3.6/site-packages/sdep/evaluator.py" />
+        <option value="&lt;5f1466bf-e574-48e2-86c5-f903d7af9b07&gt;/outcome/seq2seq/GruSeq2seqWithEmbedder/AE_v1/training_hist.json" />
+        <option value="&lt;5f1466bf-e574-48e2-86c5-f903d7af9b07&gt;/outcome/seq2seq/LstmSeq2seqWithGpt2Encoder/v1/training_hist.json" />
+        <option value="&lt;5f1466bf-e574-48e2-86c5-f903d7af9b07&gt;/outcome/seq2seq/LstmSeq2seqWithEmbedder/AE_v1/training_hist.json" />
+        <option value="$PROJECT_DIR$/custom_components/layers.py" />
+        <option value="$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithGpt2Encoder2.py" />
+        <option value="$PROJECT_DIR$/tasks/seq2seq/__init__.py" />
+        <option value="$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithEmbedder.py" />
+        <option value="$PROJECT_DIR$/preprocessor/load_profiles/cvut.py" />
+        <option value="$PROJECT_DIR$/preprocessor/load_profiles/ataccama_s3.py" />
+        <option value="$PROJECT_DIR$/custom_components/loss_functions.py" />
+        <option value="$PROJECT_DIR$/evaluation/__init__.py" />
+        <option value="$PROJECT_DIR$/preprocessor/encoder/gpt2.py" />
+        <option value="$PROJECT_DIR$/evaluation/similarity_task.py" />
+        <option value="$PROJECT_DIR$/tasks/seq2seq/lstm/lstmSeq2seqWithGpt2Encoder.py" />
+        <option value="$PROJECT_DIR$/tasks/seq2seq/gru/cuDNNGRUSeq2seqWithGpt2Encoder.py" />
+        <option value="$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithGpt2Encoder.py" />
+        <option value="&lt;5f1466bf-e574-48e2-86c5-f903d7af9b07&gt;/evaluation/kill.sh" />
+        <option value="&lt;5f1466bf-e574-48e2-86c5-f903d7af9b07&gt;/kill.sh" />
+        <option value="$PROJECT_DIR$/evaluation/evaluator.py" />
+        <option value="$PROJECT_DIR$/tasks/siamese/models/hierSiamJointly.py" />
+        <option value="$PROJECT_DIR$/tasks/siamese/models/meanSiamJointly.py" />
+        <option value="$PROJECT_DIR$/tasks/siamese/models/meanSiamJointlyWithGpt2Encoder.py" />
+        <option value="$PROJECT_DIR$/tasks/siamese/models/meanSiamJointlyWithSeq2Encoder.py" />
+        <option value="$PROJECT_DIR$/tasks/siamese/models/__init__.py" />
+        <option value="$PROJECT_DIR$/tasks/siamese/models/hierSiamJointlyWithSeq2Encoder.py" />
+        <option value="$PROJECT_DIR$/tasks/computing_model.py" />
+        <option value="$PROJECT_DIR$/tasks/seq2seq/seq2seq.py" />
+        <option value="$PROJECT_DIR$/tasks/run.py" />
+        <option value="$PROJECT_DIR$/tasks/siamese/siamese.py" />
+        <option value="$PROJECT_DIR$/tasks/triplet/triplet.py" />
+        <option value="$PROJECT_DIR$/tasks/triplet/models/hierTripleJointly.py" />
+        <option value="$PROJECT_DIR$/tasks/triplet/models/meanTriplet.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="x" value="-101" />
-    <option name="y" value="-1692" />
-    <option name="width" value="3008" />
-    <option name="height" value="1692" />
+    <option name="x" value="-62" />
+    <option name="y" value="-1440" />
+    <option name="width" value="2560" />
+    <option name="height" value="1440" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -303,12 +311,29 @@
             <path>
               <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
               <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
-              <item name="custom_components" type="462c0819:PsiDirectoryNode" />
+              <item name="evaluater_old" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
               <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
+              <item name="evaluater_old" type="462c0819:PsiDirectoryNode" />
+              <item name="similarity_detection" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
+              <item name="evaluation" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
+              <item name="preprocessor" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
+              <item name="preprocessor" type="462c0819:PsiDirectoryNode" />
+              <item name="encoder" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
@@ -326,14 +351,20 @@
               <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
               <item name="tasks" type="462c0819:PsiDirectoryNode" />
               <item name="siamese" type="462c0819:PsiDirectoryNode" />
-              <item name="gru" type="462c0819:PsiDirectoryNode" />
+              <item name="models" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
               <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
               <item name="tasks" type="462c0819:PsiDirectoryNode" />
-              <item name="siamese" type="462c0819:PsiDirectoryNode" />
-              <item name="lstm" type="462c0819:PsiDirectoryNode" />
+              <item name="triplet" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
+              <item name="tasks" type="462c0819:PsiDirectoryNode" />
+              <item name="triplet" type="462c0819:PsiDirectoryNode" />
+              <item name="models" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -343,31 +374,35 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/tasks/siamese/models" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/tasks/siamese/lstm" />
-      <recent name="$PROJECT_DIR$/tasks/seq2seq/lstm" />
-      <recent name="$PROJECT_DIR$/tasks/seq2seq/gru" />
-      <recent name="$PROJECT_DIR$/tasks/siamese" />
-      <recent name="$PROJECT_DIR$/tasks/seq2seq/gru/onehot_encoder" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/data/profiles" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/tasks/siamese/models" />
       <recent name="$PROJECT_DIR$/tasks/seq2seq/gru" />
       <recent name="$PROJECT_DIR$/tasks" />
-      <recent name="$PROJECT_DIR$/tasks/seq2seq" />
-      <recent name="$PROJECT_DIR$/tasks/seq2seq/models/gru/gpt2_encoder" />
-      <recent name="$PROJECT_DIR$/models" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/tasks/siamese/models" />
+      <recent name="$PROJECT_DIR$/tasks/seq2seq/gru" />
+      <recent name="$PROJECT_DIR$/tasks/siamese" />
+      <recent name="$PROJECT_DIR$/tasks/siamese/lstm" />
+      <recent name="$PROJECT_DIR$/tasks/seq2seq/lstm" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -382,7 +417,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.run">
+  <component name="RunManager" selected="Python.evaluator">
     <configuration name="lstm_embedding" type="JupiterNotebook" factoryName="Jupyter Notebook">
       <module name="lstm_embedding" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -423,7 +458,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="exp_hierarchical" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="evaluator" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="lstm_embedding" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -431,12 +466,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/evaluater/similarity_detection" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/evaluation" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/evaluater/similarity_detection/exp_hierarchical.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/evaluation/evaluator.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -534,20 +569,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Jupyter Notebook.lstm_embedding" />
       <item itemvalue="Python.model" />
-      <item itemvalue="Python.exp_hierarchical" />
       <item itemvalue="Python.task" />
       <item itemvalue="Python.preprocessing" />
       <item itemvalue="Python.run" />
+      <item itemvalue="Python.evaluator" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.evaluator" />
         <item itemvalue="Python.run" />
         <item itemvalue="Python.preprocessing" />
         <item itemvalue="Python.task" />
         <item itemvalue="Python.model" />
-        <item itemvalue="Python.exp_hierarchical" />
       </list>
     </recent_temporary>
   </component>
@@ -643,7 +677,19 @@
       <workItem from="1553866818521" duration="698000" />
       <workItem from="1553983491194" duration="342000" />
       <workItem from="1554071008829" duration="244000" />
-      <workItem from="1554103147633" duration="9128000" />
+      <workItem from="1554103147633" duration="35896000" />
+      <workItem from="1554240151810" duration="400000" />
+      <workItem from="1554288666756" duration="1932000" />
+      <workItem from="1554313329637" duration="698000" />
+      <workItem from="1554325414603" duration="2981000" />
+      <workItem from="1554358615871" duration="1217000" />
+      <workItem from="1554369761955" duration="1118000" />
+      <workItem from="1554390169216" duration="22000" />
+      <workItem from="1554823859039" duration="10544000" />
+      <workItem from="1555002892461" duration="15411000" />
+      <workItem from="1555056113833" duration="1483000" />
+      <workItem from="1555139959223" duration="1759000" />
+      <workItem from="1555145189943" duration="12322000" />
     </task>
     <task id="LOCAL-00001" summary="Evaluation similarity detection">
       <created>1543940803928</created>
@@ -806,11 +852,18 @@
       <option name="project" value="LOCAL" />
       <updated>1553619897589</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Add siamese experiments">
+      <created>1554121477435</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1554121477435</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="667413000" />
+    <option name="totallyTimeSpent" value="744068000" />
   </component>
   <component name="TodoView" selected-index="2">
     <todo-panel id="selected-file">
@@ -822,10 +875,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-420" y="-1440" width="2560" height="1440" extended-state="0" />
+    <frame x="-62" y="-1440" width="2560" height="1440" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49489796" visible="true" weight="0.11795075" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49489796" visible="true" weight="0.0929309" />
       <window_info id="Structure" order="1" sideWeight="0.50264084" side_tool="true" weight="0.11358221" />
       <window_info id="Favorites" order="2" sideWeight="0.50510204" side_tool="true" weight="0.18253969" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -836,23 +889,23 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.329927" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32919708" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.037956204" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5007943" side_tool="true" weight="0.21240877" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.0877551" />
-      <window_info anchor="bottom" id="Python Console" order="12" weight="0.14693877" />
-      <window_info anchor="bottom" id="File Transfer" order="13" sideWeight="0.4992057" weight="0.108029194" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.14014599" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.14525548" />
+      <window_info anchor="bottom" id="File Transfer" order="13" sideWeight="0.4992057" weight="0.36938775" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Remote Host" order="3" weight="0.13264495" />
-      <window_info anchor="right" id="SciView" order="4" weight="0.32905984" />
-      <window_info anchor="right" x="0" y="0" width="590" height="1217" id="Documentation" order="5" side_tool="true" weight="0.32843527" />
-      <window_info anchor="right" id="Database" order="6" weight="0.32962668" />
+      <window_info anchor="right" id="Remote Host" order="3" visible="true" weight="0.1858618" />
+      <window_info anchor="right" x="0" y="0" width="590" height="1217" id="Documentation" order="4" side_tool="true" weight="0.32843527" />
+      <window_info anchor="right" id="SciView" order="5" show_stripe_button="false" weight="0.32883242" />
+      <window_info anchor="right" id="Database" order="6" show_stripe_button="false" weight="0.32962668" />
       <window_info anchor="right" id="Coverage" order="7" side_tool="true" />
     </layout>
     <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49489796" visible="true" weight="0.11795075" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49489796" visible="true" weight="0.0929309" />
       <window_info id="Structure" order="1" sideWeight="0.50264084" side_tool="true" weight="0.11358221" />
       <window_info id="Favorites" order="2" sideWeight="0.50510204" side_tool="true" weight="0.18253969" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -863,19 +916,19 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.329927" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32919708" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.037956204" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5007943" side_tool="true" weight="0.21240877" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.0877551" />
-      <window_info anchor="bottom" id="Python Console" order="12" weight="0.14693877" />
-      <window_info anchor="bottom" id="File Transfer" order="13" sideWeight="0.4992057" visible="true" weight="0.108029194" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.14014599" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.14525548" />
+      <window_info anchor="bottom" id="File Transfer" order="13" sideWeight="0.4992057" weight="0.36938775" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Remote Host" order="3" visible="true" weight="0.13264495" />
-      <window_info anchor="right" id="SciView" order="4" weight="0.32905984" />
-      <window_info anchor="right" x="0" y="0" width="590" height="1217" id="Documentation" order="5" side_tool="true" weight="0.32843527" />
-      <window_info anchor="right" id="Database" order="6" weight="0.32962668" />
+      <window_info anchor="right" id="Remote Host" order="3" visible="true" weight="0.1858618" />
+      <window_info anchor="right" x="0" y="0" width="590" height="1217" id="Documentation" order="4" side_tool="true" weight="0.32843527" />
+      <window_info anchor="right" id="SciView" order="5" show_stripe_button="false" weight="0.32883242" />
+      <window_info anchor="right" id="Database" order="6" show_stripe_button="false" weight="0.32962668" />
       <window_info anchor="right" id="Coverage" order="7" side_tool="true" />
     </layout-to-restore>
   </component>
@@ -919,7 +972,8 @@
     <MESSAGE value="add experiment for hierarchical networks" />
     <MESSAGE value="Add new architecture of network Attention network" />
     <MESSAGE value="Update computing method, prepare for automating evaluation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update computing method, prepare for automating evaluation" />
+    <MESSAGE value="Add siamese experiments" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add siamese experiments" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -982,244 +1036,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/trainer/siamese/models/gru/join_with_attention.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/trainer/gru_hierarchical/model.py" />
-    <entry file="file://$PROJECT_DIR$/trainer/gru_hierarchical/task.py" />
-    <entry file="file://$PROJECT_DIR$/trainer/lstm_hierarchical/model.py" />
-    <entry file="file://$PROJECT_DIR$/trainer/seq2_siamese/model.py" />
-    <entry file="file://$PROJECT_DIR$/trainer/siamese/models/gru/join_with_double_attention.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/han_lr_range_test_trainval_history.json" />
-    <entry file="file://$PROJECT_DIR$/hist.png" />
-    <entry file="file://$PROJECT_DIR$/unmutch_clusters.txt" />
-    <entry file="file://$PROJECT_DIR$/evaluater/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/evaluater/similarity_detection/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/seq2seq/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="63" lean-forward="true" selection-start-line="9" selection-start-column="63" selection-end-line="9" selection-end-column="63" />
-          <folding>
-            <element signature="e#0#71#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/computing_model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Caches/PyCharm2018.3/python_stubs/-1778771105/builtins.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="5243" column="8" selection-start-line="5243" selection-start-column="8" selection-end-line="5243" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/preprocessor/preprocessor.py" />
-    <entry file="file://$PROJECT_DIR$/preprocessor/encoder/encoder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/preprocessor/encoder/asciEncoder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/seq2seq/gru/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/trainer/custom_components.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="769">
-          <caret line="71" selection-start-line="71" selection-end-line="71" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/custom_components/similarity_functions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/custom_components/layers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" column="19" lean-forward="true" selection-start-line="23" selection-start-column="6" selection-end-line="23" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/custom_components/callbacks.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="10" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#36#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.venv/lib/python3.6/site-packages/keras/engine/training_arrays.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="68" column="28" lean-forward="true" selection-start-line="68" selection-start-column="28" selection-end-line="68" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/seq2seq/lstm/lstmSeq2seqWithEmbedder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="41" column="59" selection-start-line="41" selection-start-column="59" selection-end-line="41" selection-end-column="59" />
-          <folding>
-            <element signature="e#1#27#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/custom_components/loss_functions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="28" selection-start-line="28" selection-end-line="28" />
-          <folding>
-            <element signature="e#1#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithEmbedder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="11" column="54" selection-start-line="11" selection-start-column="47" selection-end-line="11" selection-end-column="54" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithOnehot.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="645">
-          <caret line="48" column="82" selection-start-line="48" selection-start-column="82" selection-end-line="48" selection-end-column="82" />
-          <folding>
-            <element signature="e#1#27#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.venv/lib/python3.6/site-packages/keras/engine/training.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15045">
-          <caret line="1030" column="44" selection-start-line="1030" selection-start-column="44" selection-end-line="1030" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.venv/lib/python3.6/site-packages/sdep/evaluator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="170" column="4" selection-start-line="170" selection-start-column="4" selection-end-line="170" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/models/117M/hparams.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithGpt2Encoder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" column="65" selection-start-line="23" selection-start-column="65" selection-end-line="23" selection-end-column="65" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/seq2seq/seq2seq.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="530">
-          <caret line="83" lean-forward="true" selection-start-line="83" selection-end-line="83" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/preprocessor/encoder/bpe.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="710">
-          <caret line="70" column="46" lean-forward="true" selection-start-line="70" selection-start-column="46" selection-end-line="70" selection-end-column="46" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/models/117M/encoder.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1058">
-          <caret column="1041777" selection-start-column="1041777" selection-end-column="1041777" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/seq2seq/lstm/lstmSeq2seqWithGpt2Encoder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" selection-start-line="20" selection-end-line="20" />
-          <folding>
-            <element signature="e#1#24#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/siamese/siamese.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="35" column="26" lean-forward="true" selection-start-line="35" selection-start-column="26" selection-end-line="35" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/preprocessor/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/preprocessor/encoder/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -1237,99 +1053,298 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamJointlyWithAttention.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" selection-start-line="9" selection-end-line="18" selection-end-column="53" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamJointly.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="590">
-          <caret line="40" column="42" lean-forward="true" selection-end-line="85" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamWithFixValueEnc.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="7" lean-forward="true" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamWithFixValueEncAndAttention.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="7" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/siamese/gru/gruMeanSiamJointly.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="7" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamWithFixValueEncAndAttention.py" />
+    <entry file="file://$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamJointlyWithAttention.py" />
+    <entry file="file://$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamJointlyWithAttention.py" />
+    <entry file="file://$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamJointly.py" />
+    <entry file="file://$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamJointly.py" />
+    <entry file="file://$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamWithFixValueEncAndAttention.py" />
+    <entry file="file://$PROJECT_DIR$/tasks/siamese/gru/gruHierSiamWithFixValueEnc.py" />
+    <entry file="file://$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamWithFixValueEnc.py" />
+    <entry file="file://$PROJECT_DIR$/tasks/siamese/gru/gruMeanSiamJointly.py" />
+    <entry file="file://$PROJECT_DIR$/tasks/siamese/lstm/lstmMeanSiamJointly.py" />
     <entry file="file://$PROJECT_DIR$/tasks/siamese/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamJointly.py">
+    <entry file="file://$PROJECT_DIR$/.venv/lib/python3.6/site-packages/sdep/__init__.py" />
+    <entry file="file://$PROJECT_DIR$/.venv/lib/python3.6/site-packages/sdep/evaluator.py" />
+    <entry file="file://$PROJECT_DIR$/.venv/lib/python3.6/site-packages/sdep/similarity_task.py" />
+    <entry file="file://$PROJECT_DIR$/tasks/seq2seq/lstm/lstmSeq2seqWithEmbedder.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
+        <state relative-caret-position="721">
+          <caret line="49" column="68" selection-start-line="49" selection-start-column="68" selection-end-line="49" selection-end-column="68" />
+          <folding>
+            <element signature="e#1#27#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/custom_components/layers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1750">
+          <caret line="165" column="30" selection-start-line="165" selection-start-column="30" selection-end-line="165" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/seq2seq/gru/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/seq2seq/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+          <folding>
+            <element signature="e#0#71#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/preprocessor/load_profiles/cvut.py" />
+    <entry file="file://$PROJECT_DIR$/preprocessor/load_profiles/ataccama_s3.py" />
+    <entry file="file://$PROJECT_DIR$/evaluation/profiler.py" />
+    <entry file="file://$PROJECT_DIR$/evaluation/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/seq2seq/gru/cuDNNGRUSeq2seqWithGpt2Encoder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithEmbedder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="26" selection-start-line="22" selection-start-column="26" selection-end-line="22" selection-end-column="26" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamJointlyWithAttention.py">
+    <entry file="file://$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithGpt2Encoder.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="99" lean-forward="true" selection-start-line="26" selection-start-column="99" selection-end-line="26" selection-end-column="99" />
+        <state relative-caret-position="15">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithOnehot.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="645">
+          <caret line="48" column="82" selection-start-line="48" selection-start-column="82" selection-end-line="48" selection-end-column="82" />
+          <folding>
+            <element signature="e#1#27#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/custom_components/similarity_functions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="4" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/custom_components/loss_functions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="49" lean-forward="true" selection-start-line="16" selection-start-column="49" selection-end-line="16" selection-end-column="49" />
+          <folding>
+            <element signature="e#1#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluation/similarity_task.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="805">
+          <caret line="58" column="31" selection-start-line="58" selection-start-column="31" selection-end-line="58" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#46#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/siamese/models/hierSiamFixValueLevel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="33" column="25" selection-start-line="33" selection-start-column="25" selection-end-line="33" selection-end-column="25" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamWithFixValueEnc.py">
+    <entry file="file://$PROJECT_DIR$/evaluater_old/similarity_detection/exp_hierarchical.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="39" column="65" lean-forward="true" selection-start-line="39" selection-start-column="65" selection-end-line="39" selection-end-column="65" />
+        <state relative-caret-position="246">
+          <caret line="146" column="63" selection-start-line="146" selection-start-column="63" selection-end-line="146" selection-end-column="63" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/siamese/lstm/lstmHierSiamWithFixValueEncAndAttention.py">
+    <entry file="file://$PROJECT_DIR$/tasks/siamese/models/meanSiamJointly.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="32" column="65" selection-start-line="32" selection-start-column="65" selection-end-line="32" selection-end-column="65" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/siamese/lstm/lstmMeanSiamJointly.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="24" column="42" lean-forward="true" selection-start-line="24" selection-start-column="42" selection-end-line="24" selection-end-column="42" />
+        <state relative-caret-position="688">
+          <caret line="71" column="79" selection-start-line="71" selection-start-column="79" selection-end-line="71" selection-end-column="79" />
           <folding>
             <element signature="e#1#10#0" expanded="true" />
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Caches/PyCharm2019.1/python_stubs/-1456876789/builtins.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="5274" column="8" selection-start-line="5274" selection-start-column="8" selection-end-line="5274" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/preprocessor/encoder/asciEncoder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="59" selection-start-line="11" selection-start-column="56" selection-end-line="11" selection-end-column="59" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluation/evaluator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2175">
+          <caret line="145" selection-start-line="145" selection-end-line="145" />
+          <folding>
+            <element signature="e#0#40#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/siamese/models/meanSiamJointlyWithGpt2Encoder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="705">
+          <caret line="47" column="30" lean-forward="true" selection-start-line="47" selection-start-column="30" selection-end-line="47" selection-end-column="30" />
+          <folding>
+            <element signature="e#1#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/siamese/models/hierSiamJointly.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="625">
+          <caret line="48" column="5" selection-start-line="48" selection-start-column="5" selection-end-line="75" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/preprocessor/encoder/gpt2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="12" selection-start-line="4" selection-start-column="12" selection-end-line="4" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/preprocessor/encoder/encoder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="9" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/siamese/models/hierSiamJointlyWithSeq2Encoder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="690">
+          <caret line="58" column="41" selection-start-line="58" selection-start-column="41" selection-end-line="58" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/siamese/models/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="42" selection-start-line="8" selection-start-column="42" selection-end-line="8" selection-end-column="42" />
+          <folding>
+            <element signature="e#1#59#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/computing_model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="34" selection-start-line="34" selection-end-line="34" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/seq2seq/seq2seq.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="948">
+          <caret line="120" selection-start-line="120" selection-end-line="120" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/seq2seq/lstm/lstmSeq2seqWithGpt2Encoder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="73" selection-start-line="20" selection-start-column="53" selection-end-line="20" selection-end-column="73" />
+          <folding>
+            <element signature="e#1#24#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1070">
+          <caret line="93" column="27" selection-start-line="93" selection-start-column="27" selection-end-line="93" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/siamese/siamese.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1203">
+          <caret line="107" column="18" lean-forward="true" selection-start-line="107" selection-start-column="18" selection-end-line="107" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/triplet/triplet.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/triplet/models/hierTripleJointly.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/triplet/models/meanTriplet.py">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
   <component name="masterDetails">

@@ -1,4 +1,5 @@
 import os
+import json
 from abc import abstractmethod
 
 
@@ -9,7 +10,7 @@ class ComputingModel(object):
     GPT2_CHECKPOINT_PATH = os.path.join(os.environ['PYTHONPATH'].split(":")[0] + '/data/models/117M', 'model.ckpt')
     GPT2_ENCODER_PATH = os.path.join(os.environ['PYTHONPATH'].split(":")[0] + '/data/models/117M', 'encoder.json')
     GPT2_VOCAB_PATH = os.path.join(os.environ['PYTHONPATH'].split(":")[0] + '/data/models/117M', 'vocab.bpe')
-    OUTPUT_ROOT = f"{os.environ['PYTHONPATH'].split(':')[0]}/outcome/seq2seq"
+    OUTPUT_ROOT = f"{os.environ['PYTHONPATH'].split(':')[0]}/outcome"
 
     @abstractmethod
     def build_model(self):
@@ -26,3 +27,17 @@ class ComputingModel(object):
     @abstractmethod
     def evaluate_model(self):
         pass
+
+    @abstractmethod
+    def print_training_stats(self):
+        pass
+
+
+
+
+
+
+
+
+
+

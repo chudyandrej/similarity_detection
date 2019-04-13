@@ -19,6 +19,9 @@
           </mappings>
           <excludedPaths>
             <excludedPath path="/gru_hierarchical1550841088/model.h5" />
+            <excludedPath path="/.ipynb_checkpoints" />
+            <excludedPath path="/data" />
+            <excludedPath path="/outcome" />
           </excludedPaths>
         </serverdata>
       </paths>

@@ -10,7 +10,6 @@ from preprocessor.encoder import Encoder
 
 import custom_components as cc
 from tasks.seq2seq.seq2seq import Seq2seq
-from sdep import AuthorityEvaluator, Profile   # Needed
 
 
 class GruSeq2seqWithGpt2Encoder(Seq2seq):
@@ -31,17 +30,17 @@ class GruSeq2seqWithGpt2Encoder(Seq2seq):
         decoder_inputs = Input(shape=(self.max_seq_len,), name="decoder_Input", dtype="int32")
         target = Input(shape=(self.max_seq_len,), name="target_Input", dtype="int32")
 
-        embedding = cc.EmbeddingRet(input_dim=config['n_vocab'], output_dim=config['n_embd'],
+        embedding = Embedding(input_dim=config['n_vocab'], output_dim=config['n_embd'],
                                     mask_zero=False, name='Embed-Token', trainable=False)
 
-        embedded_encoder_input, _ = embedding(encoder_inputs)
-        embedded_decoder_input, _ = embedding(decoder_inputs)
-        embedded_target, _ = embedding(target)
+        embedded_encoder_input = embedding(encoder_inputs)
+        embedded_decoder_input = embedding(decoder_inputs)
+        embedded_target = embedding(target)
 
-        encoder = CuDNNGRU(self.gru_dim, return_state=True)
+        encoder = GRU(self.gru_dim, recurrent_dropout=self.dropout, dropout=self.dropout, return_state=True)
         encoder_outputs, state_h = encoder(embedded_encoder_input)
 
-        decoder_gru = CuDNNGRU(self.gru_dim, return_sequences=True)
+        decoder_gru = GRU(self.gru_dim, recurrent_dropout=self.dropout, dropout=self.dropout, return_sequences=True)
         decoder_outputs = decoder_gru(embedded_decoder_input, initial_state=state_h)
         decoder_dense = Dense(config['n_embd'], activation='tanh')
         decoder_outputs = decoder_dense(decoder_outputs)
@@ -62,7 +61,7 @@ class GruSeq2seqWithGpt2Encoder(Seq2seq):
     def load_encoder(self):
         model = load_model(f"{self.output_space}/model.h5", custom_objects={
             "mean_squared_error_from_pred": cc.mean_squared_error_from_pred,
-            "EmbeddingRet": cc.EmbeddingRet
+            # "EmbeddingRet": cc.EmbeddingRet
         })
         model: Model = Model(model.inputs[0], model.layers[4].output[1])
         model.summary()

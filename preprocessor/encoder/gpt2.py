@@ -2,7 +2,6 @@ import os
 import pickle
 import numpy as np
 import regex as re
-from sdep.profiler import Profile
 from keras_gpt_2 import load_trained_model_from_checkpoint
 
 from .bpe import BytePairEncoding
@@ -50,11 +49,11 @@ class GPT2ProfileEncoding(object):
 
         self.profile_index = dict(zip(self.profiles, self.embeddings))
 
-    def encode(self, prof_obj: Profile):
+    def encode(self, prof_obj):
         return self.profile_index[prof_obj]
 
     @classmethod
-    def convert_quantile_to_text(prof_obj: Profile):
+    def convert_quantile_to_text(prof_obj):
         text = ""
         for value in prof_obj.quantiles:
             value = str(value).replace("$", " ")

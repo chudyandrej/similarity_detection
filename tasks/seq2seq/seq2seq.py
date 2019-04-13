@@ -1,6 +1,9 @@
 import os
 import json
+import pickle
 import numpy as np
+from collections import namedtuple
+
 import pandas as pd
 import tensorflow as tf
 
@@ -11,14 +14,16 @@ from keras.preprocessing.sequence import pad_sequences
 from abc import abstractmethod
 from typing import List, Tuple
 
-import evaluater.embedder as em
+import evaluater_old.embedder as em
 import custom_components as cc
-from sdep import AuthorityEvaluator, Profile   # Needed
+from evaluation import AuthorityEvaluator   # Needed
 from ..computing_model import ComputingModel
 from preprocessor.encoder import Encoder
 
 
 class Seq2seq(ComputingModel):
+    OUTPUT_ROOT = f"{ComputingModel.OUTPUT_ROOT}/seq2seq"
+
     def __init__(self, encoder: Encoder, max_seq_len, output_path):
         self.encoder = encoder
         self.max_seq_len = max_seq_len
@@ -48,11 +53,12 @@ class Seq2seq(ComputingModel):
                          y=target,
                          epochs=300,
                          batch_size=64,
-
                          validation_split=0.3,
-                     verbose=1,
+                         verbose=1,
                          callbacks=[
-                                     EarlyStopping(monitor='val_loss', patience=6, verbose=1),
+                             cc.ModelCheckpointMLEngine(self.output_path + "/model.h5", monitor='val_loss',
+                                                        verbose=1, save_best_only=True, mode='min'),
+                             EarlyStopping(monitor='val_loss', patience=6, verbose=1),
                              TensorBoard(log_dir=self.output_path + '/training_log', write_graph=True),
                              time_callback
                          ])
@@ -68,16 +74,15 @@ class Seq2seq(ComputingModel):
         # self.evaluate_model()
 
     def evaluate_model(self):
-        print("Experiment FIX GPT2 encoder running ...")
 
         ev = AuthorityEvaluator(username='andrej', neighbors=20, train_size=0.50,
                                 results_file=self.output_path)
-        test_profiles: List[Profile] = ev.get_test_dataset("s3")
-
+        test_profiles: List = ev.cvut_profiles
         # -------------- COMPUTING EXPERIMENT BODY --------------------
         uid_values: List[Tuple[Tuple, str]] = [(profile.uid, value) for profile in test_profiles
                                                for value in profile.quantiles]
         nn_input: np.array = self.preprocess_profiles(test_profiles)
+
         nn_input = np.reshape(nn_input, (nn_input.shape[0] * nn_input.shape[1], nn_input.shape[2]))
 
         nn_output = self.load_encoder().predict(nn_input, verbose=1)
@@ -92,9 +97,12 @@ class Seq2seq(ComputingModel):
         print("Count of classes: " + str(len(uid_embedding)))
         ev.evaluate_embeddings(profile_embedding)
 
-    def preprocess_profiles(self, profiles: List[Profile]):
+    def preprocess_profiles(self, profiles):
         result = []
         for profile in profiles:
+            if len(profile.quantiles) != 11:
+                continue
+
             values = map(lambda x: str(x)[:self.max_seq_len], profile.quantiles)
             values = map(str.strip, values)
             values = [self.encoder.encode(value)[:self.max_seq_len] for value in values]
@@ -118,3 +126,15 @@ class Seq2seq(ComputingModel):
         input_decoder = np.roll(pad_sequences(embedded_strings, maxlen=self.max_seq_len, padding='post'), 1)
         target = pad_sequences(embedded_strings, maxlen=self.max_seq_len, padding='post')
         return input_coder, input_decoder, target
+
+    def print_training_stats(self):
+        try:
+            with open(f"{self.output_path}/training_hist.json") as json_file:
+                data = json.load(json_file)
+        except:
+            return
+
+        print({
+            "epoch": len(data["times"]),
+            "epoch_time": np.mean(data["times"]),
+        })
