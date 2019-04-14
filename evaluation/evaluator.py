@@ -110,7 +110,7 @@ def triplet_generator(profiles, batch_size, preprocess_profile):
             positives.append(preprocess_profile(positive))
             negatives.append(preprocess_profile(negative))
 
-        yield anchors, positives, negatives
+        yield [np.array(anchors), np.array(positives), np.array(negatives)], np.ones(batch_size)
 
 
 def pairs_generator(profiles, batch_size, preprocess_profile):
