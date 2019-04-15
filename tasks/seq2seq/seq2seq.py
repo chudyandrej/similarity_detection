@@ -29,6 +29,7 @@ class Seq2seq(ComputingModel):
         self.max_seq_len = max_seq_len
         self.output_path = output_path
         os.makedirs(self.output_path, exist_ok=True)
+        super().__init__(self.output_path)
 
     @abstractmethod
     def build_model(self):
@@ -126,15 +127,3 @@ class Seq2seq(ComputingModel):
         input_decoder = np.roll(pad_sequences(embedded_strings, maxlen=self.max_seq_len, padding='post'), 1)
         target = pad_sequences(embedded_strings, maxlen=self.max_seq_len, padding='post')
         return input_coder, input_decoder, target
-
-    def print_training_stats(self):
-        try:
-            with open(f"{self.output_path}/training_hist.json") as json_file:
-                data = json.load(json_file)
-        except:
-            return
-
-        print({
-            "epoch": len(data["times"]),
-            "epoch_time": np.mean(data["times"]),
-        })

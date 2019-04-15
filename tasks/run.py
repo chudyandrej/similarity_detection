@@ -8,10 +8,6 @@ from preprocessor.encoder import *
 os.environ['CUDA_VISIBLE_DEVICES'] = '1'
 
 
-def run_value_experiments(code):
-
-
-
 
 
 def run_hybrid_model(code):
@@ -38,7 +34,7 @@ if __name__ == '__main__':
         print("##"*10)
         print(i)
         print("##" * 10)
-        run_hierarchy_experiments(i)
+        # run_hierarchy_experiments(i)
 
     # run_value_experiments(6)
     # run_hierarchy_experiments(5)

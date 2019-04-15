@@ -32,6 +32,7 @@ def categorical_crossentropy_form_pred(y_true, y_pred):
     y_pred = y_pred[:, 1]
     return objectives.categorical_crossentropy(y_true, y_pred)
 
+
 def triplet_loss(y_true, y_pred, alpha=0.5):
     ''' Lossless Triplet loss
     https://towardsdatascience.com/lossless-triplet-loss-7e932f990b24

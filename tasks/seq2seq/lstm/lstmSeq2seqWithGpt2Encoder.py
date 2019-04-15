@@ -58,10 +58,13 @@ class LstmSeq2seqWithGpt2Encoder(Seq2seq):
         return model
 
     def load_encoder(self):
-        model = load_model(f"{self.output_space}/model.h5", custom_objects={
-            "mean_squared_error_from_pred": cc.mean_squared_error_from_pred,
-            "EmbeddingRet": cc.EmbeddingRet
-        })
+        model = self.load_model()
         model: Model = Model(model.inputs[0], model.layers[4].output[2])
         model.summary()
         return model
+
+    def load_model(self):
+        return load_model(f"{self.output_space}/model.h5", custom_objects={
+            "mean_squared_error_from_pred": cc.mean_squared_error_from_pred,
+            "EmbeddingRet": cc.EmbeddingRet
+        })

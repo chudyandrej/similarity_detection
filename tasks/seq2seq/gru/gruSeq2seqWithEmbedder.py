@@ -47,13 +47,13 @@ class GruSeq2seqWithEmbedder(Seq2seq):
         return model
 
     def load_encoder(self):
-        model = load_model(f"{self.output_space}/model.h5", custom_objects={
-            "mean_squared_error_from_pred": cc.mean_squared_error_from_pred
-        })
+        model = self.load_model()
 
         model: Model = Model(model.inputs[0], model.layers[4].output[1])
         model.summary()
         return model
 
-    def get_output_space(self):
-        return self.output_space
+    def load_model(self):
+        return load_model(f"{self.output_space}/model.h5", custom_objects={
+            "mean_squared_error_from_pred": cc.mean_squared_error_from_pred
+        })

@@ -72,16 +72,21 @@ class HierSiamJointlyWithSeq2Encoder(Siamese):
         return joint_model
 
     def load_encoder(self):
-        model = load_model(f"{self.output_space}/model.h5", custom_objects={
+        model = load_model()
+
+        model: Model = Model(model.inputs[0], model.layers[4].get_output_at(0))
+        model.summary()
+        return model
+
+    def load_model(self):
+        return load_model(f"{self.output_space}/model.h5", custom_objects={
             "euclidean_distance": cc.euclidean_distance,
             "contrastive_loss": cc.contrastive_loss,
             "AttentionWithContext": cc.AttentionWithContext
 
         })
 
-        model: Model = Model(model.inputs[0], model.layers[4].get_output_at(0))
-        model.summary()
-        return model
+
 
 
 

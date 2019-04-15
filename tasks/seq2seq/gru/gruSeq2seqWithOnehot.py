@@ -45,13 +45,13 @@ class GruSeq2seqWithOnehot(Seq2seq):
         return model
 
     def load_encoder(self):
-        model = load_model(f"{self.output_space}/model.h5", custom_objects={
-            "mean_squared_error_from_pred": cc.categorical_crossentropy_form_pred,
-            "OneHot": cc.OneHot
-        })
+        model = self.load_model()
         model: Model = Model(model.inputs[0], model.layers[4].output[1])
         model.summary()
         return model
 
-    def get_output_space(self):
-        pass
+    def load_model(self):
+        return load_model(f"{self.output_space}/model.h5", custom_objects={
+            "mean_squared_error_from_pred": cc.categorical_crossentropy_form_pred,
+            "OneHot": cc.OneHot
+        })

@@ -39,6 +39,12 @@ class MeanTriplet(Triplet):
         anchor_values = TimeDistributed(value_lstm)(anchor_embedded)
         positive_values = TimeDistributed(value_lstm)(positive_embedded)
         negataive_values = TimeDistributed(value_lstm)(negative_embedded)
+
+        if self.attention:
+            context_layer = cc.AttentionWithContext(return_coefficients=False)
+            anchor_values = TimeDistributed(context_layer)(anchor_values)
+            positive_values = TimeDistributed(context_layer)(positive_values)
+            negataive_values = TimeDistributed(context_layer)(negataive_values)
         
         quantile_mean = Lambda(lambda x: K.mean(x, axis=1))
         anchor_quantiles = quantile_mean(anchor_values)
@@ -64,11 +70,18 @@ class MeanTriplet(Triplet):
         return model
 
     def load_encoder(self):
-        model = load_model(f"{self.output_space}/model.h5", custom_objects={
-            "triplet_loss": cc.triplet_loss,
-            "AttentionWithContext": cc.AttentionWithContext
-        })
-        print(model.layers)
-        exit()
+        model = self.load_model()
+        if self.attention:
+            model: Model = Model(model.inputs[0], model.layers[12].get_output_at(0))
+        else:
+            model: Model = Model(model.inputs[0], model.layers[10].get_output_at(0))
         model.summary()
         return model
+
+    def load_model(self):
+        return load_model(f"{self.output_space}/model.h5", custom_objects={
+            "euclidean_distance": cc.euclidean_distance,
+            "triplet_loss": cc.triplet_loss,
+            "AttentionWithContext": cc.AttentionWithContext
+
+        })

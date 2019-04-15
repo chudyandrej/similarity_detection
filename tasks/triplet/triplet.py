@@ -26,6 +26,7 @@ class Triplet(ComputingModel):
         self.max_seq_len = max_seq_len
         self.output_path = output_path
         os.makedirs(self.output_path, exist_ok=True)
+        super().__init__(self.output_path)
 
     @abstractmethod
     def build_model(self):
@@ -33,6 +34,10 @@ class Triplet(ComputingModel):
 
     @abstractmethod
     def load_encoder(self):
+        pass
+
+    @abstractmethod
+    def load_model(self):
         pass
 
     def train_model(self):
@@ -70,9 +75,8 @@ class Triplet(ComputingModel):
             json.dump(hist.history, f)
 
     def evaluate_model(self):
-
-        ev = AuthorityEvaluator(username='andrej', neighbors=20, metric="euclidean", results_file=self.output_path)
         encoder_model = self.load_encoder()
+        ev = AuthorityEvaluator(username='andrej', neighbors=20, metric="euclidean", results_file=self.output_path)
         test_profiles = ev.cvut_profiles
         quantiles_data = np.array(list(map(lambda x: self.preprocess_profile(x), test_profiles)))
         embedding_vectors = encoder_model.predict(quantiles_data, verbose=1)
@@ -96,17 +100,3 @@ class Triplet(ComputingModel):
             return Bidirectional(LSTM(units=rnn_dim, return_sequences=return_sequences, recurrent_dropout=dropout))
         else:
             raise ValueError('Unknown type of network!')
-
-    def print_training_stats(self):
-        print(self.output_path)
-
-        try:
-            with open(f"{self.output_path}/training_hist.json") as json_file:
-                data = json.load(json_file)
-                print({
-                    "epoch": len(data["times"]),
-                    "epoch_time": np.mean(data["times"]),
-                })
-        except:
-            pass
-        print(sh.tail("-n 1", f"{self.output_path}/results.txt", _iter=True))

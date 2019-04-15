@@ -33,17 +33,30 @@ class HierTripletJointly(Triplet):
         anchor_embedded = TimeDistributed(value_embed)(anchor_input)
         positive_embedded = TimeDistributed(value_embed)(positive_input)
         negative_embedded = TimeDistributed(value_embed)(negative_input)
+
         value_lstm = self.get_rnn(rnn_type=self.rnn_type, rnn_dim=self.rnn_dim, dropout=self.dropout,
                                   return_sequences=self.attention)
         anchor_values = TimeDistributed(value_lstm)(anchor_embedded)
         positive_values = TimeDistributed(value_lstm)(positive_embedded)
         negataive_values = TimeDistributed(value_lstm)(negative_embedded)
 
+        if self.attention:
+            context_layer = cc.AttentionWithContext(return_coefficients=False)
+            anchor_values = TimeDistributed(context_layer)(anchor_values)
+            positive_values = TimeDistributed(context_layer)(positive_values)
+            negataive_values = TimeDistributed(context_layer)(negataive_values)
+
         quantile_lstm = self.get_rnn(rnn_type=self.rnn_type, rnn_dim=self.rnn_dim, dropout=self.dropout,
                                      return_sequences=self.attention)
         anchor_quantiles = quantile_lstm(anchor_values)
         positive_quantiles = quantile_lstm(positive_values)
         negative_quantiles = quantile_lstm(negataive_values)
+
+        if self.attention:
+            context_layer = cc.AttentionWithContext(return_coefficients=False)
+            anchor_quantiles = context_layer(anchor_quantiles)
+            positive_quantiles = context_layer(positive_quantiles)
+            negative_quantiles = context_layer(negative_quantiles)
 
         quantile_norm = Lambda(lambda x: K.l2_normalize(x, axis=-1))
         anchor_normed = quantile_norm(anchor_quantiles)
@@ -63,11 +76,20 @@ class HierTripletJointly(Triplet):
         return model
 
     def load_encoder(self):
-        model = load_model(f"{self.output_space}/model.h5", custom_objects={
+        model = self.load_model()
+        print(model.layers)
+
+        if self.attention:
+            model: Model = Model(model.inputs[0], model.layers[13].get_output_at(0))
+        else:
+            model: Model = Model(model.inputs[0], model.layers[9].get_output_at(0))
+        model.summary()
+        return model
+
+    def load_model(self):
+        return load_model(f"{self.output_space}/model.h5", custom_objects={
             "triplet_loss": cc.triplet_loss,
             "AttentionWithContext": cc.AttentionWithContext
         })
-        print(model.layers)
-        exit()
-        model.summary()
-        return model
+
+

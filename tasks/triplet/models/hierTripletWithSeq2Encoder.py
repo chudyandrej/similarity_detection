@@ -52,6 +52,12 @@ class HierTripletWithSeq2Encoder(Triplet):
         positive_quantiles = quantile_lstm(positive_values)
         negative_quantiles = quantile_lstm(negataive_values)
 
+        if self.attention:
+            context_layer = cc.AttentionWithContext(return_coefficients=False)
+            anchor_quantiles = context_layer(anchor_quantiles)
+            positive_quantiles = context_layer(positive_quantiles)
+            negative_quantiles = context_layer(negative_quantiles)
+
         quantile_norm = Lambda(lambda x: K.l2_normalize(x, axis=-1))
         anchor_normed = quantile_norm(anchor_quantiles)
         positive_normed = quantile_norm(positive_quantiles)
@@ -71,16 +77,24 @@ class HierTripletWithSeq2Encoder(Triplet):
         return model
 
     def load_encoder(self):
-        model = load_model(f"{self.output_space}/model.h5", custom_objects={
+        model = self.load_model()
+        print(model.layers)
+        if self.attention:
+            model: Model = Model(model.inputs[0], model.layers[7].get_output_at(0))
+        else:
+            model: Model = Model(model.inputs[0], model.layers[6].get_output_at(0))
+
+        model.summary()
+        return model
+
+    def load_model(self):
+        return load_model(f"{self.output_space}/model.h5", custom_objects={
             "euclidean_distance": cc.euclidean_distance,
-            "contrastive_loss": cc.contrastive_loss,
+            "triplet_loss": cc.triplet_loss,
             "AttentionWithContext": cc.AttentionWithContext
 
         })
 
-        model: Model = Model(model.inputs[0], model.layers[4].get_output_at(0))
-        model.summary()
-        return model
 
 
 

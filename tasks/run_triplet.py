@@ -16,19 +16,26 @@ def run(code):
         model_execution = MeanTriplet(rnn_type="Gru", attention=False, encoder=AsciiEncoding(), enc_out_dim=128, max_seq_len=64, rnn_dim=128, dropout=0.2, version="v1")
     elif code == 4:
         model_execution = HierTripletWithSeq2Encoder(rnn_type="Gru", attention=False, encoder=AsciiEncoding(), enc_out_dim=128, max_seq_len=64, rnn_dim=128, dropout=0.2, version="v1")
+    elif code == 5:
+        model_execution = HierTripletJointly(rnn_type="Gru", attention=True, encoder=AsciiEncoding(), enc_out_dim=128,
+                                             max_seq_len=64, rnn_dim=128, dropout=0.2, version="v1")
+    elif code == 6:
+        model_execution = MeanTriplet(rnn_type="Gru", attention=True, encoder=AsciiEncoding(), enc_out_dim=128,
+                                      max_seq_len=64, rnn_dim=128, dropout=0.2, version="v1")
     else:
         return
 
-    model_execution.train_model()
-
+    # model_execution.train_model()
+    # model_execution.evaluate_model()
+    model_execution.make_plots()
 
 if __name__ == '__main__':
     # for i in range(0, 2):
     #     print(f"{'##'*10}\n{i}\n{'##'*10}")
     #     run(i)
+    # run(5)
+    run(0)
 
-    for i in range(2, 5):
-        print(f"{'##'*10}\n{i}\n{'##'*10}")
-        run(i)
+
 
 

@@ -3,7 +3,8 @@ import os
 from .siamese.models import *
 from preprocessor.encoder import *
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+# os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
 
 def run(code):
@@ -43,13 +44,27 @@ def run(code):
         model_execution = MeanHierSiamJointlyWithGpt2Encoder(rnn_type="Lstm", attention=True, encoder=BytePairEncoding(),
                                                              enc_out_dim=128, max_seq_len=64, rnn_dim=128, dropout=0.2,
                                                              version="v1")
+    elif code == 11:
+        model_execution = HierSiamJointlyWithGpt2Encoder(rnn_type="Lstm", attention=False, encoder=BytePairEncoding(),
+                                                         enc_out_dim=128, max_seq_len=64, rnn_dim=128, dropout=0.2,
+                                                         version="v1")
+    elif code == 12:
+        model_execution = HierSiamJointlyWithGpt2Encoder(rnn_type="Gru", attention=False, encoder=BytePairEncoding(),
+                                                         enc_out_dim=128, max_seq_len=64, rnn_dim=128, dropout=0.2,
+                                                         version="v1")
+
     else:
         return
 
-    # model_execution.train_model()
+    model_execution.train_model()
     # model_execution.evaluate_model()
-    model_execution.print_training_stats()
+    # model_execution.print_training_stats()
+    # model_execution.make_plots()
 
 
 if __name__ == '__main__':
-    run(0)
+
+    run(12)
+
+
+

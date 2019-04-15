@@ -1,6 +1,5 @@
 import os
 import json
-import sh
 import numpy as np
 from keras import Model
 from keras.callbacks import EarlyStopping, TensorBoard
@@ -26,6 +25,7 @@ class Siamese(ComputingModel):
         self.max_seq_len = max_seq_len
         self.output_path = output_path
         os.makedirs(self.output_path, exist_ok=True)
+        super().__init__(self.output_path)
 
     @abstractmethod
     def build_model(self):
@@ -96,16 +96,4 @@ class Siamese(ComputingModel):
         else:
             raise ValueError('Unknown type of network!')
 
-    def print_training_stats(self):
-        print(self.output_path)
 
-        try:
-            with open(f"{self.output_path}/training_hist.json") as json_file:
-                data = json.load(json_file)
-                print({
-                    "epoch": len(data["times"]),
-                    "epoch_time": np.mean(data["times"]),
-                })
-        except:
-            pass
-        print(sh.tail("-n 1", f"{self.output_path}/results.txt", _iter=True))
