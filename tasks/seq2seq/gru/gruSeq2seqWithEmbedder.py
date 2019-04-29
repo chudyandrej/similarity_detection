@@ -30,10 +30,10 @@ class GruSeq2seqWithEmbedder(Seq2seq):
         embedded_decoder_input = embedding(decoder_inputs)
         embedded_target = embedding(target)
 
-        encoder = GRU(self.gru_dim, dropout=self.dropout, recurrent_dropout=self.dropout, return_state=True)
+        encoder = CuDNNGRU(self.gru_dim, return_state=True)
         encoder_outputs, state_c = encoder(embedded_encoder_input)
 
-        decoder_gru = GRU(self.gru_dim, dropout=self.dropout, recurrent_dropout=self.dropout, return_sequences=True)
+        decoder_gru = CuDNNGRU(self.gru_dim, return_sequences=True)
         decoder_outputs = decoder_gru(embedded_decoder_input, initial_state=state_c)
         decoder_dense = Dense(self.embedding_dim, activation='tanh')
         decoder_outputs = decoder_dense(decoder_outputs)

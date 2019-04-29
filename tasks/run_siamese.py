@@ -56,15 +56,22 @@ def run(code):
     else:
         return
 
-    model_execution.train_model()
+    # model_execution.train_model()
     # model_execution.evaluate_model()
-    # model_execution.print_training_stats()
+    model_execution.print_training_stats()
     # model_execution.make_plots()
 
 
-if __name__ == '__main__':
 
-    run(12)
+
+if __name__ == '__main__':
+    # TO train
+    run(4)
+
+    # run(12)
+
+
+
 
 
 

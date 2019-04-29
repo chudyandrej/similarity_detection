@@ -69,14 +69,14 @@ class Siamese(ComputingModel):
             json.dump(hist.history, f)
 
     def evaluate_model(self):
+        encoder_model = self.load_encoder()
 
         ev = AuthorityEvaluator(username='andrej', neighbors=20, metric="euclidean", results_file=self.output_path)
-        encoder_model = self.load_encoder()
         test_profiles = ev.cvut_profiles
         quantiles_data = np.array(list(map(lambda x: self.preprocess_profile(x), test_profiles)))
         embedding_vectors = encoder_model.predict(quantiles_data, verbose=1)
         print("Processed " + str(len(embedding_vectors)) + " value embeddings")
-        ev.evaluate_embeddings(list(zip(test_profiles, embedding_vectors)))
+        ev.evaluate_embeddings(test_profiles, embedding_vectors)
 
     def preprocess_profile(self, profile):
         values = profile.quantiles
@@ -86,6 +86,9 @@ class Siamese(ComputingModel):
         values = list(map(lambda x: self.encoder.encode(x), values))
         values = pad_sequences(values, maxlen=self.max_seq_len)
         return np.array(values)
+
+    def get_encoder(self):
+        return self.encoder
 
     @staticmethod
     def get_rnn(rnn_type, rnn_dim, dropout, return_sequences):

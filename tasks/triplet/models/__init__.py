@@ -1,3 +1,5 @@
 from .hierTripleJointly import HierTripletJointly
 from .hierTripletWithSeq2Encoder import HierTripletWithSeq2Encoder
 from .meanTriplet import MeanTriplet
+from .hierTripleJointlyWithGpt2Encoder import HierTripletJointlyWithGpt2Encoder
+from .meanTripletWithGpt2Encoder import MeanTripletWithGpt2Encoder

@@ -75,6 +75,7 @@ class Seq2seq(ComputingModel):
         # self.evaluate_model()
 
     def evaluate_model(self):
+        model = self.load_encoder()
 
         ev = AuthorityEvaluator(username='andrej', neighbors=20, train_size=0.50,
                                 results_file=self.output_path)
@@ -86,7 +87,7 @@ class Seq2seq(ComputingModel):
 
         nn_input = np.reshape(nn_input, (nn_input.shape[0] * nn_input.shape[1], nn_input.shape[2]))
 
-        nn_output = self.load_encoder().predict(nn_input, verbose=1)
+        nn_output = model.predict(nn_input, verbose=1)
 
         print("Clustering value vectors to column representation")
         uids = list(map(lambda x: x[0], uid_values))
@@ -96,7 +97,8 @@ class Seq2seq(ComputingModel):
 
         # -------------- EVALUATE EXPERIMENT --------------------
         print("Count of classes: " + str(len(uid_embedding)))
-        ev.evaluate_embeddings(profile_embedding)
+        profile, embedding = zip(*profile_embedding)
+        ev.evaluate_embeddings(profile, embedding)
 
     def preprocess_profiles(self, profiles):
         result = []
@@ -127,3 +129,6 @@ class Seq2seq(ComputingModel):
         input_decoder = np.roll(pad_sequences(embedded_strings, maxlen=self.max_seq_len, padding='post'), 1)
         target = pad_sequences(embedded_strings, maxlen=self.max_seq_len, padding='post')
         return input_coder, input_decoder, target
+
+    def get_encoder(self):
+        return self.encoder

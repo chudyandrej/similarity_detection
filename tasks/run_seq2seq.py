@@ -3,7 +3,7 @@ import os
 from .seq2seq import *
 from preprocessor.encoder import *
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 
 def run(code):
@@ -30,4 +30,4 @@ def run(code):
 
 
 if __name__ == '__main__':
-    run(0)
+    run(3)

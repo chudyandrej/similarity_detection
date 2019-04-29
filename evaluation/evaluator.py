@@ -63,14 +63,14 @@ class AuthorityEvaluator:
         valid_profiles = [x for x in profiles if x.uid[0] in set(valid_tables)]
         return train_profiles, valid_profiles
 
-    def evaluate_embeddings(self, profile_embedding: List[Tuple[namedtuple, np.array]]):
+    def evaluate_embeddings(self, profiles, embeddings):
         """
         Evaluation function for similarity detection task. Function build NearestNeighbors index over all uid_embedding
         data. This data consist from profile and column vector (his embedding). This function try to find
         partitions for every column representation.
         :param profile_embedding: (Dict, np.Vector)
         """
-        evaluate_similarity(self, profile_embedding)
+        evaluate_similarity(self, profiles, embeddings)
 
 
 def get_profile_similarity(profile1, profile2):

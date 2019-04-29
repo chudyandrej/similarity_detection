@@ -11,24 +11,28 @@ import custom_components as cc
 from preprocessor.encoder import Encoder
 
 from ...seq2seq import CuDNNGRUSeq2seqWithGpt2Encoder
+from ...computing_model import ComputingModel
 from preprocessor.encoder import BytePairEncoding
 
 
 class HierSiamJointlyWithSeq2Encoder(Siamese):
-    def __init__(self, rnn_type: str, attention: bool, encoder: Encoder, enc_out_dim, max_seq_len, rnn_dim, dropout,
-                 version):
+    def __init__(self, rnn_type: str, attention: bool, value_compute_obj: ComputingModel, value_model_name: str,
+                 enc_out_dim, max_seq_len, rnn_dim, dropout, version):
         self.rnn_dim = rnn_dim
         self.dropout = dropout
         self.version = version
         self.rnn_type = rnn_type
         self.attention = attention
         self.enc_out_dim = enc_out_dim
+        self.value_compute_obj = value_compute_obj
+        self.value_model_name = value_model_name
 
-        self.output_space = f"{super().OUTPUT_ROOT}/{rnn_type}{type(self).__name__}/{self.version}"
+        self.output_space = f"{super().OUTPUT_ROOT}/{self.value_model_name}{rnn_type}{type(self).__name__}/{self.version}"
         if attention:
-            self.output_space = f"{super().OUTPUT_ROOT}/{rnn_type}{type(self).__name__}WithAttention/{self.version}"
+            self.output_space = f"{super().OUTPUT_ROOT}/{self.value_model_name}{rnn_type}{type(self).__name__}WithAttention/{self.version}"
 
-        super().__init__(encoder=encoder, max_seq_len=max_seq_len, output_path=self.output_space)
+        super().__init__(encoder=self.value_compute_obj.get_encoder(), max_seq_len=max_seq_len,
+                         output_path=self.output_space)
 
     def build_model(self):
 
@@ -37,8 +41,7 @@ class HierSiamJointlyWithSeq2Encoder(Siamese):
         right_input = Input(shape=(11, self.max_seq_len), name='right_input')
 
         # Value embedding model trained as seq2seq.
-        value_model = CuDNNGRUSeq2seqWithGpt2Encoder(gru_dim=128, dropout=0.2, max_seq_len=64, version="v1",
-                                                     encoder=BytePairEncoding()).load_encoder()
+        value_model = self.value_compute_obj.load_encoder()
         for layer in value_model.layers:
             layer.trainable = False
 
@@ -56,13 +59,13 @@ class HierSiamJointlyWithSeq2Encoder(Siamese):
             left_encoded = context_layer(left_encoded)
             right_encoded = context_layer(right_encoded)
 
-        dropout_1 = Dropout(self.dropout)
-        col_att_vec_dr_left = dropout_1(left_encoded)
-        col_att_vec_dr_right = dropout_1(right_encoded)
+        # dropout_1 = Dropout(self.dropout)
+        # left_encoded = dropout_1(left_encoded)
+        # right_encoded = dropout_1(right_encoded)
 
         comparer = Lambda(function=cc.euclidean_distance, name='comparer')
         # comparer = Dot(axes=1, normalize=True, name='comparer')
-        output = comparer([col_att_vec_dr_left, col_att_vec_dr_right])
+        output = comparer([left_encoded, right_encoded])
 
         # Compile and train Joint Model
         joint_model = Model(inputs=[left_input, right_input], outputs=output)
@@ -72,9 +75,12 @@ class HierSiamJointlyWithSeq2Encoder(Siamese):
         return joint_model
 
     def load_encoder(self):
-        model = load_model()
+        model = self.load_model()
+        if self.attention:
+            model: Model = Model(model.inputs[0], model.layers[7].get_output_at(0))
+        else:
+            model: Model = Model(model.inputs[0], model.layers[4].get_output_at(0))
 
-        model: Model = Model(model.inputs[0], model.layers[4].get_output_at(0))
         model.summary()
         return model
 

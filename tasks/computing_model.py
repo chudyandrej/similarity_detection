@@ -37,6 +37,10 @@ class ComputingModel(object):
         pass
 
     @abstractmethod
+    def get_encoder(self):
+        pass
+
+    @abstractmethod
     def evaluate_model(self):
         pass
 

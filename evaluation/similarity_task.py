@@ -6,9 +6,8 @@ import numpy as np
 from collections import defaultdict
 
 
-def evaluate_similarity(eval_class, profile_embedding):
-    eval_class.logger.info('Evaluating embeddings ...')
-    profiles, embeddings = zip(*profile_embedding)
+def evaluate_similarity(eval_class, profiles, embeddings):
+    assert len(profiles) == len(embeddings), "Count of profiles not equal as count of embeddings"
     eval_class.logger.info('Building index ...')
     index = NearestNeighbors(metric=eval_class.metric, n_jobs=-1).fit(embeddings)
 
