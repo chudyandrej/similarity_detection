@@ -50,9 +50,5 @@ def run(code):
 
 
 if __name__ == '__main__':
-    # for i in range(3, 4):
-    #     print(f"{'##'*10}\n{i}\n{'##'*10}")
-    #     run(i)
-    # run(3)
     run(4)
-    # run(5)
+

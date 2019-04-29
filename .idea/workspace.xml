@@ -5,36 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d3daed69-9682-4673-9397-f4a458b7e5cc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/TFIDF_features.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tasks/run_stacked.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tasks/triplet/models/hierTripleJointlyWithGpt2Encoder.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tasks/triplet/models/meanTripletWithGpt2Encoder.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/evaluation/foreing_key_task.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/evaluation/evaluator.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation/evaluator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/similarity_task.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation/similarity_task.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/computing_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/computing_model.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tasks/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/run_seq2seq.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/run_seq2seq.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/run_siamese.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/run_siamese.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasks/run_stacked.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/run_stacked.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tasks/run_triplet.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/run_triplet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithEmbedder.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithEmbedder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/seq2seq/seq2seq.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/seq2seq/seq2seq.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/siamese/models/hierSiamJointlyWithSeq2Encoder.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/siamese/models/hierSiamJointlyWithSeq2Encoder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/siamese/siamese.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/siamese/siamese.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/triplet/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/triplet/models/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/triplet/models/hierTripletWithSeq2Encoder.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/triplet/models/hierTripletWithSeq2Encoder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tasks/triplet/triplet.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/triplet/triplet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/gpt2/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/cloudml-gpu.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/custom_components.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/modelCheckpoint.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/siamese/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/gpt2/gpt2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/siamese/models/gru/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/siamese/models/gru/fix_value_enc_with_attention.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/siamese/models/gru/join_model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/siamese/models/gru/join_with_attention.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/siamese/models/gru/join_with_double_attention.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer/siamese/task.py" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -69,101 +45,7 @@
     <favorites_list name="lstm_embedding" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/tasks/run_triplet.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="600">
-              <caret line="40" column="14" lean-forward="true" selection-start-line="40" selection-start-column="14" selection-end-line="40" selection-end-column="14" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tasks/triplet/models/meanTripletWithGpt2Encoder.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1140">
-              <caret line="85" column="60" selection-start-line="85" selection-start-column="60" selection-end-line="85" selection-end-column="60" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tasks/triplet/models/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="59" selection-start-line="4" selection-start-column="59" selection-end-line="4" selection-end-column="59" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tasks/triplet/models/hierTripleJointly.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="9" column="27" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tasks/triplet/triplet.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="27" column="37" selection-start-line="27" selection-start-column="37" selection-end-line="27" selection-end-column="37" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tasks/siamese/siamese.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1035">
-              <caret line="84" column="42" selection-start-line="84" selection-start-column="41" selection-end-line="84" selection-end-column="42" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tasks/run.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tasks/computing_model.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="795">
-              <caret line="60" column="25" selection-start-line="60" selection-start-column="25" selection-end-line="60" selection-end-column="25" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -213,7 +95,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="&lt;5f1466bf-e574-48e2-86c5-f903d7af9b07&gt;/outcome/seq2seq/LstmSeq2seqWithGpt2Encoder/v1/training_hist.json" />
         <option value="&lt;5f1466bf-e574-48e2-86c5-f903d7af9b07&gt;/outcome/seq2seq/LstmSeq2seqWithEmbedder/AE_v1/training_hist.json" />
         <option value="$PROJECT_DIR$/custom_components/layers.py" />
         <option value="$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithGpt2Encoder2.py" />
@@ -249,11 +130,8 @@
         <option value="$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithEmbedder.py" />
         <option value="$PROJECT_DIR$/tasks/siamese/models/hierSiamJointlyWithSeq2Encoder.py" />
         <option value="$PROJECT_DIR$/tasks/seq2seq/gru/cuDNNGRUSeq2seqWithGpt2Encoder.py" />
-        <option value="$PROJECT_DIR$/tasks/run.py" />
         <option value="$PROJECT_DIR$/tasks/gpt2/gpt2.py" />
-        <option value="$PROJECT_DIR$/tasks/run_stacked.py" />
         <option value="&lt;5f1466bf-e574-48e2-86c5-f903d7af9b07&gt;/TFIDF_features" />
-        <option value="$PROJECT_DIR$/evaluation/evaluator.py" />
         <option value="$PROJECT_DIR$/evaluation/similarity_task.py" />
         <option value="$PROJECT_DIR$/tasks/triplet/triplet.py" />
         <option value="$PROJECT_DIR$/tasks/siamese/siamese.py" />
@@ -262,14 +140,20 @@
         <option value="$PROJECT_DIR$/tasks/run_siamese.py" />
         <option value="&lt;5f1466bf-e574-48e2-86c5-f903d7af9b07&gt;/TFIDF_features.py" />
         <option value="$PROJECT_DIR$/tasks/triplet/models/__init__.py" />
-        <option value="$PROJECT_DIR$/tasks/run_triplet.py" />
         <option value="$PROJECT_DIR$/tasks/triplet/models/meanTripletWithGpt2Encoder.py" />
+        <option value="$PROJECT_DIR$/tasks/run_triplet.py" />
+        <option value="$PROJECT_DIR$/tasks/run_stacked.py" />
+        <option value="$PROJECT_DIR$/tasks/run.py" />
+        <option value="$PROJECT_DIR$/evaluation/evaluator.py" />
+        <option value="$PROJECT_DIR$/evaluation/foreing_key_task.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="width" value="1680" />
-    <option name="height" value="1050" />
+    <option name="x" value="-420" />
+    <option name="y" value="-1440" />
+    <option name="width" value="2560" />
+    <option name="height" value="1440" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -288,33 +172,12 @@
             <path>
               <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
               <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
-              <item name="tasks" type="462c0819:PsiDirectoryNode" />
+              <item name="evaluation" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
               <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
               <item name="tasks" type="462c0819:PsiDirectoryNode" />
-              <item name="siamese" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
-              <item name="tasks" type="462c0819:PsiDirectoryNode" />
-              <item name="siamese" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
-              <item name="tasks" type="462c0819:PsiDirectoryNode" />
-              <item name="triplet" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lstm_embedding" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lstm_embedding" type="462c0819:PsiDirectoryNode" />
-              <item name="tasks" type="462c0819:PsiDirectoryNode" />
-              <item name="triplet" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -650,6 +513,7 @@
       <workItem from="1556123034990" duration="644000" />
       <workItem from="1556378349912" duration="3256000" />
       <workItem from="1556455184310" duration="18000" />
+      <workItem from="1556524245582" duration="1456000" />
     </task>
     <task id="LOCAL-00001" summary="Evaluation similarity detection">
       <created>1543940803928</created>
@@ -840,11 +704,18 @@
       <option name="project" value="LOCAL" />
       <updated>1555327947760</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="add triplet model with GPT2">
+      <created>1556524406989</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1556524406989</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="793177000" />
+    <option name="totallyTimeSpent" value="794633000" />
   </component>
   <component name="TodoView" selected-index="2">
     <todo-panel id="selected-file">
@@ -856,10 +727,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
-    <editor active="true" />
+    <frame x="-420" y="-1440" width="2560" height="1440" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49489796" visible="true" weight="0.12332112" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49489796" visible="true" weight="0.08101668" />
       <window_info id="Structure" order="1" sideWeight="0.50264084" side_tool="true" weight="0.11358221" />
       <window_info id="Favorites" order="2" sideWeight="0.50510204" side_tool="true" weight="0.18253969" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -875,11 +745,11 @@
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5007943" side_tool="true" weight="0.21240877" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.19591837" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.14525548" />
-      <window_info anchor="bottom" id="File Transfer" order="13" sideWeight="0.4992057" visible="true" weight="0.14897959" />
+      <window_info anchor="bottom" id="File Transfer" order="13" sideWeight="0.4992057" visible="true" weight="0.09562044" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info active="true" anchor="right" id="Remote Host" order="3" visible="true" weight="0.22527473" />
+      <window_info anchor="right" id="Remote Host" order="3" visible="true" weight="0.14654487" />
       <window_info anchor="right" x="0" y="0" width="590" height="1217" id="Documentation" order="4" side_tool="true" weight="0.32843527" />
       <window_info anchor="right" id="SciView" order="5" show_stripe_button="false" weight="0.32883242" />
       <window_info anchor="right" id="Database" order="6" show_stripe_button="false" weight="0.32962668" />
@@ -903,7 +773,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="Experiment for key analyzes fix" />
     <MESSAGE value="seq2seq key problem evaluation" />
     <MESSAGE value="cnn_kim, cnn_zhang" />
     <MESSAGE value="New experiments file. Demo code" />
@@ -928,7 +797,8 @@
     <MESSAGE value="Fix siamese trainings" />
     <MESSAGE value="Triplet" />
     <MESSAGE value="Triplet load encoder and plot architecture" />
-    <option name="LAST_COMMIT_MESSAGE" value="Triplet load encoder and plot architecture" />
+    <MESSAGE value="add triplet model with GPT2" />
+    <option name="LAST_COMMIT_MESSAGE" value="add triplet model with GPT2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -991,7 +861,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/.venv/lib/python3.6/site-packages/sdep/similarity_task.py" />
     <entry file="file://$PROJECT_DIR$/custom_components/layers.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1750">
@@ -1205,16 +1074,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/run_stacked.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="39" column="29" selection-start-line="39" selection-start-column="29" selection-end-line="39" selection-end-column="29" />
-          <folding>
-            <element signature="e#1#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tasks/seq2seq/gru/gruSeq2seqWithEmbedder.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
@@ -1285,26 +1144,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/evaluation/similarity_task.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="28" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="28" />
-          <folding>
-            <element signature="e#0#46#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/evaluation/evaluator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="930">
-          <caret line="72" column="24" selection-start-line="72" selection-start-column="24" selection-end-line="72" selection-end-column="24" />
-          <folding>
-            <element signature="e#0#40#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tasks/triplet/models/hierTripletWithSeq2Encoder.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="487">
@@ -1347,8 +1186,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/tasks/run_triplet.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="40" column="14" lean-forward="true" selection-start-line="40" selection-start-column="14" selection-end-line="40" selection-end-column="14" />
+        <state relative-caret-position="855">
+          <caret line="57" lean-forward="true" selection-start-line="57" selection-end-line="57" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
@@ -1359,33 +1198,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1140">
           <caret line="85" column="60" selection-start-line="85" selection-start-column="60" selection-end-line="85" selection-end-column="60" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/triplet/models/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="59" selection-start-line="4" selection-start-column="59" selection-end-line="4" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/triplet/models/hierTripleJointly.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="9" column="27" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tasks/triplet/triplet.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="27" column="37" selection-start-line="27" selection-start-column="37" selection-end-line="27" selection-end-column="37" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
@@ -1404,20 +1216,87 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/tasks/run.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
+        <state relative-caret-position="255">
+          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/evaluation/similarity_task.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="28" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#46#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluation/evaluator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="30" column="20" lean-forward="true" selection-start-line="30" selection-start-column="20" selection-end-line="30" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#40#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/tasks/computing_model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="795">
+        <state relative-caret-position="877">
           <caret line="60" column="25" selection-start-line="60" selection-start-column="25" selection-end-line="60" selection-end-column="25" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/triplet/triplet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="27" column="37" selection-start-line="27" selection-start-column="37" selection-end-line="27" selection-end-column="37" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/triplet/models/hierTripleJointly.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="9" column="27" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/triplet/models/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="59" selection-start-line="4" selection-start-column="59" selection-end-line="4" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks/run_stacked.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="38" column="19" lean-forward="true" selection-start-line="38" selection-start-column="19" selection-end-line="38" selection-end-column="19" />
+          <folding>
+            <element signature="e#1#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluation/foreing_key_task.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+          <folding>
+            <element signature="e#0#46#0" expanded="true" />
           </folding>
         </state>
       </provider>

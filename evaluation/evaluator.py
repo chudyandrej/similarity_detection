@@ -9,6 +9,9 @@ from collections import defaultdict
 
 from .similarity_task import evaluate_similarity
 from sklearn.model_selection import train_test_split
+from sdep.foreing_key_task import evaluate_foreign_key_detection
+
+
 
 
 def create_logger():
@@ -71,6 +74,9 @@ class AuthorityEvaluator:
         :param profile_embedding: (Dict, np.Vector)
         """
         evaluate_similarity(self, profiles, embeddings)
+
+    def evaluate_foreign_keys(self, profile_embedding):
+        evaluate_foreign_key_detection(self, profile_embedding)
 
 
 def get_profile_similarity(profile1, profile2):

@@ -7,15 +7,17 @@ os.environ['CUDA_VISIBLE_DEVICES'] = '1'
 
 def run(code):
     if code == 0:
-        model_execution = HierTripletJointly(rnn_type="Lstm", attention=False, encoder=AsciiEncoding(), enc_out_dim=128, max_seq_len=64, rnn_dim=128, dropout=0.2, version="v1")
+        model_execution = HierTripletJointly(rnn_type="Lstm", attention=False, encoder=AsciiEncoding(), enc_out_dim=128,
+                                             max_seq_len=64, rnn_dim=128, dropout=0.2, version="v1")
     elif code == 1:
-        model_execution = HierTripletJointly(rnn_type="Gru", attention=False, encoder=AsciiEncoding(), enc_out_dim=128, max_seq_len=64, rnn_dim=300, dropout=0.2, version="v2")
+        model_execution = HierTripletJointly(rnn_type="Gru", attention=False, encoder=AsciiEncoding(), enc_out_dim=128,
+                                             max_seq_len=64, rnn_dim=300, dropout=0.2, version="v2")
     elif code == 2:
-        model_execution = MeanTriplet(rnn_type="Lstm", attention=False, encoder=AsciiEncoding(), enc_out_dim=128, max_seq_len=64, rnn_dim=128, dropout=0.2, version="v1")
+        model_execution = MeanTriplet(rnn_type="Lstm", attention=False, encoder=AsciiEncoding(), enc_out_dim=128,
+                                      max_seq_len=64, rnn_dim=128, dropout=0.2, version="v1")
     elif code == 3:
-        model_execution = MeanTriplet(rnn_type="Gru", attention=False, encoder=AsciiEncoding(), enc_out_dim=128, max_seq_len=64, rnn_dim=300, dropout=0.2, version="v2")
-    elif code == 4:
-        model_execution = HierTripletWithSeq2Encoder(rnn_type="Gru", attention=False, encoder=AsciiEncoding(), enc_out_dim=128, max_seq_len=64, rnn_dim=128, dropout=0.2, version="v1")
+        model_execution = MeanTriplet(rnn_type="Gru", attention=False, encoder=AsciiEncoding(), enc_out_dim=128,
+                                      max_seq_len=64, rnn_dim=300, dropout=0.2, version="v2")
     elif code == 5:
         model_execution = HierTripletJointly(rnn_type="Gru", attention=True, encoder=AsciiEncoding(), enc_out_dim=128,
                                              max_seq_len=64, rnn_dim=128, dropout=0.2, version="v1")
