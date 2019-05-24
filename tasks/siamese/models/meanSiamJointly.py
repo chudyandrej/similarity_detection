@@ -10,7 +10,7 @@ from preprocessor.encoder import Encoder
 
 class MeanHierSiamJointly(Siamese):
     def __init__(self, rnn_type: str, attention: bool, encoder: Encoder, enc_out_dim, max_seq_len, rnn_dim, dropout,
-                 version):
+                 version, name):
         self.rnn_dim = rnn_dim
         self.dropout = dropout
         self.version = version

@@ -95,6 +95,10 @@ class Triplet(ComputingModel):
     def get_encoder(self):
         return self.encoder
 
+    def save_embedder(self):
+        model = self.load_model()
+        model.save(self.output_path+"/embedder.h5")
+
     @staticmethod
     def get_rnn(rnn_type, rnn_dim, dropout, return_sequences):
         if rnn_type == "Gru":

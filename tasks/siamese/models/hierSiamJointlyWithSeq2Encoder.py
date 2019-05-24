@@ -16,8 +16,8 @@ from preprocessor.encoder import BytePairEncoding
 
 
 class HierSiamJointlyWithSeq2Encoder(Siamese):
-    def __init__(self, rnn_type: str, attention: bool, value_compute_obj: ComputingModel, value_model_name: str,
-                 enc_out_dim, max_seq_len, rnn_dim, dropout, version):
+    def __init__(self, rnn_type: str, attention: bool, value_compute_obj: ComputingModel, enc_out_dim, max_seq_len,
+                 rnn_dim, dropout, version, name):
         self.rnn_dim = rnn_dim
         self.dropout = dropout
         self.version = version
@@ -25,11 +25,8 @@ class HierSiamJointlyWithSeq2Encoder(Siamese):
         self.attention = attention
         self.enc_out_dim = enc_out_dim
         self.value_compute_obj = value_compute_obj
-        self.value_model_name = value_model_name
 
-        self.output_space = f"{super().OUTPUT_ROOT}/{self.value_model_name}{rnn_type}{type(self).__name__}/{self.version}"
-        if attention:
-            self.output_space = f"{super().OUTPUT_ROOT}/{self.value_model_name}{rnn_type}{type(self).__name__}WithAttention/{self.version}"
+        self.output_space = f"{super().OUTPUT_ROOT}/{name}/{self.version}"
 
         super().__init__(encoder=self.value_compute_obj.get_encoder(), max_seq_len=max_seq_len,
                          output_path=self.output_space)

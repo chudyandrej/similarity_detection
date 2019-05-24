@@ -9,7 +9,7 @@ from ..seq2seq import Seq2seq
 
 class GruSeq2seqWithEmbedder(Seq2seq):
 
-    def __init__(self, embedding_dim, gru_dim, dropout, max_seq_len, version, encoder: Encoder):
+    def __init__(self, embedding_dim, gru_dim, dropout, max_seq_len, version, encoder: Encoder, name):
         self.embedding_dim = embedding_dim
         self.gru_dim = gru_dim
         self.dropout = dropout
@@ -17,7 +17,7 @@ class GruSeq2seqWithEmbedder(Seq2seq):
         self.version = version
         self.encoder = encoder
 
-        self.output_space = f"{super().OUTPUT_ROOT}/{type(self).__name__}/{self.version}"
+        self.output_space = f"{super().OUTPUT_ROOT}/{name}/{self.version}"
         super().__init__(encoder, max_seq_len, self.output_space)
 
     def build_model(self):

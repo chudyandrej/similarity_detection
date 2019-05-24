@@ -12,40 +12,40 @@ os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 def run(code):
     if code == 0:
-        value_obj = CuDNNGRUSeq2seqWithGpt2Encoder(gru_dim=128, dropout=0.2, max_seq_len=64, version="v1", encoder=BytePairEncoding())
+        value_obj = CuDNNGRUSeq2seqWithGpt2Encoder(gru_dim=128, dropout=0.2, max_seq_len=64, version="v1", encoder=BytePairEncoding(), name="GCu")
         model_execution = HierTripletWithSeq2Encoder(rnn_type="Gru", attention=False, value_compute_obj=value_obj,
-                                                     value_model_name="Bgcu", enc_out_dim=128, max_seq_len=64,
-                                                     rnn_dim=128, dropout=0.2, version="v1")
+                                                     enc_out_dim=128, max_seq_len=64,
+                                                     rnn_dim=128, dropout=0.2, version="v1", name="TGCuC")
     elif code == 1:
-        value_obj = CuDNNGRUSeq2seqWithGpt2Encoder(gru_dim=128, dropout=0.2, max_seq_len=64, version="v1", encoder=BytePairEncoding())
+        value_obj = CuDNNGRUSeq2seqWithGpt2Encoder(gru_dim=128, dropout=0.2, max_seq_len=64, version="v1", encoder=BytePairEncoding(), name="GCu")
         model_execution = HierTripletWithSeq2Encoder(rnn_type="Gru", attention=True, value_compute_obj=value_obj,
-                                                     value_model_name="Bgcu", enc_out_dim=128, max_seq_len=64,
-                                                     rnn_dim=128, dropout=0.2, version="v1")
+                                                     enc_out_dim=128, max_seq_len=64,
+                                                     rnn_dim=128, dropout=0.2, version="v1", name="TGCuCWA")
     elif code == 2:
-        value_obj= GruSeq2seqWithEmbedder(gru_dim=128, dropout=0.2, embedding_dim=128, max_seq_len=64, version="AE_v1", encoder=AsciiEncoding())
+        value_obj= GruSeq2seqWithEmbedder(gru_dim=128, dropout=0.2, embedding_dim=128, max_seq_len=64, version="v1", encoder=AsciiEncoding(), name="UG")
         model_execution = HierTripletWithSeq2Encoder(rnn_type="Gru", attention=False, value_compute_obj=value_obj,
-                                                     value_model_name="Aeg", enc_out_dim=128, max_seq_len=64,
-                                                     rnn_dim=128, dropout=0.2, version="v1")
+                                                     enc_out_dim=128, max_seq_len=64,
+                                                     rnn_dim=128, dropout=0.2, version="v1", name="TUGC")
     elif code == 3:
-        value_obj = GruSeq2seqWithEmbedder(gru_dim=128, dropout=0.2, embedding_dim=128, max_seq_len=64, version="AE_v1", encoder=AsciiEncoding())
+        value_obj = GruSeq2seqWithEmbedder(gru_dim=128, dropout=0.2, embedding_dim=128, max_seq_len=64, version="v1", encoder=AsciiEncoding(), name="UG")
         model_execution = HierTripletWithSeq2Encoder(rnn_type="Lstm", attention=False, value_compute_obj=value_obj,
-                                                     value_model_name="Aeg", enc_out_dim=128, max_seq_len=64,
-                                                     rnn_dim=128, dropout=0.2, version="v1")
+                                                     enc_out_dim=128, max_seq_len=64,
+                                                     rnn_dim=128, dropout=0.2, version="v1", name="TUGL")
     elif code == 4:
-        value_obj = CuDNNGRUSeq2seqWithGpt2Encoder(gru_dim=128, dropout=0.2, max_seq_len=64, version="v1", encoder=BytePairEncoding())
+        value_obj = CuDNNGRUSeq2seqWithGpt2Encoder(gru_dim=128, dropout=0.2, max_seq_len=64, version="v1", encoder=BytePairEncoding(), name="GCu")
         model_execution = HierSiamJointlyWithSeq2Encoder(rnn_type="Gru", attention=False, value_compute_obj=value_obj,
-                                                         value_model_name="Bgcu", enc_out_dim=128, max_seq_len=64,
-                                                         rnn_dim=128, dropout=0.2, version="v3")
+                                                         enc_out_dim=128, max_seq_len=64,
+                                                         rnn_dim=128, dropout=0.2, version="v1", name="SGCuC")
     elif code == 5:
-        value_obj = GruSeq2seqWithEmbedder(gru_dim=128, dropout=0.2, embedding_dim=256, max_seq_len=64, version="AE_v1", encoder=AsciiEncoding())
+        value_obj = GruSeq2seqWithEmbedder(gru_dim=128, dropout=0.2, embedding_dim=256, max_seq_len=64, version="v1", encoder=AsciiEncoding(), name="UG")
         model_execution = HierSiamJointlyWithSeq2Encoder(rnn_type="Gru", attention=False, value_compute_obj=value_obj,
-                                                         value_model_name="Aeg", enc_out_dim=128, max_seq_len=64,
-                                                         rnn_dim=128, dropout=0.2, version="v1")
+                                                         enc_out_dim=128, max_seq_len=64, rnn_dim=128, dropout=0.2,
+                                                         version="v1", name="SUGC")
     else:
         return
 
-    model_execution.train_model()
-    model_execution.evaluate_model()
+    # model_execution.train_model()
+    # model_execution.evaluate_model()
     # model_execution.print_training_stats()
 
 

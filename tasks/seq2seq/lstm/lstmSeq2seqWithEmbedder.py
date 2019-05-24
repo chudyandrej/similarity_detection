@@ -7,14 +7,14 @@ from ..seq2seq import Seq2seq
 
 
 class LstmSeq2seqWithEmbedder(Seq2seq):
-    def __init__(self, lstm_dim, dropout, embedding_dim, max_seq_len, version, encoder: Encoder):
+    def __init__(self, lstm_dim, dropout, embedding_dim, max_seq_len, version, encoder: Encoder, name):
         self.lstm_dim = lstm_dim
         self.dropout = dropout
         self.embedding_dim = embedding_dim
         self.max_seq_len = max_seq_len
         self.version = version
         self.encoder = encoder
-        self.output_space = f"{super().OUTPUT_ROOT}/{type(self).__name__}/{self.version}"
+        self.output_space = f"{super().OUTPUT_ROOT}/{name}/{self.version}"
         super().__init__(encoder, max_seq_len, self.output_space)
 
     def build_model(self):

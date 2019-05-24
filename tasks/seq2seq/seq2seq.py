@@ -1,11 +1,6 @@
 import os
 import json
-import pickle
 import numpy as np
-from collections import namedtuple
-
-import pandas as pd
-import tensorflow as tf
 
 from keras import Model
 from keras.callbacks import EarlyStopping, TensorBoard
@@ -14,9 +9,9 @@ from keras.preprocessing.sequence import pad_sequences
 from abc import abstractmethod
 from typing import List, Tuple
 
-import evaluater_old.embedder as em
+import preprocessor.embedder as em
 import custom_components as cc
-from evaluation import AuthorityEvaluator   # Needed
+from evaluation import AuthorityEvaluator
 from ..computing_model import ComputingModel
 from preprocessor.encoder import Encoder
 
